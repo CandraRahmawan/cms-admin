@@ -1,0 +1,167 @@
+<?php
+
+namespace Content\Controller;
+
+use Content\Controller\ContentAppController;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
+
+class ContentController extends ContentAppController {
+
+    public $option_field = [
+        'Title Content' => 'title',
+        'Category' => 'category_name',
+        'Type' => 'category_type',
+        'Create' => 'entity_create_date',
+        'Author' => 'user_name',
+        'Status' => 'active',
+        'Action' => 'action_content'
+    ];
+
+    public function beforeFilter(\Cake\Event\Event $event) {
+        parent::beforeFilter($event);
+        $this->params_data = $this->request->data;
+        $this->params_query = $this->request->query;
+    }
+
+    public function lists() {
+        $option_field = $this->option_field;
+        $this->set(compact('option_field'));
+    }
+
+    public function serverSide() {
+        $this->viewBuilder()->layout(false);
+        $this->render(false);
+        $option['table'] = 'content';
+        $option['field'] = $this->option_field;
+        $option['search'] = ['title', 'type'];
+        $option['orderby'] = ['content_id' => 'DESC'];
+        $option['join'] = ['Category', 'Users'];
+        $option['where'] = ['content.status !=' => 'T'];
+        $json = $this->DataTables->getResponse($option);
+        echo $json;
+    }
+
+    public function formArticle() {
+        $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
+
+        if (empty($content_id)) {
+            $content = $this->Content->newEntity();
+            $type = 'add';
+            $param = '';
+        } else {
+            $content = $this->Content->get($content_id);
+            $type = 'update';
+            $param = '?content_id=' . $content;
+        }
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $success = $this->__save($type, $content);
+            if ($success) {
+                return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+            } else {
+                return $this->redirect(['action' => 'form', '_ext' => 'html' . $param . '']);
+            }
+        }
+
+        $list_category = $this->Category->getListCategory('content');
+        $this->set(compact('content', 'list_category'));
+    }
+
+    public function formPage() {
+        $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
+
+        if (empty($content_id)) {
+            $content = $this->Content->newEntity();
+            $type = 'add';
+            $param = '';
+        } else {
+            $content = $this->Content->get($content_id);
+            $type = 'update';
+            $param = '?content_id=' . $content;
+        }
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $success = $this->__save($type, $content);
+            if ($success) {
+                return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+            } else {
+                return $this->redirect(['action' => 'form', '_ext' => 'html' . $param . '']);
+            }
+        }
+
+        $list_category = $this->Category->getListCategory('page');
+        $this->set(compact('content', 'list_category'));
+    }
+
+    private function __save($type, $entity) {
+        $file = isset($this->params_data['path_img']) ? $this->params_data['path_img'] : NULL;
+        $title = isset($this->params_data['title']) ? $this->params_data['title'] : NULL;
+        $description = isset($this->params_data['description']) ? $this->params_data['description'] : NULL;
+        $category_id = isset($this->params_data['category_id']) ? $this->params_data['category_id'] : NULL;
+        $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
+
+        //picture
+        $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
+        $arr_ext = array('jpg', 'jpeg', 'png');
+        $setNewFileName = md5($category_id . '%' . $title . '%' . $file['name']);
+        if (in_array($ext, $arr_ext)) {
+            $files_system = new File(WWW_ROOT . $this->utility->basePathImgArticle() . $category_id . '/' . $entity->picture, false, 0777);
+            $files_system->delete();
+            move_uploaded_file($file['tmp_name'], WWW_ROOT . $this->utility->basePathImgArticle() . $category_id . '/' . $setNewFileName . '.' . $ext);
+            $path_img = $setNewFileName . '.' . $ext;
+            $entity->picture = $path_img;
+        } else {
+            $dir = new Folder(WWW_ROOT . $this->utility->basePathImgArticle());
+            $files_system = $dir->find($entity->picture, true);
+            if (count($files_system) == 0)
+                $entity->picture = '';
+        }
+
+        try {
+
+            $entity->title = $title;
+            $entity->description = $description;
+            $entity->status = $status;
+            $entity->category_id = $category_id;
+            $entity->user_id = $this->session_user['user_id'];
+
+            if ($type == 'add')
+                $entity->create_date = date('Y-m-d H:i:s');
+            else
+                $entity->update_date = date('Y-m-d H:i:s');
+
+            $this->Content->save($entity);
+
+            if ($type == 'add')
+                $this->Flash->success('New Content Has Been Added');
+            else
+                $this->Flash->success('Content Has Been Update');
+
+            return true;
+        } catch (\Exception $ex) {
+            $this->Flash->error($ex);
+            return false;
+        }
+    }
+
+    public function trashContent() {
+        $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
+
+        if (!empty($content_id)) {
+            $content = $this->Content->get($content_id);
+            $content->status = 'T';
+            try {
+                $this->Content->save($content);
+                $this->Flash->success('Content Moved to Trash');
+            } catch (\Exception $ex) {
+                $this->Flash->error($ex);
+            }
+        } else {
+            $this->Flash->error('Something Wrong, Try Again Later');
+        }
+
+        return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+    }
+
+}

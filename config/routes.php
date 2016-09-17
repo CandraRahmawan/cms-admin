@@ -8,8 +8,9 @@ Router::defaultRouteClass('DashedRoute');
 
 Router::scope('/', function (RouteBuilder $routes) {
     $routes->extensions('html');
-    $routes->connect('/', ['controller' => 'Login', 'action' => 'index']);
-    $routes->connect('/dashboard', ['controller' => 'Dashboard', 'action' => 'index']);
+    $routes->connect('', ['controller' => 'Login', 'action' => 'index']);
+    $routes->connect('/login', ['controller' => 'Login', 'action' => 'index']);
+    $routes->connect('/delete-files', ['controller' => 'Utility', 'action' => 'deleteFiles']);
     $routes->fallbacks('DashedRoute');
 });
 
