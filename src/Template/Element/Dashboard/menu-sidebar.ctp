@@ -59,6 +59,7 @@
             <ul class="treeview-menu">
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Content', 'controller' => 'Content', 'action' => 'formArticle', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> Create New Article</a></li>
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Content', 'controller' => 'Content', 'action' => 'formPage', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> Create Page</a></li>
+                <li><a href="<?php echo $this->Url->build(['plugin' => 'Content', 'controller' => 'Content', 'action' => 'formSection', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> Create New Section</a></li>
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Content', 'controller' => 'Content', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> List Content</a></li>
             </ul>
         </li>
@@ -85,6 +86,19 @@
             <ul class="treeview-menu">
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Gallery', 'controller' => 'SliderBanner', 'action' => 'form', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> Add Slider Banner</a></li>
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Gallery', 'controller' => 'SliderBanner', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> Slider Banner</a></li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-fw fa-th-large"></i>
+                <span>Themes</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="<?php echo $this->Url->build(['plugin' => 'Themes', 'controller' => 'Themes', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> List Themes</a></li>
+                <li><a href="<?php echo $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> List Menu</a></li>
             </ul>
         </li>
     </ul>

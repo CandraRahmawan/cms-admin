@@ -94,6 +94,32 @@ class ContentController extends ContentAppController {
         $this->set(compact('content', 'list_category'));
     }
 
+    public function formSection() {
+        $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
+
+        if (empty($content_id)) {
+            $content = $this->Content->newEntity();
+            $type = 'add';
+            $param = '';
+        } else {
+            $content = $this->Content->get($content_id);
+            $type = 'update';
+            $param = '?content_id=' . $content;
+        }
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $success = $this->__save($type, $content);
+            if ($success) {
+                return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+            } else {
+                return $this->redirect(['action' => 'form', '_ext' => 'html' . $param . '']);
+            }
+        }
+
+        $list_category = $this->Category->getListCategory('section');
+        $this->set(compact('content', 'list_category'));
+    }
+
     private function __save($type, $entity) {
         $file = isset($this->params_data['path_img']) ? $this->params_data['path_img'] : NULL;
         $title = isset($this->params_data['title']) ? $this->params_data['title'] : NULL;
@@ -151,6 +177,7 @@ class ContentController extends ContentAppController {
         if (!empty($content_id)) {
             $content = $this->Content->get($content_id);
             $content->status = 'T';
+            $content->trash_date = date('Y-m-d H:i:s');
             try {
                 $this->Content->save($content);
                 $this->Flash->success('Content Moved to Trash');

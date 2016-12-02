@@ -53,12 +53,7 @@ $this->Html->css(array(
                                     <select name="category_id" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true">
                                         <?php
                                         echo '<option disabled selected>Select Category</option>';
-                                        foreach ($list_category as $item) {
-                                            if ($content['category_id'] == $item['category_id'])
-                                                echo '<option value="' . $item['category_id'] . '" selected>' . $item['name'] . '</option>';
-                                            else
-                                                echo '<option value="' . $item['category_id'] . '">' . $item['name'] . '</option>';
-                                        }
+                                        $this->Utility->categoryOptionView($list_category, $content['category_id']);
                                         ?>
                                     </select>
                                 </div>

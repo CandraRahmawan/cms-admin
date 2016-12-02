@@ -185,6 +185,7 @@ Plugin::load('Content', ['routes' => true, 'autoload' => true]);
 Plugin::load('Message', ['routes' => true, 'autoload' => true]);
 Plugin::load('Gallery', ['routes' => true, 'autoload' => true]);
 Plugin::load('Tracking', ['routes' => true, 'autoload' => true]);
+Plugin::load('Themes', ['routes' => true, 'autoload' => true]);
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system

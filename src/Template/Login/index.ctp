@@ -1,6 +1,6 @@
 <div class="login-box">
     <div class="login-logo">
-        <a href="../../index2.html"><b>Dashboard</b>CMS</a>
+        <a href="/"><b>Dashboard</b>CMS</a>
     </div>
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>

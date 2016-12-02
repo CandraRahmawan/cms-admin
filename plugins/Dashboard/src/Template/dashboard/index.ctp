@@ -1,6 +1,5 @@
 <?php
 $this->Html->css(array(
-    '/assets/lte/plugins/iCheck/flat/blue',
     '/assets/lte/plugins/morris/morris',
     '/assets/lte/plugins/jvectormap/jquery-jvectormap-1.2.2'), ['block' => 'css']);
 ?>
@@ -42,16 +41,7 @@ $this->Html->css(array(
 <?php
 $this->Html->script(array(
     '/assets/lte/plugins/jQuery/jquery-2.2.3.min',
-    'https://code.jquery.com/ui/1.11.4/jquery-ui.min.js',
+    '/assets/lte/plugins/jQueryUI/jquery-ui.min',
     '/assets/lte/bootstrap/js/bootstrap.min',
     'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js',
-    '/assets/lte/plugins/slimScroll/jquery.slimscroll.min',
-    '/assets/lte/plugins/fastclick/fastclick',
-    '/assets/lte/dist/js/app.min',
-    '/assets/lte/dist/js/pages/dashboard',
-    '/assets/lte/dist/js/main'), ['block' => 'scriptBottom']);
-?>
-
-<script type="text/javascript">
-    $.widget.bridge('uibutton', $.ui.button);
-</script>
+    '/assets/lte/dist/js/app.min'), ['block' => 'scriptBottom']);

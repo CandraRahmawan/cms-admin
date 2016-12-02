@@ -24,6 +24,8 @@ class Content extends Entity {
             return "<a href=\"" . $this->request . "form-page.html?content_id=" . $this->_properties['content_id'] . "\"><i class=\"fa fa-fw fa-edit\"></i> Update </a> | <a href=\"" . $this->request . "trash.html?content_id=" . $this->_properties['content_id'] . "\" onclick=\"return confirm('Are you sure to Move Trash ?')\"><i class=\"fa fa-fw fa-trash\"></i> Trash </a>";
         else if ($this->_properties['category']['type'] == 'Content')
             return "<a href=\"" . $this->request . "form-article.html?content_id=" . $this->_properties['content_id'] . "\"><i class=\"fa fa-fw fa-edit\"></i> Update </a> | <a href=\"" . $this->request . "trash.html?content_id=" . $this->_properties['content_id'] . "\" onclick=\"return confirm('Are you sure to Move Trash ?')\"><i class=\"fa fa-fw fa-trash\"></i> Trash </a>";
+        else if ($this->_properties['category']['type'] == 'Section')
+            return "<a href=\"" . $this->request . "form-section.html?content_id=" . $this->_properties['content_id'] . "\"><i class=\"fa fa-fw fa-edit\"></i> Update </a> | <a href=\"" . $this->request . "trash.html?content_id=" . $this->_properties['content_id'] . "\" onclick=\"return confirm('Are you sure to Move Trash ?')\"><i class=\"fa fa-fw fa-trash\"></i> Trash </a>";
     }
 
     protected function _getUserName() {

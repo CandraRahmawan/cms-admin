@@ -14,7 +14,7 @@ class CategoryTable extends Table {
 
     public function getListCategory($params) {
         $result = $this->find()
-                ->where(['type LIKE' => '%' . $params . '%']);
+                ->where(['type LIKE' => '%' . $params . '%', '`status`' => 'Y']);
         return $result;
     }
 

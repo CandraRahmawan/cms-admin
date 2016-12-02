@@ -1,22 +1,22 @@
 <?php
 
-namespace Category\Controller;
+namespace Themes\Controller;
 
-use Category\Controller\CategoryAppController;
-use Cake\Filesystem\Folder;
+use Themes\Controller\ThemesAppController;
+use Cake\Utility\Hash;
 
-class CategoryController extends CategoryAppController {
+class ThemesController extends ThemesAppController {
 
     public $option_field = [
-        'Category' => 'name',
-        'Type Category' => 'type',
-        'Description' => 'description',
+        'Theme Name' => 'name',
+        'Install Date' => 'entity_install_date',
         'Status' => 'status_indicator',
-        'Action' => 'action_category'
+        'Action' => 'action_theme'
     ];
 
     public function beforeFilter(\Cake\Event\Event $event) {
         parent::beforeFilter($event);
+        $this->loadModel('Menu');
         $this->params_data = $this->request->data;
         $this->params_query = $this->request->query;
     }
@@ -29,73 +29,51 @@ class CategoryController extends CategoryAppController {
     public function serverSide() {
         $this->viewBuilder()->layout(false);
         $this->render(false);
-        $option['table'] = 'category';
+        $option['table'] = 'themes';
         $option['field'] = $this->option_field;
-        $option['search'] = ['name', 'type', 'status', 'description'];
-        $option['orderby'] = ['category_id' => 'DESC'];
+        $option['search'] = ['name'];
+        $option['orderby'] = ['id_theme' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
         echo $json;
     }
 
     public function form() {
-        $category_id = isset($this->params_query['category_id']) ? $this->params_query['category_id'] : NULL;
+        $id_theme = isset($this->params_query['id_theme']) ? $this->params_query['id_theme'] : $this->params_data['id_theme'];
 
-        if (empty($category_id)) {
-            $category = $this->Category->newEntity();
-            $type = 'add';
-            $param = '';
-        } else {
-            $category = $this->Category->get($category_id);
-            $type = 'update';
-            $param = '?category_id=' . $category_id;
+        if (!empty($id_theme)) {
+            $theme = $this->ThemesSetting->find('all')
+                    ->where(['id_theme' => $id_theme])
+                    ->order(['`group`'])
+                    ->toArray();
+            $param = '?id_theme=' . $id_theme;
         }
 
+        $menuPage = $this->Menu->find()
+                ->where(['is_active' => 'Y'])
+                ->toArray();
+        $menuPage = Hash::combine($menuPage, '{n}.menu_id', '{n}.name');
+
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__save($type, $category);
+            $success = $this->__save($id_theme);
             if ($success) {
                 return $this->redirect(['action' => 'lists', '_ext' => 'html']);
             } else {
                 return $this->redirect(['action' => 'form', '_ext' => 'html' . $param . '']);
             }
         }
-
-        $this->set(compact('category'));
+        $this->set(compact('theme', 'menuPage'));
     }
 
-    private function __save($type, $entity) {
-        $name = isset($this->params_data['name']) ? $this->params_data['name'] : NULL;
-        $description = isset($this->params_data['description']) ? $this->params_data['description'] : NULL;
-        $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
-        $type_page = isset($this->params_data['type']) ? $this->params_data['type'] : NULL;
+    private function __save($id_theme) {
 
         try {
-
-            $entity->name = $name;
-            $entity->description = $description;
-            $entity->status = $status;
-            $entity->type = $type_page;
-
-            if ($type == 'add')
-                $entity->create_date = date('Y-m-d H:i:s');
-            else
-                $entity->update_date = date('Y-m-d H:i:s');
-
-            $save = $this->Category->save($entity);
-            $category_id = $save->category_id;
-
-            if ($type_page == 'Content')
-                $dir = new Folder(WWW_ROOT . 'img/Content/Article/' . $category_id . '', true, 0777);
-            else if ($type_page == 'Slider Banner')
-                $dir = new Folder(WWW_ROOT . 'img/Gallery/SliderBanner/' . $category_id . '', true, 0777);
-            else if ($type_page == 'Gallery')
-                $dir = new Folder(WWW_ROOT . 'img/Gallery/Photos/' . $category_id . '', true, 0777);
-
-
-            if ($type == 'add')
-                $this->Flash->success('New Category Has Been Added');
-            else
-                $this->Flash->success('Category Has Been Update');
-
+            for ($i = 0; $i < count($this->params_data); $i++) {
+                $key = array_keys($this->params_data)[$i];
+                if ('id_theme' != $key) {
+                    $this->ThemesSetting->updateAll(['value_1' => $this->params_data[$key]], ['`key`' => $key, 'id_theme' => $id_theme]);
+                }
+            }
+            $this->Flash->success('Success Update Theme');
             return true;
         } catch (\Exception $ex) {
             $this->Flash->error($ex);

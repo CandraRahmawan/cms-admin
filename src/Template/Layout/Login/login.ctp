@@ -11,7 +11,6 @@
             'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css',
             'https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css',
             '/assets/lte/dist/css/AdminLTE.min',
-            '/assets/lte/plugins/iCheck/square/blue.'
         ));
         ?>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,18 +26,8 @@
 
         echo $this->Html->script(array(
             '/assets/lte/plugins/jQuery/jquery-2.2.3.min',
-            '/assets/lte/bootstrap/js/bootstrap.min',
-            '/assets/lte/plugins/iCheck/icheck.min'));
+            '/assets/lte/bootstrap/js/bootstrap.min'));
         ?>
-        <script type="text/javascript">
-            $(function () {
-                $('input').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%'
-                });
-            });
-        </script>
     </body>
 </html>
 

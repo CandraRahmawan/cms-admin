@@ -8,6 +8,7 @@ Router::plugin('Content', ['path' => '/content'], function ($routes) {
     $routes->connect('/server-side', ['controller' => 'Content', 'action' => 'serverSide']);
     $routes->connect('/form-page', ['controller' => 'Content', 'action' => 'formPage']);
     $routes->connect('/form-article', ['controller' => 'Content', 'action' => 'formArticle']);
+    $routes->connect('/form-section', ['controller' => 'Content', 'action' => 'formSection']);
     $routes->connect('/trash', ['controller' => 'Content', 'action' => 'trashContent']);
     $routes->fallbacks('DashedRoute');
 });

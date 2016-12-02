@@ -32,6 +32,7 @@ $this->Html->css([
                                     <option value="">All</option>
                                     <option value="Content">Article</option>
                                     <option value="Page">Page</option>
+                                    <option value="Section">Section</option>
                                 </select>
                             </div>
                         </div>
