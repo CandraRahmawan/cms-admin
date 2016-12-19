@@ -5,6 +5,7 @@ namespace App\View\Helper;
 use Cake\View\Helper;
 use Cake\Datasource\ConnectionManager;
 use Cake\Utility\Hash;
+use Cake\Core\Configure;
 
 class UtilityHelper extends Helper {
 
@@ -20,6 +21,11 @@ class UtilityHelper extends Helper {
 
     public function basePathImgSliderBanner() {
         $base = 'img/Gallery/SliderBanner/';
+        return $base;
+    }
+
+    public function basePathImages() {
+        $base = Configure::read('urlImage.image_management');
         return $base;
     }
 

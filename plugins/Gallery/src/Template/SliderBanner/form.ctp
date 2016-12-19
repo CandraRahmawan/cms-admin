@@ -71,7 +71,7 @@ $this->Html->css(array(
                             <div class="form-group">
                                 <label for="img_user" class="col-sm-2 control-label">Image</label>
                                 <div class="col-sm-9">
-                                    <input id="img_user" name="img_user" type="file" multiple=true value="c:/passwords.txt">
+                                    <input id="img_user" name="img_user" type="file" multiple=true>
                                 </div>
                             </div>
                             <div class="form-group">

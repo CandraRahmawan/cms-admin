@@ -65,6 +65,7 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    Configure::load('config', 'default', false);
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
@@ -183,6 +184,7 @@ Plugin::load('Users', ['routes' => true, 'autoload' => true]);
 Plugin::load('Category', ['routes' => true, 'autoload' => true]);
 Plugin::load('Content', ['routes' => true, 'autoload' => true]);
 Plugin::load('Message', ['routes' => true, 'autoload' => true]);
+Plugin::load('Images', ['routes' => true, 'autoload' => true]);
 Plugin::load('Gallery', ['routes' => true, 'autoload' => true]);
 Plugin::load('Tracking', ['routes' => true, 'autoload' => true]);
 Plugin::load('Themes', ['routes' => true, 'autoload' => true]);
@@ -215,3 +217,5 @@ Type::build('date')
 Type::build('datetime')
         ->useImmutable()
         ->useLocaleParser();
+
+Plugin::load('Images', ['autoload' => true, 'bootstrap' => false, 'routes' => true]);

@@ -44,6 +44,7 @@ return [
         'webroot' => 'webroot',
         'wwwRoot' => WWW_ROOT,
         // 'baseUrl' => env('SCRIPT_NAME'),
+        'baseUrlWeb' => 'http://localhost/admin-cms/',
         'fullBaseUrl' => false,
         'imageBaseUrl' => 'img/',
         'cssBaseUrl' => 'css/',
