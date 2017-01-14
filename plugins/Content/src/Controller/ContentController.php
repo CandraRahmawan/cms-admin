@@ -8,8 +8,16 @@ use Cake\Filesystem\File;
 
 class ContentController extends ContentAppController {
 
-    public $option_field = [
+    public $option_field1 = [
         'Title Content' => 'title',
+        'Category' => 'category_name',
+        'Type' => 'category_type',
+        'Create' => 'entity_create_date',
+        'Author' => 'user_name',
+        'Status' => 'active',
+        'Action' => 'action_content'
+    ];
+    public $option_field2 = [
         'Category' => 'category_name',
         'Type' => 'category_type',
         'Create' => 'entity_create_date',
@@ -24,20 +32,41 @@ class ContentController extends ContentAppController {
         $this->params_query = $this->request->query;
     }
 
-    public function lists() {
-        $option_field = $this->option_field;
+    public function listsArticle() {
+        $option_field = $this->option_field1;
+        $this->set(compact('option_field'));
+    }
+
+    public function listsPage() {
+        $option_field = $this->option_field2;
+        $this->set(compact('option_field'));
+    }
+
+    public function listsSection() {
+        $option_field = $this->option_field2;
         $this->set(compact('option_field'));
     }
 
     public function serverSide() {
+        $type = isset($this->request->params['pass'][0]) ? $this->request->params['pass'][0] : 'article';
         $this->viewBuilder()->layout(false);
         $this->render(false);
         $option['table'] = 'content';
-        $option['field'] = $this->option_field;
         $option['search'] = ['title', 'type'];
         $option['orderby'] = ['content_id' => 'DESC'];
         $option['join'] = ['Category', 'Users'];
-        $option['where'] = ['content.status !=' => 'T'];
+
+        if ($type == 'article') {
+            $option['field'] = $this->option_field1;
+            $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Content', 'category.status' => 'Y'];
+        } else if ($type == 'page') {
+            $option['field'] = $this->option_field2;
+            $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Page', 'category.status' => 'Y'];
+        } else if ($type == 'section') {
+            $option['field'] = $this->option_field2;
+            $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Section', 'category.status' => 'Y'];
+        }
+
         $json = $this->DataTables->getResponse($option);
         echo $json;
     }

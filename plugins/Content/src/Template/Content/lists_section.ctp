@@ -86,7 +86,7 @@ $this->Html->script([
             "processing": true,
             "serverSide": true,
             "iDisplayLength": 25,
-            "ajax": "<?php echo $this->Url->build(['plugin' => 'Content', 'controller' => 'Content', 'action' => 'serverSide', '_ext' => 'html']); ?>",
+            "ajax": "<?php echo $this->Url->build(['plugin' => 'Content', 'controller' => 'Content', 'action' => 'serverSide']); ?>/section",
             initComplete: function () {
                 var api = this.api();
                 $('#list_content_filter input')

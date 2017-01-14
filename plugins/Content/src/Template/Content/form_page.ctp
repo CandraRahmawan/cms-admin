@@ -30,13 +30,7 @@ $this->Html->css(array(
                         ?>
                         <div class="box-body">
                             <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">Name Page</label>
-                                <div class="col-sm-10">
-                                    <input type="hidden" name="content_id" value="<?php echo $content['content_id']; ?>">
-                                    <input type="text" class="form-control" id="title" name="title" value="<?php echo $content['title']; ?>">
-                                </div>
-                            </div>
-                            <div class="form-group">
+                                <input type="hidden" name="content_id" value="<?php echo $content['content_id']; ?>">
                                 <label for="description" class="col-sm-2 control-label">Description</label>
                                 <div class="col-sm-10">
                                     <textarea id="description" name="description" rows="10" cols="80">
@@ -99,12 +93,10 @@ $this->Html->script([
 
         $("#form_page").validate({
             rules: {
-                title: "required",
                 description: "required",
                 category_id: "required"
             },
             messages: {
-                title: "Page Name is required",
                 description: "Description is required",
                 category_id: "Page location is required"
             },
