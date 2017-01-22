@@ -24,17 +24,7 @@ $this->Html->css([
                                 echo $this->Element($element);
                             }
                             ?>
-                        </div>
-                        <div class="box-header">
-                            <div class="col-sm-2" style="margin-left: -15px"> 
-                                Filter type :
-                                <select id="filter_type" name="filter_type" class="form-control select2 select2-hidden-accessible">
-                                    <option value="">All</option>
-                                    <option value="Content">Article</option>
-                                    <option value="Page">Page</option>
-                                    <option value="Section">Section</option>
-                                </select>
-                            </div>
+                            <h3 class = "box-title"><button class = "btn btn-block btn-primary" type = "button" onclick = "location.href = '<?php echo $this->Url->build(['plugin' => 'Content', 'controller' => 'Content', 'action' => 'formPage', '_ext' => 'html']); ?>'"><i class = "fa fa-fw fa-plus"></i> Add Page</button></h3>
                         </div>
                         <div class = "box-body">
                             <table id = "list_content" class = "table table-bordered table-striped">
@@ -96,9 +86,6 @@ $this->Html->script([
                                 api.search(this.value).draw();
                             }
                         });
-                $('#filter_type').on('change', function (e) {
-                    api.search(this.value).draw();
-                });
             }
         });
     });

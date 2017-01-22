@@ -5,10 +5,11 @@ namespace Content\Controller;
 use Content\Controller\ContentAppController;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
+use Cake\Core\Configure;
 
 class ContentController extends ContentAppController {
 
-    public $option_field1 = [
+    public $article = [
         'Title Content' => 'title',
         'Category' => 'category_name',
         'Type' => 'category_type',
@@ -17,7 +18,16 @@ class ContentController extends ContentAppController {
         'Status' => 'active',
         'Action' => 'action_content'
     ];
-    public $option_field2 = [
+    public $page = [
+        'Category' => 'category_name',
+        'Type' => 'category_type',
+        'Create' => 'entity_create_date',
+        'Link' => 'link',
+        'Author' => 'user_name',
+        'Status' => 'active',
+        'Action' => 'action_content'
+    ];
+    public $section = [
         'Category' => 'category_name',
         'Type' => 'category_type',
         'Create' => 'entity_create_date',
@@ -33,17 +43,17 @@ class ContentController extends ContentAppController {
     }
 
     public function listsArticle() {
-        $option_field = $this->option_field1;
+        $option_field = $this->article;
         $this->set(compact('option_field'));
     }
 
     public function listsPage() {
-        $option_field = $this->option_field2;
+        $option_field = $this->page;
         $this->set(compact('option_field'));
     }
 
     public function listsSection() {
-        $option_field = $this->option_field2;
+        $option_field = $this->section;
         $this->set(compact('option_field'));
     }
 
@@ -57,13 +67,13 @@ class ContentController extends ContentAppController {
         $option['join'] = ['Category', 'Users'];
 
         if ($type == 'article') {
-            $option['field'] = $this->option_field1;
+            $option['field'] = $this->article;
             $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Content', 'category.status' => 'Y'];
         } else if ($type == 'page') {
-            $option['field'] = $this->option_field2;
+            $option['field'] = $this->page;
             $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Page', 'category.status' => 'Y'];
         } else if ($type == 'section') {
-            $option['field'] = $this->option_field2;
+            $option['field'] = $this->section;
             $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Section', 'category.status' => 'Y'];
         }
 
@@ -78,16 +88,18 @@ class ContentController extends ContentAppController {
             $content = $this->Content->newEntity();
             $type = 'add';
             $param = '';
+            $category = 'article';
         } else {
             $content = $this->Content->get($content_id);
             $type = 'update';
             $param = '?content_id=' . $content;
+            $category = 'article';
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__save($type, $content);
+            $success = $this->__save($type, $content, $category);
             if ($success) {
-                return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+                return $this->redirect(['action' => 'listsArticle', '_ext' => 'html']);
             } else {
                 return $this->redirect(['action' => 'form', '_ext' => 'html' . $param . '']);
             }
@@ -104,16 +116,18 @@ class ContentController extends ContentAppController {
             $content = $this->Content->newEntity();
             $type = 'add';
             $param = '';
+            $category = 'page';
         } else {
             $content = $this->Content->get($content_id);
             $type = 'update';
             $param = '?content_id=' . $content;
+            $category = 'page';
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__save($type, $content);
+            $success = $this->__save($type, $content, $category);
             if ($success) {
-                return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+                return $this->redirect(['action' => 'listsPage', '_ext' => 'html']);
             } else {
                 return $this->redirect(['action' => 'form', '_ext' => 'html' . $param . '']);
             }
@@ -130,16 +144,18 @@ class ContentController extends ContentAppController {
             $content = $this->Content->newEntity();
             $type = 'add';
             $param = '';
+            $category = 'section';
         } else {
             $content = $this->Content->get($content_id);
             $type = 'update';
             $param = '?content_id=' . $content;
+            $category = 'section';
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__save($type, $content);
+            $success = $this->__save($type, $content, $category);
             if ($success) {
-                return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+                return $this->redirect(['action' => 'listsSection', '_ext' => 'html']);
             } else {
                 return $this->redirect(['action' => 'form', '_ext' => 'html' . $param . '']);
             }
@@ -149,7 +165,7 @@ class ContentController extends ContentAppController {
         $this->set(compact('content', 'list_category'));
     }
 
-    private function __save($type, $entity) {
+    private function __save($type, $entity, $category) {
         $file = isset($this->params_data['path_img']) ? $this->params_data['path_img'] : NULL;
         $title = isset($this->params_data['title']) ? $this->params_data['title'] : NULL;
         $description = isset($this->params_data['description']) ? $this->params_data['description'] : NULL;
@@ -186,7 +202,17 @@ class ContentController extends ContentAppController {
             else
                 $entity->update_date = date('Y-m-d H:i:s');
 
-            $this->Content->save($entity);
+            $save = $this->Content->save($entity);
+
+            //add link
+            if ($category != 'section') {
+                $title_category = $this->Category->get($category_id)->toArray();
+                $karakter = array('-', '_', '(', ')', ',', '.', '@', '#', '$', '%', '&', '*', ';', '""', '\'\'', ' ', '  ');
+                $title_generate = str_replace($karakter, '-', $title_category['name']);
+                $content = $this->Content->get($save->content_id);
+                $content->link = Configure::read('App.baseUrlFrontEnd') . $title_generate . '-' . $save->content_id;
+                $this->Content->save($content);
+            }
 
             if ($type == 'add')
                 $this->Flash->success('New Content Has Been Added');
