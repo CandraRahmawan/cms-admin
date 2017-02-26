@@ -68,13 +68,13 @@ class ContentController extends ContentAppController {
 
         if ($type == 'article') {
             $option['field'] = $this->article;
-            $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Content', 'category.status' => 'Y'];
+            $option['where'] = ['content.status !=' => 'T', 'Category.type' => 'Content', 'Category.status' => 'Y'];
         } else if ($type == 'page') {
             $option['field'] = $this->page;
-            $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Page', 'category.status' => 'Y'];
+            $option['where'] = ['content.status !=' => 'T', 'Category.type' => 'Page', 'Category.status' => 'Y'];
         } else if ($type == 'section') {
             $option['field'] = $this->section;
-            $option['where'] = ['content.status !=' => 'T', 'category.type' => 'Section', 'category.status' => 'Y'];
+            $option['where'] = ['content.status !=' => 'T', 'Category.type' => 'Section', 'Category.status' => 'Y'];
         }
 
         $json = $this->DataTables->getResponse($option);
