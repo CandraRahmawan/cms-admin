@@ -32,7 +32,7 @@ use DateTimeZone;
  * @property-read DateTimeZone $timezone the current timezone
  * @property-read DateTimeZone $tz alias of timezone
  * @property-read int $micro
- * @property-read int $dayOfWeek 0 (for Sunday) through 6 (for Saturday)
+ * @property-read int $dayOfWeek 1 (for Monday) through 7 (for Sunday)
  * @property-read int $dayOfYear 0 through 365
  * @property-read int $weekOfMonth 1 through 5
  * @property-read int $weekOfYear ISO-8601 week number of year, weeks starting on Monday
@@ -73,7 +73,7 @@ class Chronos extends DateTimeImmutable implements ChronosInterface
      * for more on the possibility of this constructor returning a test instance.
      *
      * @param string|null $time Fixed or relative time
-     * @param DateTimeZone|string|null $tz The timezone for the instance
+     * @param \DateTimeZone|string|null $tz The timezone for the instance
      */
     public function __construct($time = 'now', $tz = null)
     {
@@ -81,13 +81,18 @@ class Chronos extends DateTimeImmutable implements ChronosInterface
             $tz = $tz instanceof DateTimeZone ? $tz : new DateTimeZone($tz);
         }
 
+        static::$_lastErrors = [];
         if (static::$testNow === null) {
-            return parent::__construct($time === null ? 'now' : $time, $tz);
+            parent::__construct($time === null ? 'now' : $time, $tz);
+
+            return;
         }
 
         $relative = static::hasRelativeKeywords($time);
         if (!empty($time) && $time !== 'now' && !$relative) {
-            return parent::__construct($time, $tz);
+            parent::__construct($time, $tz);
+
+            return;
         }
 
         $testInstance = static::getTestNow();
@@ -121,5 +126,21 @@ class Chronos extends DateTimeImmutable implements ChronosInterface
     public function copy()
     {
         return $this;
+    }
+
+    /**
+     * Return properties for debugging.
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        $properties = [
+            'time' => $this->format('Y-m-d H:i:s.u'),
+            'timezone' => $this->getTimezone()->getName(),
+            'hasFixedNow' => isset(self::$testNow)
+        ];
+
+        return $properties;
     }
 }
