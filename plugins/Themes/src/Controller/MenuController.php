@@ -17,7 +17,7 @@ class MenuController extends ThemesAppController {
         parent::beforeFilter($event);
         $this->params_data = $this->request->data;
         $this->params_query = $this->request->query;
-        $this->loadModel('Category');
+        $this->loadModel('MenuDetail');
     }
 
     public function lists() {
@@ -38,13 +38,24 @@ class MenuController extends ThemesAppController {
 
     public function setting() {
         $menu_id = isset($this->params_query['menu_id']) ? $this->params_query['menu_id'] : "";
-        $listPage = $this->Category->find()
-                ->where(['type' => 'Page', 'status' => 'Y'])
+        $listMenu = $this->MenuDetail->find()
+                ->select([
+                    'id' => 'md.menu_detil_id',
+                    'name' => 'c.`name`',
+                    'parent_id' => 'md.parent_id',
+                    'drop_down' => 'md.drop_down',
+                    'order_id' => 'md.order_id'
+                ])
+                ->from('category c')
+                ->join([
+                    'table' => 'menu_detail',
+                    'alias' => 'md',
+                    'type' => 'INNER',
+                    'conditions' => 'c.category_id=md.category_id',
+                ])
+                ->where(['type' => 'Page', 'c.status' => 'Y', 'md.status' => 'Y', 'menu_id' => $menu_id])
                 ->toArray();
-        $menuPage = $this->Menu->find()
-                ->where(['is_active' => 'Y', 'menu_id' => $menu_id])
-                ->toArray();
-        $this->set(compact('listPage', 'menuPage'));
+        $this->set(compact('listMenu'));
     }
 
     public function saveMenu() {

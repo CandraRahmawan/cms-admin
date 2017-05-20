@@ -57,34 +57,6 @@ class UtilityHelper extends Helper {
         return $results;
     }
 
-    public function listSortableMenu($params, $class, $menu, $type) {
-        $menu = (unserialize($menu[0]['value']));
-        $menu_active = [
-            'menu_id' => [],
-            'name' => []
-        ];
-        if ($type == 'menu') {
-            foreach ($params as $item) {
-                if (in_array($item['category_id'], $menu)) {
-                    array_push($menu_active['menu_id'], $item['category_id']);
-                    array_push($menu_active['name'], $item['name']);
-                    //'<li class="' . $class . '" id="item-' . $item['category_id'] . '">' . $item['name'] . '</li>';
-                }
-            }
-            for ($i = 0; $i < count($menu); $i++) {
-                if (in_array($menu[$i], $menu_active['menu_id'])) {
-                    echo '<li class="' . $class . '" id="item-' . $menu[$i] . '|' . $menu_active['name'][$i] . '">' . $menu_active['name'][$i] . '</li>';
-                }
-            }
-        } else {
-            foreach ($params as $item) {
-                if (!in_array($item['category_id'], $menu)) {
-                    echo '<li class="' . $class . '" id="item-' . $item['category_id'] . '">' . $item['name'] . '</li>';
-                }
-            }
-        }
-    }
-
     public function categoryOptionView($list_category, $category_id) {
         foreach ($list_category as $item) {
             if ($category_id == $item['category_id'])

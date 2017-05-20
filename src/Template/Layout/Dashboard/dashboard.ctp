@@ -11,6 +11,7 @@
             'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css',
             'https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css',
             '/assets/lte/dist/css/AdminLTE.min',
+            '/assets/lte/dist/css/style',
             '/assets/lte/dist/css/skins/_all-skins.min']);
         echo $this->fetch('css');
         echo $this->Html->script(array(

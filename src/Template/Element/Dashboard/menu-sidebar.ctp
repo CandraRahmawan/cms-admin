@@ -113,7 +113,7 @@
             </a>
             <ul class="treeview-menu">
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Themes', 'controller' => 'Themes', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> List Themes</a></li>
-                <!--<li><a href="<?php //echo $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'lists', '_ext' => 'html']);   ?>"><i class="fa fa-circle-o"></i> List Menu</a></li>-->
+                <li><a href="<?php echo $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'lists', '_ext' => 'html']);   ?>"><i class="fa fa-circle-o"></i> List Menu</a></li>
             </ul>
         </li>
     </ul>
