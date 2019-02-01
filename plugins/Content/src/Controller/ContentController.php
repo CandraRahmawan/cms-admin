@@ -6,6 +6,7 @@ use Content\Controller\ContentAppController;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 use Cake\Core\Configure;
+use Cake\Utility\Inflector;
 
 class ContentController extends ContentAppController {
 
@@ -173,6 +174,7 @@ class ContentController extends ContentAppController {
         $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
 
         //picture
+        $dir = new Folder(WWW_ROOT . $this->utility->basePathImgArticle() . $category_id . '/', true, 0777);
         $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
         $arr_ext = array('jpg', 'jpeg', 'png');
         $setNewFileName = md5($category_id . '%' . $title . '%' . $file['name']);
@@ -210,7 +212,7 @@ class ContentController extends ContentAppController {
                 $karakter = array('-', '_', '(', ')', ',', '.', '@', '#', '$', '%', '&', '*', ';', '""', '\'\'', ' ', '  ');
                 $title_generate = str_replace($karakter, '-', $title_category['name']);
                 $content = $this->Content->get($save->content_id);
-                $content->link = Configure::read('App.baseUrlFrontEnd') . $title_generate . '-' . $save->content_id;
+                $content->link = Inflector::dasherize(Configure::read('App.baseUrlFrontEnd') . $title_generate .'-'. $save->content_id);
                 $this->Content->save($content);
             }
 

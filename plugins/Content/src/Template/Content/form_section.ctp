@@ -32,9 +32,7 @@ $this->Html->css(array(
                             <div class="form-group">
                                 <label for="description" class="col-sm-2 control-label">Description Section</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" name="description" id="description" rows="8">
-                                        <?php echo $content['description']; ?>
-                                    </textarea>
+                                    <textarea class="form-control" name="description" id="description" rows="8"><?php echo $content['description']; ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group">

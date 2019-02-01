@@ -62,6 +62,8 @@ $this->Html->css(array(
                                             }
                                         } else if ('text' == $item['type']) {
                                             echo '<textarea name="' . $item['key'] . '" class="form-control">' . $item['value_1'] . '</textarea>';
+                                        } else if ('text' == $item['image']) {
+
                                         }
                                         ?>
                                     </div>
