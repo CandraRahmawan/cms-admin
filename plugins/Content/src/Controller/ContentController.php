@@ -208,11 +208,13 @@ class ContentController extends ContentAppController {
 
             //add link
             if ($category != 'section') {
-                $title_category = $this->Category->get($category_id)->toArray();
+                if ($category == 'content') {
+                    $title = $this->Category->get($category_id)->toArray()['name'];
+                }
                 $karakter = array('-', '_', '(', ')', ',', '.', '@', '#', '$', '%', '&', '*', ';', '""', '\'\'', ' ', '  ');
-                $title_generate = str_replace($karakter, '-', $title_category['name']);
+                $title_generator = str_replace($karakter, '-', strtolower($title));
                 $content = $this->Content->get($save->content_id);
-                $content->link = Inflector::dasherize(Configure::read('App.baseUrlFrontEnd') . $title_generate .'-'. $save->content_id);
+                $content->link = Inflector::dasherize('/' . $title_generator .'-'. $save->content_id);
                 $this->Content->save($content);
             }
 
