@@ -14,7 +14,7 @@ class ImagesList extends Entity {
     }
 
     protected function _getActionImages() {
-        $result = "<a href=\"" . $this->request . "form-action.html?images_id=" . $this->_properties['id_images'] . "\"><i class=\"fa fa-fw fa-edit\"></i> Update </a> | ";
+        $result = "<a href=\"" . $this->request . "form-action.html?images_id=" . $this->_properties['id_images'] . "\"><i class=\"fa fa-fw fa-edit\"></i> Update </a>";
         //$result .= "<a href=\"" . $this->request . "form-action.html?images_id=" . $this->_properties['id_images'] . "\"><i class=\"fa fa-fw fa-remove\"></i> Remove </a>";
         return $result;
     }

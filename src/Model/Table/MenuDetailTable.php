@@ -9,7 +9,7 @@ class MenuDetailTable extends Table {
     public function initialize(array $config) {
         parent::initialize($config);
         $this->table('menu_detail');
-        $this->primaryKey('menu_detil_id');
+        $this->primaryKey('menu_detail_id');
     }
 
     public function getListCategory($params) {

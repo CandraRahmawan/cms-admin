@@ -14,6 +14,15 @@ class MenuController extends ThemesAppController
         'Action' => 'action_menu'
     ];
 
+    public $option_field_detail = [
+        'Menu Name' => 'name',
+        'Order' => 'order_id',
+        'Created Date' => 'entity_create_date',
+        'Link Url' => 'link_url',
+        'Status' => 'status_indicator',
+        'Action' => 'action'
+    ];
+
     public function beforeFilter(\Cake\Event\Event $event)
     {
         parent::beforeFilter($event);
@@ -40,13 +49,26 @@ class MenuController extends ThemesAppController
         echo $json;
     }
 
+    public function serverSideDetail()
+    {
+        $this->viewBuilder()->layout(false);
+        $this->render(false);
+        $option['table'] = 'menu_detail';
+        $option['field'] = $this->option_field_detail;
+        $option['search'] = ['name'];
+        $option['orderby'] = ['order_id' => 'ASC'];
+        $json = $this->DataTables->getResponse($option);
+        echo $json;
+    }
+
+
     public function setting()
     {
         $menu_id = isset($this->params_query['menu_id']) ? $this->params_query['menu_id'] : "";
 
         if ($this->request->is('post') || $this->request->is('put')) {
             $param = '?menu_id=' . $menu_id;
-            $success = $this->__saveMenuDetail($menu_id);
+            $success = $this->__saveMenuDetail();
             if ($success) {
                 return $this->redirect(['action' => 'lists', '_ext' => 'html']);
             } else {
@@ -56,11 +78,13 @@ class MenuController extends ThemesAppController
 
         $listMenuByContent = $this->MenuDetail->find()
             ->select([
-                'id' => 'md.menu_detil_id',
+                'id' => 'md.menu_detail_id',
                 'name' => 'md.name',
                 'parent_id' => 'md.parent_id',
                 'drop_down' => 'md.drop_down',
-                'order_id' => 'md.order_id'
+                'order_id' => 'md.order_id',
+                'status' => 'md.status',
+                'created_date' => 'md.created_date'
             ])
             ->from('content c')
             ->join([
@@ -73,11 +97,13 @@ class MenuController extends ThemesAppController
             ->toArray();
         $listMenuCustom = $this->MenuDetail->find()
             ->select([
-                'id' => 'md.menu_detil_id',
+                'id' => 'md.menu_detail_id',
                 'name' => 'md.name',
                 'parent_id' => 'md.parent_id',
                 'drop_down' => 'md.drop_down',
-                'order_id' => 'md.order_id'
+                'order_id' => 'md.order_id',
+                'status' => 'md.status',
+                'created_date' => 'md.created_date'
             ])
             ->from('menu m')
             ->join([
@@ -92,7 +118,13 @@ class MenuController extends ThemesAppController
         $this->set(compact('listMenu', 'menuDetail'));
     }
 
-    private function __saveMenuDetail($menu_id)
+    public function detailUpdate()
+    {
+        $option_field = $this->option_field_detail;
+        $this->set(compact('option_field'));
+    }
+
+    private function __saveMenuDetail()
     {
         $sortValue = isset($this->params_data['sort_value']) ? $this->params_data['sort_value'] : [];
         if (!empty($sortValue)) {
@@ -112,6 +144,23 @@ class MenuController extends ThemesAppController
             $this->Flash->success('Menu Detail has been saved');
         }
         return true;
+    }
+
+    public function changeStatus()
+    {
+        $status = $this->request->params['status'];
+        $menu_id = $this->request->query['menu_id'];
+        $detail_id = $this->request->query['detail_id'];
+        $menuDetail = $this->MenuDetail->get($detail_id);
+        $menuDetail->status = $status == 'Y' ? 'N' : 'Y';
+        try {
+            $this->MenuDetail->save($menuDetail);
+            $this->Flash->success('Status Menu Detail has been updated');
+        } catch (\Exception $ex) {
+            $this->Flash->error($ex);
+            return false;
+        }
+        return $this->redirect(['action' => 'detail_update', '_ext' => 'html' . '?menu_id=' . $menu_id]);
     }
 
 }
