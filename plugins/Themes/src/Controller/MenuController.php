@@ -29,6 +29,7 @@ class MenuController extends ThemesAppController
         $this->params_data = $this->request->data;
         $this->params_query = $this->request->query;
         $this->loadModel('MenuDetail');
+        $this->loadModel('Content');
     }
 
     public function lists()
@@ -68,7 +69,7 @@ class MenuController extends ThemesAppController
 
         if ($this->request->is('post') || $this->request->is('put')) {
             $param = '?menu_id=' . $menu_id;
-            $success = $this->__saveMenuDetail();
+            $success = $this->__saveSortDetail();
             if ($success) {
                 return $this->redirect(['action' => 'lists', '_ext' => 'html']);
             } else {
@@ -118,13 +119,75 @@ class MenuController extends ThemesAppController
         $this->set(compact('listMenu', 'menuDetail'));
     }
 
-    public function detailUpdate()
+    public function detail()
     {
         $option_field = $this->option_field_detail;
         $this->set(compact('option_field'));
     }
 
-    private function __saveMenuDetail()
+    public function formDetail()
+    {
+        $menu_detail_id = isset($this->params_query['id']) ? $this->params_query['id'] : NULL;
+        $menu_id = isset($this->params_query['menu_id']) ? $this->params_query['menu_id'] : NULL;
+        $param = '?menu_id=' . $menu_id;
+        if (empty($menu_detail_id)) {
+            $menu_detail = $this->MenuDetail->newEntity();
+            $type = 'add';
+        } else {
+            $menu_detail = $this->MenuDetail->get($menu_detail_id);
+            $type = 'update';
+            $param = $param . '&id=' . $menu_detail_id;
+        }
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $success = $this->__saveDetail($type, $menu_detail);
+            if ($success) {
+                return $this->redirect(['action' => 'detail', '_ext' => 'html' . $param . '']);
+            } else {
+                return $this->redirect(['action' => 'formDetail', '_ext' => 'html' . $param . '']);
+            }
+        }
+
+        $list_content = $this->Content->getListContent();
+        $this->set(compact('list_content', 'menu_detail'));
+    }
+
+    private function __saveDetail($type, $entity)
+    {
+        $menu_id = isset($this->params_data['menu_id']) ? $this->params_data['menu_id'] : NULL;
+        $name = isset($this->params_data['name']) ? $this->params_data['name'] : NULL;
+        $content_id = isset($this->params_data['content_id']) ? $this->params_data['content_id'] : 0;
+        $custom_link = isset($this->params_data['custom_link']) ? $this->params_data['custom_link'] : NULL;
+        $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
+
+        try {
+            $entity->menu_id = $menu_id;
+            $entity->name = $name;
+            $entity->content_id = $content_id;
+            $entity->custom_link = $custom_link;
+            $entity->status = $status;
+
+            if ($type == 'update') {
+                $entity->update_date = date('Y-m-d H:i:s');
+            } else {
+                $entity->order_id = 130;
+            }
+
+            $this->MenuDetail->save($entity);
+
+            if ($type == 'add')
+                $this->Flash->success('Menu Detail Has Been Added');
+            else
+                $this->Flash->success('Menu Detail Has Been Update');
+
+            return true;
+        } catch (\Exception $ex) {
+            $this->Flash->error($ex);
+            return false;
+        }
+    }
+
+    private function __saveSortDetail()
     {
         $sortValue = isset($this->params_data['sort_value']) ? $this->params_data['sort_value'] : [];
         if (!empty($sortValue)) {
@@ -160,7 +223,7 @@ class MenuController extends ThemesAppController
             $this->Flash->error($ex);
             return false;
         }
-        return $this->redirect(['action' => 'detail_update', '_ext' => 'html' . '?menu_id=' . $menu_id]);
+        return $this->redirect(['action' => 'detail', '_ext' => 'html' . '?menu_id=' . $menu_id]);
     }
 
 }

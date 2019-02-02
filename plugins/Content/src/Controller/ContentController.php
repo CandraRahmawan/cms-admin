@@ -200,7 +200,6 @@ class ContentController extends ContentAppController
         }
 
         try {
-
             $entity->title = $title;
             $entity->description = $description;
             $entity->status = $status;

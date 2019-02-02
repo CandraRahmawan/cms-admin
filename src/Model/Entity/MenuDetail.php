@@ -37,7 +37,9 @@ class MenuDetail extends Entity
 
     protected function _getAction()
     {
-        return "<a href=\"" . $this->request . "change-status/" . $this->_properties['status'] . "?detail_id=" . $this->_properties['menu_detail_id'] . "&menu_id=" . $this->_properties['menu_id'] . "\"><i class=\"fa fa-undo\"></i> Change Status </a>";
+        $changeStatus = "<a href=\"" . $this->request . "change-status/" . $this->_properties['status'] . "?detail_id=" . $this->_properties['menu_detail_id'] . "&menu_id=" . $this->_properties['menu_id'] . "\"><i class=\"fa fa-undo\"></i> Change Status </a>";
+        $update = "<a href=\"" . $this->request . "form-menu-detail?id=" . $this->_properties['menu_detail_id'] . "&menu_id=" . $this->_properties['menu_id'] . "\"><i class=\"fa fa-edit\"></i> Update </a>";;
+        return $changeStatus . " | " . $update;
     }
 
 }

@@ -4,7 +4,7 @@ namespace App\Model\Table;
 
 use Cake\ORM\Table;
 
-class GuestcounteTable extends Table {
+class GuestcounterTable extends Table {
 
     public function initialize(array $config) {
         parent::initialize($config);
