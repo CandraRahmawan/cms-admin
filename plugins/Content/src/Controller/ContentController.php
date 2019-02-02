@@ -8,7 +8,8 @@ use Cake\Filesystem\File;
 use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 
-class ContentController extends ContentAppController {
+class ContentController extends ContentAppController
+{
 
     public $article = [
         'Title Content' => 'title',
@@ -37,28 +38,33 @@ class ContentController extends ContentAppController {
         'Action' => 'action_content'
     ];
 
-    public function beforeFilter(\Cake\Event\Event $event) {
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
         parent::beforeFilter($event);
         $this->params_data = $this->request->data;
         $this->params_query = $this->request->query;
     }
 
-    public function listsArticle() {
+    public function listsArticle()
+    {
         $option_field = $this->article;
         $this->set(compact('option_field'));
     }
 
-    public function listsPage() {
+    public function listsPage()
+    {
         $option_field = $this->page;
         $this->set(compact('option_field'));
     }
 
-    public function listsSection() {
+    public function listsSection()
+    {
         $option_field = $this->section;
         $this->set(compact('option_field'));
     }
 
-    public function serverSide() {
+    public function serverSide()
+    {
         $type = isset($this->request->params['pass'][0]) ? $this->request->params['pass'][0] : 'article';
         $this->viewBuilder()->layout(false);
         $this->render(false);
@@ -82,7 +88,8 @@ class ContentController extends ContentAppController {
         echo $json;
     }
 
-    public function formArticle() {
+    public function formArticle()
+    {
         $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
 
         if (empty($content_id)) {
@@ -110,7 +117,8 @@ class ContentController extends ContentAppController {
         $this->set(compact('content', 'list_category'));
     }
 
-    public function formPage() {
+    public function formPage()
+    {
         $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
 
         if (empty($content_id)) {
@@ -138,7 +146,8 @@ class ContentController extends ContentAppController {
         $this->set(compact('content', 'list_category'));
     }
 
-    public function formSection() {
+    public function formSection()
+    {
         $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
 
         if (empty($content_id)) {
@@ -166,7 +175,8 @@ class ContentController extends ContentAppController {
         $this->set(compact('content', 'list_category'));
     }
 
-    private function __save($type, $entity, $category) {
+    private function __save($type, $entity, $category)
+    {
         $file = isset($this->params_data['path_img']) ? $this->params_data['path_img'] : NULL;
         $title = isset($this->params_data['title']) ? $this->params_data['title'] : NULL;
         $description = isset($this->params_data['description']) ? $this->params_data['description'] : NULL;
@@ -208,13 +218,13 @@ class ContentController extends ContentAppController {
 
             //add link
             if ($category != 'section') {
-                if ($category == 'content') {
+                if ($category == 'page') {
                     $title = $this->Category->get($category_id)->toArray()['name'];
                 }
-                $karakter = array('-', '_', '(', ')', ',', '.', '@', '#', '$', '%', '&', '*', ';', '""', '\'\'', ' ', '  ');
+                $karakter = array('-', '_', '(', ')', ',', '.', '@', '#', '$', '%', '&', '*', ';', '""', '\'\'', ' ', '  ', '\'');
                 $title_generator = str_replace($karakter, '-', strtolower($title));
                 $content = $this->Content->get($save->content_id);
-                $content->link = Inflector::dasherize('/' . $title_generator .'-'. $save->content_id);
+                $content->link = Inflector::dasherize('/' . $title_generator . '-' . $save->content_id);
                 $this->Content->save($content);
             }
 
@@ -230,7 +240,8 @@ class ContentController extends ContentAppController {
         }
     }
 
-    public function trashContent() {
+    public function trashContent()
+    {
         $content_id = isset($this->params_query['content_id']) ? $this->params_query['content_id'] : NULL;
 
         if (!empty($content_id)) {
