@@ -1,8 +1,8 @@
 /tmp/
-/webroot/img/Content/Article/
-/webroot/img/Gallery/SliderBanner/
-/webroot/img/Gallery/Photos/
-/webroot/img/Users/Profiles/
+/webroot/img/Content
+/webroot/img/Gallery
+/webroot/img/Users
+/webroot/img/Images
 /logs/
 /nbproject/
 /tests/
