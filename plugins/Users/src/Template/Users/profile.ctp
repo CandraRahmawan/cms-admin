@@ -23,7 +23,7 @@ $this->Html->css(array(
                         <div class="box-body box-profile">
                             <?php
                             $attr = ['class' => 'profile-user-img img-responsive img-circle', 'alt' => 'User profile picture', 'onerror' => 'javascript:this.src="' . $base . '/img/no-user.png"'];
-                            echo $this->Html->image($this->Utility->basePathImgProfile() . $profile['path_img'], $attr);
+                            echo $this->Html->image('/' . $this->Utility->basePathImgProfile() . $profile['path_img'], $attr);
                             ?>
                             <h3 class="profile-username text-center"><?php echo $profile['first_name'] . ' ' . $profile['last_name']; ?></h3>
                             <p class="text-muted text-center"><?php echo $profile['status']; ?></p>

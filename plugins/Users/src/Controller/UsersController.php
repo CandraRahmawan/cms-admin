@@ -96,6 +96,7 @@ class UsersController extends UsersAppController {
         $user_id = isset($this->params_data['user_id']) ? $this->params_data['user_id'] : NULL;
 
         //picture
+        new Folder(WWW_ROOT . $this->utility->basePathImgProfile(), true, 0777);
         $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
         $arr_ext = array('jpg', 'jpeg', 'png');
         $setNewFileName = md5($email . '%' . $user_name);

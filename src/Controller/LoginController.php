@@ -26,7 +26,7 @@ class LoginController extends AppController {
                     $session_login['user_name'] = $login['user_name'];
                     $session_login['email'] = $login['email'];
                     $session_login['status'] = $login['status'];
-                    $session_login['path_img'] = $this->utility->basePathImgProfile() . $login['path_img'];
+                    $session_login['path_img'] = '/' . $this->utility->basePathImgProfile() . $login['path_img'];
                     $session_login['create_date'] = $login['create_date'];
                     $this->session->write('user_login', $session_login);
                     $this->redirect(['plugin' => 'Dashboard', 'controller' => 'Dashboard', 'action' => 'index', '_ext' => 'html']);

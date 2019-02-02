@@ -182,9 +182,7 @@ class ContentController extends ContentAppController
         $description = isset($this->params_data['description']) ? $this->params_data['description'] : NULL;
         $category_id = isset($this->params_data['category_id']) ? $this->params_data['category_id'] : NULL;
         $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
-
         //picture
-        $dir = new Folder(WWW_ROOT . $this->utility->basePathImgArticle() . $category_id . '/', true, 0777);
         $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
         $arr_ext = array('jpg', 'jpeg', 'png');
         $setNewFileName = md5($category_id . '%' . $title . '%' . $file['name']);
@@ -195,7 +193,7 @@ class ContentController extends ContentAppController
             $path_img = $setNewFileName . '.' . $ext;
             $entity->picture = $path_img;
         } else {
-            $dir = new Folder(WWW_ROOT . $this->utility->basePathImgArticle());
+            $dir = new Folder(WWW_ROOT . $this->utility->basePathImgArticle() . $category_id);
             $files_system = $dir->find($entity->picture, true);
             if (count($files_system) == 0)
                 $entity->picture = '';

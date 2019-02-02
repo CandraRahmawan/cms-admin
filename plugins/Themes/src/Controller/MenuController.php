@@ -2,9 +2,8 @@
 
 namespace Themes\Controller;
 
-use Themes\Controller\ThemesAppController;
-
-class MenuController extends ThemesAppController {
+class MenuController extends ThemesAppController
+{
 
     public $option_field = [
         'Menu Name' => 'name',
@@ -13,19 +12,22 @@ class MenuController extends ThemesAppController {
         'Action' => 'action_menu'
     ];
 
-    public function beforeFilter(\Cake\Event\Event $event) {
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
         parent::beforeFilter($event);
         $this->params_data = $this->request->data;
         $this->params_query = $this->request->query;
         $this->loadModel('MenuDetail');
     }
 
-    public function lists() {
+    public function lists()
+    {
         $option_field = $this->option_field;
         $this->set(compact('option_field'));
     }
 
-    public function serverSide() {
+    public function serverSide()
+    {
         $this->viewBuilder()->layout(false);
         $this->render(false);
         $option['table'] = 'menu';
@@ -36,29 +38,31 @@ class MenuController extends ThemesAppController {
         echo $json;
     }
 
-    public function setting() {
+    public function setting()
+    {
         $menu_id = isset($this->params_query['menu_id']) ? $this->params_query['menu_id'] : "";
         $listMenu = $this->MenuDetail->find()
-                ->select([
-                    'id' => 'md.menu_detil_id',
-                    'name' => 'c.`name`',
-                    'parent_id' => 'md.parent_id',
-                    'drop_down' => 'md.drop_down',
-                    'order_id' => 'md.order_id'
-                ])
-                ->from('category c')
-                ->join([
-                    'table' => 'menu_detail',
-                    'alias' => 'md',
-                    'type' => 'INNER',
-                    'conditions' => 'c.category_id=md.category_id',
-                ])
-                ->where(['type' => 'Page', 'c.status' => 'Y', 'md.status' => 'Y', 'menu_id' => $menu_id])
-                ->toArray();
+            ->select([
+                'id' => 'md.menu_detil_id',
+                'name' => 'c.title',
+                'parent_id' => 'md.parent_id',
+                'drop_down' => 'md.drop_down',
+                'order_id' => 'md.order_id'
+            ])
+            ->from('content c')
+            ->join([
+                'table' => 'menu_detail',
+                'alias' => 'md',
+                'type' => 'INNER',
+                'conditions' => 'c.content_id=md.content_id',
+            ])
+            ->where(['c.status' => 'Y', 'md.status' => 'Y', 'menu_id' => $menu_id])
+            ->toArray();
         $this->set(compact('listMenu'));
     }
 
-    public function saveMenu() {
+    public function saveMenu()
+    {
         $item = isset($this->params_data['item']) ? $this->params_data['item'] : [];
         $menu_id = isset($this->params_data['menu_id']) ? $this->params_data['menu_id'] : null;
 
@@ -66,7 +70,6 @@ class MenuController extends ThemesAppController {
             if (!empty($menu_id)) {
                 try {
                     $menu = $this->Menu->get($menu_id);
-                    $item_value = explode('|', $item);
                     $item_value = explode('|', $item);
                     $menu->value = serialize($item_value[0], $item_value[1]);
                     $this->Menu->save($menu);

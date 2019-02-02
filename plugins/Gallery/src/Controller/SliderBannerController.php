@@ -88,7 +88,7 @@ class SliderBannerController extends GalleryAppController {
             $path_img = $setNewFileName . '.' . $ext;
             $entity->path = $path_img;
         } else {
-            $dir = new Folder(WWW_ROOT . $this->utility->basePathImgSliderBanner());
+            $dir = new Folder(WWW_ROOT . $this->utility->basePathImgSliderBanner() . $category_id);
             $files_system = $dir->find($entity->path, true);
             if (count($files_system) == 0)
                 $entity->path = '';

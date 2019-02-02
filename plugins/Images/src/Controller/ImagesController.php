@@ -2,7 +2,6 @@
 
 namespace Images\Controller;
 
-use Images\Controller\ImagesAppController;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 
@@ -68,7 +67,7 @@ class ImagesController extends ImagesAppController {
         $file = isset($this->params_data['img_user']) ? $this->params_data['img_user'] : NULL;
 
         //picture
-        $dir = new Folder(WWW_ROOT . $this->utility->basePathImages() . date('Ymd'), true, 0777);
+        new Folder(WWW_ROOT . $this->utility->basePathImages() . date('Ymd'), true, 0777);
         $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
         $arr_ext = array('jpg', 'jpeg', 'png');
         $setNewFileName = md5(date('YmdHis') . '%' . $file['name']);
@@ -87,7 +86,7 @@ class ImagesController extends ImagesAppController {
                 $file_img->delete();
             }
 
-            $files_system = new File(WWW_ROOT . $this->utility->basePathImages() . date('Ymd', strtotime($entity->created_date)) . '/' . $entity->name, false, 0777);
+            new File(WWW_ROOT . $this->utility->basePathImages() . date('Ymd', strtotime($entity->created_date)) . '/' . $entity->name, false, 0777);
             move_uploaded_file($file['tmp_name'], WWW_ROOT . $this->utility->basePathImages() . date('Ymd', strtotime($entity->created_date)) . '/' . $setNewFileName . '.' . $ext);
         }
 
