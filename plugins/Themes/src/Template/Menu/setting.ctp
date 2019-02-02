@@ -32,20 +32,21 @@ $this->Html->css(array(
                         if (!empty($element)) {
                             echo $this->Element($element);
                         }
+                        echo $this->Form->create(null, ['class' => 'form-horizontal']);
                         ?>
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <div class="col-sm-6">
                                         <h3>Menu Active</h3>
-                                        <ul class="listMenuSortable">
+                                        <ul id="items" class="nav nav-stacked bg-gray">
                                             <?php
                                             foreach ($listMenu as $item) {
                                                 if ($item->parent_id == 0) {
-                                                    echo '<li><div>'.$item->name.'</div>';
+                                                    echo '<li id="' . $item->id . '"><a href="#"><i class="fa fa-arrows"></i> ' . $item->name . '</a>';
                                                     foreach ($listMenu as $children) {
                                                         if ($children->parent_id == $item->id) {
-                                                            echo '<ul><li><div>'.$children->name.'</div></li></ul>';
+                                                            echo '<ul><li>' . $children->name . '</li></ul>';
                                                         }
                                                     }
                                                     echo '</li>';
@@ -53,6 +54,7 @@ $this->Html->css(array(
                                             }
                                             ?>
                                         </ul>
+                                        <input type="hidden" id="sort_value" name="sort_value">
                                     </div>
                                 </div>
                             </div>
@@ -60,12 +62,13 @@ $this->Html->css(array(
                         <div class="box-footer">
                             <div class="form-group">
                                 <div class="col-sm-10">
-<!--                                    <button type="button" class="btn btn-info" id="saveMenu">Save</button> -->
+                                    <button type="submit" class="btn btn-info">Save</button>
                                 </div>
                             </div>
                         </div>
+                        <?php echo $this->Form->end(); ?>
                     </div>
-                </div> 
+                </div>
             </div>
         </section>
     </div>
@@ -76,7 +79,7 @@ $this->Html->css(array(
 </div>
 <?php
 $this->Html->script([
-    //'/assets/lte/plugins/jquery-sortable-lists/jquery-sortable-lists.min',
+    '/components/Sortable/Sortable.min',
     '/assets/lte/plugins/jQueryUI/jquery-ui.min',
     '/assets/lte/plugins/fastclick/fastclick',
     '/assets/lte/dist/js/app.min',
@@ -85,39 +88,13 @@ $this->Html->script([
 ?>
 
 <script type="text/javascript">
-    //$(function () {
-    //    var options = {
-    //        placeholderCss: {'background-color': 'rgba(0,0,0,0.2)'},
-    //        hintCss: {'background-color': '#bbf'},
-    //        opener: {
-    //            active: true,
-    //            as: 'html', // if as is not set plugin uses background image
-    //            close: '<i class="fa fa-minus c3"></i>', // or 'fa-minus c3',  // or './imgs/Remove2.png',
-    //            open: '<i class="fa fa-plus"></i>', // or 'fa-plus',  // or'./imgs/Add2.png',
-    //            openerCss: {
-    //                'display': 'inline-block',
-    //                //'width': '18px', 'height': '18px',
-    //                'float': 'left',
-    //                'margin-left': '-35px',
-    //                'margin-right': '5px',
-    //                //'background-position': 'center center', 'background-repeat': 'no-repeat',
-    //                'font-size': '1.1em'
-    //            }
-    //        }
-    //    }
-    //    $('.listMenuSortable').sortableLists(options);
-    //
-    //    $("#saveMenu").on('click', function () {
-    //        var data = $("#sortable1").sortable('serialize') + "&menu_id=" + <?php //echo $this->request->query['menu_id']; ?>//;
-    //        $.ajax({
-    //            data: data,
-    //            type: 'POST',
-    //            url: '<?php //echo $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'saveMenu', '_ext' => 'html']); ?>//',
-    //            success: function (data) {
-    //                window.location.href = '<?php //echo $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'lists', '_ext' => 'html']); ?>//';
-    //            }
-    //        });
-    //    });
-    //
-    //});
+    $(function () {
+        var sortableElement = document.getElementById('items');
+        Sortable.create(sortableElement, {
+            onSort: function (event) {
+                var children = Array.from(event.path[0].children);
+                $("#sort_value").val(children.map(item => item.id));
+            },
+        });
+    });
 </script>

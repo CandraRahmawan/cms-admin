@@ -1,0 +1,21 @@
+{
+  "name": "admin-cms",
+  "authors": [
+    "Candra Rahmawan <candra.rahmawan@rumah123.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Sortable": "sortablejs#^1.8.1"
+  }
+}

@@ -2,6 +2,8 @@
 
 namespace Themes\Controller;
 
+use Cake\Utility\Hash;
+
 class MenuController extends ThemesAppController
 {
 
@@ -41,10 +43,21 @@ class MenuController extends ThemesAppController
     public function setting()
     {
         $menu_id = isset($this->params_query['menu_id']) ? $this->params_query['menu_id'] : "";
-        $listMenu = $this->MenuDetail->find()
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $param = '?menu_id=' . $menu_id;
+            $success = $this->__saveMenuDetail($menu_id);
+            if ($success) {
+                return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+            } else {
+                return $this->redirect(['action' => 'setting', '_ext' => 'html' . $param . '']);
+            }
+        }
+
+        $listMenuByContent = $this->MenuDetail->find()
             ->select([
                 'id' => 'md.menu_detil_id',
-                'name' => 'c.title',
+                'name' => 'md.name',
                 'parent_id' => 'md.parent_id',
                 'drop_down' => 'md.drop_down',
                 'order_id' => 'md.order_id'
@@ -58,28 +71,47 @@ class MenuController extends ThemesAppController
             ])
             ->where(['c.status' => 'Y', 'md.status' => 'Y', 'menu_id' => $menu_id])
             ->toArray();
-        $this->set(compact('listMenu'));
+        $listMenuCustom = $this->MenuDetail->find()
+            ->select([
+                'id' => 'md.menu_detil_id',
+                'name' => 'md.name',
+                'parent_id' => 'md.parent_id',
+                'drop_down' => 'md.drop_down',
+                'order_id' => 'md.order_id'
+            ])
+            ->from('menu m')
+            ->join([
+                'table' => 'menu_detail',
+                'alias' => 'md',
+                'type' => 'INNER',
+                'conditions' => 'm.menu_id=md.menu_id',
+            ])
+            ->where(['md.status' => 'Y', 'm.menu_id' => $menu_id, 'md.content_id' => 0])
+            ->toArray();
+        $listMenu = Hash::sort(Hash::merge($listMenuByContent, $listMenuCustom), '{n}.order_id', 'asc');
+        $this->set(compact('listMenu', 'menuDetail'));
     }
 
-    public function saveMenu()
+    private function __saveMenuDetail($menu_id)
     {
-        $item = isset($this->params_data['item']) ? $this->params_data['item'] : [];
-        $menu_id = isset($this->params_data['menu_id']) ? $this->params_data['menu_id'] : null;
-
-        if ($this->request->is('post')) {
-            if (!empty($menu_id)) {
-                try {
-                    $menu = $this->Menu->get($menu_id);
-                    $item_value = explode('|', $item);
-                    $menu->value = serialize($item_value[0], $item_value[1]);
-                    $this->Menu->save($menu);
-                    $this->Flash->success('Menu has been saved');
-                } catch (\Exception $ex) {
-                    $this->Flash->error($ex);
+        $sortValue = isset($this->params_data['sort_value']) ? $this->params_data['sort_value'] : [];
+        if (!empty($sortValue)) {
+            $explodeSortValue = explode(',', $sortValue);
+            try {
+                foreach ($explodeSortValue as $key => $item) {
+                    $menuDetail = $this->MenuDetail->get($item);
+                    $menuDetail->order_id = $key + 1;
+                    $this->MenuDetail->save($menuDetail);
                 }
+                $this->Flash->success('Menu Detail has been saved');
+            } catch (\Exception $ex) {
+                $this->Flash->error($ex);
+                return false;
             }
+        } else {
+            $this->Flash->success('Menu Detail has been saved');
         }
-        die();
+        return true;
     }
 
 }
