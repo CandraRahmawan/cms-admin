@@ -35,6 +35,12 @@ $this->Html->css(array(
                         echo $this->Form->create(null, ['class' => 'form-horizontal']);
                         ?>
                         <div class="box-body">
+                            <h3 class="box-title">
+                                <button class="btn btn-primary" type="button"
+                                        onclick="location.href = '<?= $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'lists', '_ext' => 'html']); ?>'">
+                                    <i class="fa fa-fw fa-list"></i> List Menu
+                                </button>
+                            </h3>
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <div class="col-sm-6">

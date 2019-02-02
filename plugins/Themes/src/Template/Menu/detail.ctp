@@ -26,9 +26,13 @@ $this->Html->css([
                             $menu_id = isset($this->request->query['menu_id']) ? $this->request->query['menu_id'] : '0';
                             ?>
                             <h3 class="box-title">
-                                <button class="btn btn-block btn-primary" type="button"
+                                <button class="btn btn-primary" type="button"
                                         onclick="location.href = '<?= $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'formDetail', '_ext' => 'html' . '?menu_id=' . $menu_id]); ?>'">
                                     <i class="fa fa-fw fa-plus"></i> Add Menu Detail
+                                </button>
+                                <button class="btn btn-primary" type="button"
+                                        onclick="location.href = '<?= $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'lists', '_ext' => 'html']); ?>'">
+                                    <i class="fa fa-fw fa-list"></i> List Menu
                                 </button>
                             </h3>
                         </div>
