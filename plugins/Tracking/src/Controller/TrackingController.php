@@ -2,7 +2,6 @@
 
 namespace Tracking\Controller;
 
-use Tracking\Controller\TrackingAppController;
 use Cake\Network\Exception\NotFoundException;
 
 class TrackingController extends TrackingAppController {

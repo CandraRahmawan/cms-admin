@@ -22,6 +22,7 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all', '/assets/lte/plugins/jq
                         if (!empty($element)) {
                             echo $this->Element($element);
                         }
+                        $checkedCustomLinkUrl = $menu_detail['custom_link'] ? 'checked' : '';
                         echo $this->Form->create($menu_detail, ['class' => 'form-horizontal', 'id' => 'form_menu_detail', 'name' => 'form_menu_detail', 'onsubmit' => 'event.preventDefault();']);
                         ?>
                         <div class="box-body">
@@ -36,7 +37,7 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all', '/assets/lte/plugins/jq
                                            value="<?= $menu_detail['name']; ?>">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="link_url_content">
                                 <input type="hidden" name="type" value="Content">
                                 <label for="category" class="col-sm-2 control-label">Link Url</label>
                                 <div class="col-sm-10">
@@ -50,10 +51,35 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all', '/assets/lte/plugins/jq
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">Custom Url</label>
+                                <label for="is_custom_url" class="col-sm-2 control-label">Use Link Custom Url</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="custom_link" name="custom_link"
-                                           value="<?= $menu_detail['custom_link']; ?>">
+                                    <label>
+                                        <input type="checkbox" class="flat-red" id="is_custom_url"/>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="custom_link_url">
+                                <div class="form-group">
+                                    <label for="custom_link" class="col-sm-2 control-label">Custom Link Url</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="custom_link" name="custom_link"
+                                               value="<?= $menu_detail['custom_link']; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="title" class="col-sm-2 control-label">SEO Meta Title</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="meta_title" name="meta_title"
+                                               value="<?= $seo['meta_title']; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="meta_description" class="col-sm-2 control-label">SEO Meta
+                                        Description</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="meta_description"
+                                               name="meta_description" value="<?= $seo['meta_description']; ?>">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -91,7 +117,27 @@ $this->Html->script([
 ?>
 
 <script type="text/javascript">
+    var checkedCustomLinkUrl = "<?= $menu_detail['custom_link'] ? 'checked' : ''; ?>";
     $(document).ready(function () {
+        $("#is_custom_url").on('ifChecked', function () {
+            $("#custom_link_url").show();
+            $("#link_url_content").hide();
+        });
+
+        $("#is_custom_url").on('ifUnchecked', function () {
+            $("#custom_link_url").hide();
+            $("#link_url_content").show();
+        });
+        if (checkedCustomLinkUrl === 'checked') {
+            $("#is_custom_url").iCheck('check');
+            $("#custom_link_url").show();
+            $("#link_url_content").hide();
+        } else {
+            $("#is_custom_url").iCheck('uncheck');
+            $("#custom_link_url").hide();
+            $("#link_url_content").show();
+        }
+
         $("#form_menu_detail").validate({
             rules: {
                 name: "required"

@@ -5,7 +5,8 @@ namespace Images\Controller;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 
-class ImagesController extends ImagesAppController {
+class ImagesController extends ImagesAppController
+{
 
     public $option_field = [
         'Link' => 'link',
@@ -13,7 +14,8 @@ class ImagesController extends ImagesAppController {
         'Author' => 'user_name',
         'Action' => 'action_images'];
 
-    public function beforeFilter(\Cake\Event\Event $event) {
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
         parent::beforeFilter($event);
         $this->loadModel('ImagesList');
         $this->loadModel('Users');
@@ -21,12 +23,14 @@ class ImagesController extends ImagesAppController {
         $this->params_query = $this->request->query;
     }
 
-    public function lists() {
+    public function lists()
+    {
         $option_field = $this->option_field;
         $this->set(compact('option_field'));
     }
 
-    public function serverSide() {
+    public function serverSide()
+    {
         $this->viewBuilder()->layout(false);
         $this->render(false);
         $option['table'] = 'images_list';
@@ -38,7 +42,8 @@ class ImagesController extends ImagesAppController {
         echo $json;
     }
 
-    public function form() {
+    public function form()
+    {
         $images_id = isset($this->params_query['images_id']) ? $this->params_query['images_id'] : NULL;
 
         if (empty($images_id)) {
@@ -63,7 +68,8 @@ class ImagesController extends ImagesAppController {
         $this->set(compact('images'));
     }
 
-    private function __save($type, $entity) {
+    private function __save($type, $entity)
+    {
         $file = isset($this->params_data['img_user']) ? $this->params_data['img_user'] : NULL;
 
         //picture
@@ -113,5 +119,14 @@ class ImagesController extends ImagesAppController {
             return false;
         }
     }
+
+    public function modalList()
+    {
+        $images = $this->ImageList->find()
+            ->select(['id_images', 'name'])
+            ->toArray();
+        $this->set(compact('images'));
+    }
+
 
 }

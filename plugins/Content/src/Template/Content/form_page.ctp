@@ -58,6 +58,18 @@ $this->Html->css(array(
                                     ?>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">SEO Meta Title</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="meta_title" name="meta_title" value="<?= $seo['meta_title']; ?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">SEO Meta Description</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="meta_description" name="meta_description" value="<?= $seo['meta_description']; ?>">
+                                </div>
+                            </div>
                         </div>
                         <div class="box-footer">
                             <div class="form-group">

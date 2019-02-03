@@ -2,11 +2,10 @@
 
 namespace Content\Controller;
 
-use Content\Controller\ContentAppController;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
-use Cake\Core\Configure;
 use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 
 class ContentController extends ContentAppController
 {
@@ -94,18 +93,20 @@ class ContentController extends ContentAppController
 
         if (empty($content_id)) {
             $content = $this->Content->newEntity();
+            $seo = $this->Seo->newEntity();
             $type = 'add';
             $param = '';
             $category = 'article';
         } else {
             $content = $this->Content->get($content_id);
+            $seo = $this->Seo->get($content->seo_id);
             $type = 'update';
             $param = '?content_id=' . $content;
             $category = 'article';
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__save($type, $content, $category);
+            $success = $this->__save($type, $content, $seo, $category);
             if ($success) {
                 return $this->redirect(['action' => 'listsArticle', '_ext' => 'html']);
             } else {
@@ -123,18 +124,20 @@ class ContentController extends ContentAppController
 
         if (empty($content_id)) {
             $content = $this->Content->newEntity();
+            $seo = $this->Seo->newEntity();
             $type = 'add';
             $param = '';
             $category = 'page';
         } else {
             $content = $this->Content->get($content_id);
+            $seo = $this->Seo->get($content->seo_id);
             $type = 'update';
             $param = '?content_id=' . $content;
             $category = 'page';
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__save($type, $content, $category);
+            $success = $this->__save($type, $content, $seo, $category);
             if ($success) {
                 return $this->redirect(['action' => 'listsPage', '_ext' => 'html']);
             } else {
@@ -143,7 +146,7 @@ class ContentController extends ContentAppController
         }
 
         $list_category = $this->Category->getListCategory('page');
-        $this->set(compact('content', 'list_category'));
+        $this->set(compact('content', 'list_category', 'seo'));
     }
 
     public function formSection()
@@ -163,7 +166,7 @@ class ContentController extends ContentAppController
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__save($type, $content, $category);
+            $success = $this->__save($type, $content, null, $category);
             if ($success) {
                 return $this->redirect(['action' => 'listsSection', '_ext' => 'html']);
             } else {
@@ -175,13 +178,16 @@ class ContentController extends ContentAppController
         $this->set(compact('content', 'list_category'));
     }
 
-    private function __save($type, $entity, $category)
+    private function __save($type, $entity, $seoEntity, $category)
     {
         $file = isset($this->params_data['path_img']) ? $this->params_data['path_img'] : NULL;
         $title = isset($this->params_data['title']) ? $this->params_data['title'] : NULL;
         $description = isset($this->params_data['description']) ? $this->params_data['description'] : NULL;
+        $meta_title = isset($this->params_data['meta_title']) ? $this->params_data['meta_title'] : NULL;
+        $meta_description = isset($this->params_data['meta_description']) ? $this->params_data['meta_description'] : NULL;
         $category_id = isset($this->params_data['category_id']) ? $this->params_data['category_id'] : NULL;
         $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
+
         //picture
         $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
         $arr_ext = array('jpg', 'jpeg', 'png');
@@ -206,10 +212,10 @@ class ContentController extends ContentAppController
             $entity->category_id = $category_id;
             $entity->user_id = $this->session_user['user_id'];
 
-            if ($type == 'add')
-                $entity->create_date = date('Y-m-d H:i:s');
-            else
+            if ($type == 'update') {
                 $entity->update_date = date('Y-m-d H:i:s');
+                $seoEntity->updated_date = date('Y-m-d H:i:s');
+            }
 
             $save = $this->Content->save($entity);
 
@@ -217,10 +223,19 @@ class ContentController extends ContentAppController
             if ($category != 'section') {
                 if ($category == 'page') {
                     $title = $this->Category->get($category_id)->toArray()['name'];
+                } else {
+                    $meta_title = Text::truncate(strip_tags($title), 250, ['ellipsis' => '', 'exact' => true, 'html' => false]);
+                    $meta_description = Text::truncate(strip_tags($description), 250, ['ellipsis' => '', 'exact' => true, 'html' => false]);
                 }
+
+                $seoEntity->meta_title = $meta_title;
+                $seoEntity->meta_description = $meta_description;
+                $seo = $this->Seo->save($seoEntity);
+
                 $karakter = array('-', '_', '(', ')', ',', '.', '@', '#', '$', '%', '&', '*', ';', '""', '\'\'', ' ', '  ', '\'');
                 $title_generator = str_replace($karakter, '-', strtolower($title));
                 $content = $this->Content->get($save->content_id);
+                $content->seo_id = $seo->seo_id;
                 $content->link = Inflector::dasherize('/' . $title_generator . '-' . $save->content_id);
                 $this->Content->save($content);
             }

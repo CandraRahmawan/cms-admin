@@ -30,6 +30,7 @@ class MenuController extends ThemesAppController
         $this->params_query = $this->request->query;
         $this->loadModel('MenuDetail');
         $this->loadModel('Content');
+        $this->loadModel('Seo');
     }
 
     public function lists()
@@ -130,17 +131,22 @@ class MenuController extends ThemesAppController
         $menu_detail_id = isset($this->params_query['id']) ? $this->params_query['id'] : NULL;
         $menu_id = isset($this->params_query['menu_id']) ? $this->params_query['menu_id'] : NULL;
         $param = '?menu_id=' . $menu_id;
+        $seo = null;
         if (empty($menu_detail_id)) {
             $menu_detail = $this->MenuDetail->newEntity();
+            $seo = $this->Seo->newEntity();
             $type = 'add';
         } else {
             $menu_detail = $this->MenuDetail->get($menu_detail_id);
+            if ($menu_detail->content_id == 0) {
+                $seo = $this->Seo->get($menu_detail->seo_id);
+            }
             $type = 'update';
             $param = $param . '&id=' . $menu_detail_id;
         }
 
         if ($this->request->is('post') || $this->request->is('put')) {
-            $success = $this->__saveDetail($type, $menu_detail);
+            $success = $this->__saveDetail($type, $menu_detail, $seo);
             if ($success) {
                 return $this->redirect(['action' => 'detail', '_ext' => 'html' . $param . '']);
             } else {
@@ -149,15 +155,17 @@ class MenuController extends ThemesAppController
         }
 
         $list_content = $this->Content->getListContent();
-        $this->set(compact('list_content', 'menu_detail'));
+        $this->set(compact('list_content', 'menu_detail', 'seo'));
     }
 
-    private function __saveDetail($type, $entity)
+    private function __saveDetail($type, $entity, $seoEntity)
     {
         $menu_id = isset($this->params_data['menu_id']) ? $this->params_data['menu_id'] : NULL;
         $name = isset($this->params_data['name']) ? $this->params_data['name'] : NULL;
         $content_id = isset($this->params_data['content_id']) ? $this->params_data['content_id'] : 0;
         $custom_link = isset($this->params_data['custom_link']) ? $this->params_data['custom_link'] : NULL;
+        $meta_title = isset($this->params_data['meta_title']) ? $this->params_data['meta_title'] : NULL;
+        $meta_description = isset($this->params_data['meta_description']) ? $this->params_data['meta_description'] : NULL;
         $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
 
         try {
@@ -169,8 +177,17 @@ class MenuController extends ThemesAppController
 
             if ($type == 'update') {
                 $entity->update_date = date('Y-m-d H:i:s');
+                if (!empty($seoEntity)) {
+                    $seoEntity->updated_date = date('Y-m-d H:i:s');
+                }
             } else {
                 $entity->order_id = 130;
+            }
+
+            if (!empty($seoEntity) && $entity->content_id == 0) {
+                $seoEntity->meta_title = $meta_title;
+                $seoEntity->meta_description = $meta_description;
+                $this->Seo->save($seoEntity);
             }
 
             $this->MenuDetail->save($entity);
