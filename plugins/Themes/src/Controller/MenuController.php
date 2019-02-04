@@ -187,7 +187,8 @@ class MenuController extends ThemesAppController
             if (!empty($seoEntity) && $entity->content_id == 0) {
                 $seoEntity->meta_title = $meta_title;
                 $seoEntity->meta_description = $meta_description;
-                $this->Seo->save($seoEntity);
+                $seo = $this->Seo->save($seoEntity);
+                $entity->seo_id = $seo->seo_id;
             }
 
             $this->MenuDetail->save($entity);

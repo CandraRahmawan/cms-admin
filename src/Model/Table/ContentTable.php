@@ -24,8 +24,8 @@ class ContentTable extends Table
     {
         $result = $this->find()
             ->contain(['Category'])
-            ->select(['content_id', 'category.name'])
-            ->where(['content.status' => 'Y', 'category.type' => 'Page'])
+            ->select(['content_id', 'Category.name'])
+            ->where(['Content.status' => 'Y', 'Category.type' => 'Page'])
             ->toArray();
         return $result;
     }
