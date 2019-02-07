@@ -50,14 +50,6 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all', '/assets/lte/plugins/jq
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="is_custom_url" class="col-sm-2 control-label">Use Link Custom Url</label>
-                                <div class="col-sm-10">
-                                    <label>
-                                        <input type="checkbox" class="flat-red" id="is_custom_url"/>
-                                    </label>
-                                </div>
-                            </div>
                             <div id="custom_link_url">
                                 <div class="form-group">
                                     <label for="custom_link" class="col-sm-2 control-label">Custom Link Url</label>
@@ -119,15 +111,6 @@ $this->Html->script([
 <script type="text/javascript">
     var checkedCustomLinkUrl = "<?= $menu_detail['custom_link'] ? 'checked' : ''; ?>";
     $(document).ready(function () {
-        $("#is_custom_url").on('ifChecked', function () {
-            $("#custom_link_url").show();
-            $("#link_url_content").hide();
-        });
-
-        $("#is_custom_url").on('ifUnchecked', function () {
-            $("#custom_link_url").hide();
-            $("#link_url_content").show();
-        });
         if (checkedCustomLinkUrl === 'checked') {
             $("#is_custom_url").iCheck('check');
             $("#custom_link_url").show();
