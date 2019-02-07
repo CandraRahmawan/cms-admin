@@ -178,7 +178,6 @@ Request::addDetector('tablet', function ($request) {
  * Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
-Plugin::load('Migrations');
 Plugin::load('Dashboard', ['routes' => true, 'autoload' => true]);
 Plugin::load('Users', ['routes' => true, 'autoload' => true]);
 Plugin::load('Category', ['routes' => true, 'autoload' => true]);
@@ -188,6 +187,7 @@ Plugin::load('Images', ['routes' => true, 'autoload' => true]);
 Plugin::load('Gallery', ['routes' => true, 'autoload' => true]);
 Plugin::load('Tracking', ['routes' => true, 'autoload' => true]);
 Plugin::load('Themes', ['routes' => true, 'autoload' => true]);
+Plugin::load('Plugins', ['routes' => true, 'autoload' => true]);
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system
