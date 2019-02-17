@@ -8,8 +8,6 @@ use Cake\ORM\TableRegistry;
 class DataTablesComponent extends Component {
 
     public function getResponse($option) {
-//        debug($this->request->query);
-//        die;
         $draw = isset($this->request->query['draw']) ? $this->request->query['draw'] : 1;
         $search = isset($this->request->query['search']['value']) ? $this->request->query['search']['value'] : "*";
         $start = isset($this->request->query['start']) ? $this->request->query['start'] : 0;
@@ -28,14 +26,9 @@ class DataTablesComponent extends Component {
 
         $data['draw'] = $draw;
         $data['recordsTotal'] = $query->count();
-        $offset = ceil($query->count() / $length);
 
-        if ($offset <= 0)
-            $offset = 1;
-
-        $query = $model->find()
-                ->limit($length)
-                ->page($offset);
+        $query->limit($length)
+            ->offset($start);
 
         if (!empty($option['join'])) {
             $query->contain($option['join']);
