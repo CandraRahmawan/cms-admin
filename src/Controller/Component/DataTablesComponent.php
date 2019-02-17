@@ -16,14 +16,6 @@ class DataTablesComponent extends Component {
         $model = TableRegistry::get($option['table']);
         $query = $model->find();
 
-        if (!empty($option['join'])) {
-            $query->contain($option['join']);
-        }
-
-        if (!empty($option['where'])) {
-            $query->where($option['where']);
-        }
-
         $data['draw'] = $draw;
         $data['recordsTotal'] = $query->count();
 
