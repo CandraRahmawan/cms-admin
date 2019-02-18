@@ -16,8 +16,15 @@ class DataTablesComponent extends Component {
         $model = TableRegistry::get($option['table']);
         $query = $model->find();
 
-        $data['draw'] = $draw;
-        $data['recordsTotal'] = $query->count();
+        $queryTotal = $query;
+        if (!empty($option['join'])) {
+            $queryTotal->contain($option['join']);
+        }
+
+        if (!empty($option['where'])) {
+            $queryTotal->where($option['where']);
+        }
+        $data['recordsTotal'] = $queryTotal->count();
 
         $query->limit($length)
             ->offset($start);
@@ -46,6 +53,7 @@ class DataTablesComponent extends Component {
 
         $data['recordsFiltered'] = $query->count();
         $data['data'] = $result;
+        $data['draw'] = $draw;
         return json_encode($data);
     }
 
