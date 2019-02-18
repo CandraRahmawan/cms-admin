@@ -9,6 +9,7 @@ class ImagesController extends ImagesAppController
 {
 
     public $option_field = [
+        'Image' => 'image',
         'Link' => 'link',
         'Created Date' => 'entity_create_date',
         'Author' => 'user_name',

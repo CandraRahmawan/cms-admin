@@ -23,6 +23,10 @@ class ImagesList extends Entity {
         return $this->_properties['user']['user_name'];
     }
 
+    protected function _getImage() {
+        return '<img style="height:150px;object-fit:cover;" src='.Configure::read('App.baseUrlWeb') . Configure::read('urlImage.image_management') . date('Ymd', strtotime($this->_properties['created_date'])) . '/' . $this->_properties['name'] .' />';
+    }
+
     protected function _getLink() {
         return Configure::read('App.baseUrlWeb') . Configure::read('urlImage.image_management') . date('Ymd', strtotime($this->_properties['created_date'])) . '/' . $this->_properties['name'];
     }
