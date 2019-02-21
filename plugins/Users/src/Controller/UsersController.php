@@ -56,6 +56,7 @@ class UsersController extends UsersAppController {
     }
 
     public function lists() {
+        $this->authUser();
         $option_field = $this->option_field;
         $this->set(compact('option_field'));
     }
@@ -72,6 +73,7 @@ class UsersController extends UsersAppController {
     }
 
     public function add() {
+        $this->authUser();
         $users = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $success = $this->__saveUser('add', $users);
