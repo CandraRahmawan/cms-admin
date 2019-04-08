@@ -8,7 +8,6 @@ class UsersTable extends Table {
 
     public function initialize(array $config) {
         parent::initialize($config);
-        $this->entityClass('App\Model\Entity\Users');
         $this->table('users');
         $this->primaryKey('user_id');
     }

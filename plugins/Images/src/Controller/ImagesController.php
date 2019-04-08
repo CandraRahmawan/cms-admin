@@ -4,6 +4,7 @@ namespace Images\Controller;
 
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
+use Cake\Utility\Hash;
 
 class ImagesController extends ImagesAppController
 {
@@ -117,10 +118,18 @@ class ImagesController extends ImagesAppController
 
     public function modalList()
     {
-        $images = $this->ImageList->find()
-            ->select(['id_images', 'name'])
+        $this->viewBuilder()->layout(false);
+        $this->render(false);
+        $images = $this->ImagesList->find()
+            ->select(['id_images', 'name', 'created_date'])
             ->toArray();
-        $this->set(compact('images'));
+        $result = [];
+        foreach ($images as $key => $item) {
+            $result[$key]['id'] = $item['id_images'];
+            $result[$key]['name'] = $this->base . $this->utility->basePathImages() . date('Ymd', strtotime($item['created_date'])) . '/' . $item['name'];
+        }
+
+        echo json_encode($result);
     }
 
 

@@ -28,7 +28,7 @@ class ImagesList extends Entity
 
     protected function _getImage()
     {
-        return '<img style="height:150px;object-fit:cover;" src=' . Configure::read('App.baseUrlWeb') . Configure::read('urlImage.image_management') . date('Ymd', strtotime($this->_properties['created_date'])) . '/' . $this->_properties['name'] . ' />';
+        return '<img style="height:150px; width: 150px; object-fit:cover;" src=' . Configure::read('App.baseUrlWeb') . Configure::read('urlImage.image_management') . date('Ymd', strtotime($this->_properties['created_date'])) . '/' . $this->_properties['name'] . ' />';
     }
 
     protected function _getLink()

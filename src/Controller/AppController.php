@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use App\View\Helper\UtilityHelper;
 
@@ -23,7 +24,7 @@ class AppController extends Controller {
         $this->utility = new UtilityHelper(new \Cake\View\View());
         $this->session = $this->request->session();
         $this->session_user = $this->session->read('user_login');
-        $this->base = $this->request->base;
+        $this->base = Configure::read('App.baseUrlWeb');
         $this->set('session', $this->session);
         $this->set('session_user', $this->session_user);
         $this->set('base', $this->base);
