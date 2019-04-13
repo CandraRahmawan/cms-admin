@@ -44,7 +44,7 @@
     }
 
     function submitImage() {
-        $('#' + imageKey).attr("src", imagePath);
+        $(`img[id="${imageKey}"]`).attr("src", imagePath);
         $("input[name$='" + imageKey + "']").attr("value", imagePath);
     }
 </script>
