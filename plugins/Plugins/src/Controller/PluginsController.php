@@ -2,6 +2,54 @@
 
 namespace Plugins\Controller;
 
-class PluginsController extends PluginsAppController {
+class PluginsController extends PluginsAppController
+{
+    public $option_field = [
+        'Name' => 'name',
+        'Type' => 'type',
+        'Description' => 'description',
+        'Install Date' => 'entity_install_date',
+        'Status' => 'active',
+        'Action' => 'action'
+    ];
+
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->loadModel('Plugins');
+        $this->loadModel('PluginsDetail');
+    }
+
+    public function lists()
+    {
+        $option_field = $this->option_field;
+        $this->set(compact('option_field'));
+    }
+
+    public function serverSide()
+    {
+        $this->viewBuilder()->layout(false);
+        $this->render(false);
+        $option['table'] = 'plugins';
+        $option['field'] = $this->option_field;
+        $option['search'] = ['name', 'description'];
+        $option['orderby'] = ['plugin_id' => 'DESC'];
+        $json = $this->DataTables->getResponse($option);
+        echo $json;
+    }
+
+    public function formAction()
+    {
+        $plugin_id = $this->request->query['plugin_id'];
+        $plugin = $this->Plugins->getById($plugin_id);
+        if (sizeof($plugin) > 0) {
+            $pluginDetail = $this->PluginsDetail->find()->where(['plugin_id' => $plugin_id])->toArray();
+            $plugin = $plugin[0];
+            $this->set(compact('pluginDetail'));
+            $this->render($plugin['render_file']);
+        } else {
+            $this->redirect('/');
+        }
+    }
 
 }

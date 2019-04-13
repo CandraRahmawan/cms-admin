@@ -103,6 +103,11 @@
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Images', 'controller' => 'Images', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> List Images</a></li>
             </ul>
         </li>
+        <li>
+            <a href="<?php echo $this->Url->build(['plugin' => 'Plugins', 'controller' => 'Plugins', 'action' => 'lists', '_ext' => 'html']) ?>">
+                <i class="fa fa-plug"></i> <span>Plugins</span>
+            </a>
+        </li>
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-fw fa-th-large"></i>

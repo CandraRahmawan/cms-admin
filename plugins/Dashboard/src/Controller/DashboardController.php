@@ -2,7 +2,6 @@
 
 namespace Dashboard\Controller;
 
-use Dashboard\Controller\DashboardAppController;
 
 class DashboardController extends DashboardAppController {
 
