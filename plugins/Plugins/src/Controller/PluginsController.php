@@ -46,7 +46,7 @@ class PluginsController extends PluginsAppController
             $pluginDetail = $this->PluginsDetail->find()->where(['plugin_id' => $plugin_id])->toArray();
             $plugin = $plugin[0];
             $this->set(compact('pluginDetail'));
-            $this->render($plugin['render_file']);
+            $this->render($plugin['key']);
         } else {
             $this->redirect('/');
         }
