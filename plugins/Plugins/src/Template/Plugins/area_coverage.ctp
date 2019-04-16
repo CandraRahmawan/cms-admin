@@ -17,13 +17,13 @@ $this->Html->css(array('/assets/lte/plugins/select2/select2'), ['block' => 'css'
                 <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Location List Section</h3>
+                            <h3 class="box-title">Area Coverage Section</h3>
                         </div>
                         <div class="box-body">
                             <h3 class="box-title" style="margin-left: 8px;">
                                 <button class="btn btn-primary" type="button"
                                         onclick="addSection()">
-                                    <i class="fa fa-fw fa-plus"></i> Add Location
+                                    <i class="fa fa-fw fa-plus"></i> Add Area Coverage
                                 </button>
                             </h3>
                         </div>
@@ -35,7 +35,7 @@ $this->Html->css(array('/assets/lte/plugins/select2/select2'), ['block' => 'css'
                                         <div class="box-header with-border">
                                             <h4 class="box-title" style="display: block;">
                                                 <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="#location<?= $key_id; ?>" aria-expanded="true" class="">
+                                                   href="#areaCoverage<?= $key_id; ?>" aria-expanded="true" class="">
                                                     <?= $item['value_1']; ?>
                                                 </a>
                                                 <a id="remove-btn-<?= $key_id; ?>"
@@ -45,7 +45,7 @@ $this->Html->css(array('/assets/lte/plugins/select2/select2'), ['block' => 'css'
                                                 </a>
                                             </h4>
                                         </div>
-                                        <div id="location<?= $key_id; ?>" class="panel-collapse collapse"
+                                        <div id="areaCoverage<?= $key_id; ?>" class="panel-collapse collapse"
                                              aria-expanded="true">
                                             <div class="form-group" style="margin-top: 15px;">
                                                 <label for="name" class="col-sm-3 control-label">Location</label>
@@ -53,7 +53,7 @@ $this->Html->css(array('/assets/lte/plugins/select2/select2'), ['block' => 'css'
                                                     <input type="hidden" name="id[<?= $key_id; ?>]"
                                                            value="<?= $item['plugin_detail_id']; ?>">
                                                     <input type="text" class="form-control"
-                                                           name="location[<?= $key_id; ?>]"
+                                                           name="areaCoverage[<?= $key_id; ?>]"
                                                            value="<?= $item['value_1']; ?>">
                                                 </div>
                                             </div>
@@ -64,7 +64,7 @@ $this->Html->css(array('/assets/lte/plugins/select2/select2'), ['block' => 'css'
                                                 <div class="col-sm-8">
                                                     <select class="form-control select2"
                                                             multiple="multiple"
-                                                            name="sublocation[<?= $key_id; ?>][]"
+                                                            name="subareaCoverage[<?= $key_id; ?>][]"
                                                             style="width:100%"
                                                     >
                                                         <?php
@@ -119,28 +119,28 @@ $this->Html->script([
         var formGroup = '';
         countSection = countSection + 1;
         var container = document.getElementById('accordion');
-        var locationSection = document.createElement("div");
-        locationSection.setAttribute('class', 'box-body');
-        locationSection.setAttribute('id', countSection);
+        var areaCoverageSection = document.createElement("div");
+        areaCoverageSection.setAttribute('class', 'box-body');
+        areaCoverageSection.setAttribute('id', countSection);
         formGroup += '<div class="panel box box-primary">';
         formGroup += '<div class="box-header with-border">';
         formGroup += '<h4 class="box-title" style="display: block;">';
-        formGroup += '<a data-toggle="collapse" data-parent="#accordion" href="#location' + countSection + '" aria-expanded="true">New Section ' + countSection + '</a>';
+        formGroup += '<a data-toggle="collapse" data-parent="#accordion" href="#areaCoverage' + countSection + '" aria-expanded="true">New Section ' + countSection + '</a>';
         formGroup += '<a id="remove-btn-' + countSection + '" onclick="removeSection(`Remove: New Section ${countSection} ?`, countSection)" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
         formGroup += '</h4></div>';
-        formGroup += '<div id="location' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
+        formGroup += '<div id="areaCoverage' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
         formGroup += '<label for="name" class="col-sm-3 control-label">Location</label>';
         formGroup += '<div class="col-sm-8">';
-        formGroup += '<input type="text" class="form-control" name="location[' + countSection + ']">';
+        formGroup += '<input type="text" class="form-control" name="areaCoverage[' + countSection + ']">';
         formGroup += '</div></div>';
         formGroup += '<div class="form-group">';
         formGroup += '<label for="name" class="col-sm-3 control-label">Sub Location</label>';
         formGroup += '<div class="col-sm-8">';
-        formGroup += '<select class="form-control select2" multiple="multiple" name="sublocation[' + countSection + '][]" style="width:100%"><option></option></select>';
+        formGroup += '<select class="form-control select2" multiple="multiple" name="subareaCoverage[' + countSection + '][]" style="width:100%"><option></option></select>';
         formGroup += '</div></div></div></div>';
-        locationSection.innerHTML = formGroup;
-        container.appendChild(locationSection);
+        areaCoverageSection.innerHTML = formGroup;
+        container.appendChild(areaCoverageSection);
         $('.select2').select2({
             tags: true
         });
@@ -197,28 +197,28 @@ if ($this->request->is('post')) {
         }
     }
 
-    foreach ($data['location'] as $key => $item) {
+    foreach ($data['areaCoverage'] as $key => $item) {
         $value = empty($item) ? '-' : $item;
-        $result[$key]['location'] = $value;
+        $result[$key]['areaCoverage'] = $value;
     }
 
-    foreach ($data['sublocation'] as $key => $item) {
+    foreach ($data['subareaCoverage'] as $key => $item) {
         if (!empty($item)) {
             $subitems = [];
             foreach ($item as $subkey => $subitem) {
                 $subitems[$subkey] = $subitem;
             }
         }
-        $result[$key]['sublocation'] = json_encode($subitems);
+        $result[$key]['subareaCoverage'] = json_encode($subitems);
     }
 
     foreach ($result as $item) {
-        $location = $item['location'];
-        $sublocation = $item['sublocation'];
+        $areaCoverage = $item['areaCoverage'];
+        $subareaCoverage = $item['subareaCoverage'];
         if (!empty($item['id'])) {
-            $connection->update('plugins_detail', ['value_1' => $location, 'value_2' => $sublocation, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
+            $connection->update('plugins_detail', ['value_1' => $areaCoverage, 'value_2' => $subareaCoverage, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
         } else {
-            $connection->insert('plugins_detail', ['value_1' => $location, 'value_2' => $sublocation, 'plugin_id' => $this->request->query('plugin_id')]);
+            $connection->insert('plugins_detail', ['value_1' => $areaCoverage, 'value_2' => $subareaCoverage, 'plugin_id' => $this->request->query('plugin_id')]);
         }
     }
     header("Refresh:0");
