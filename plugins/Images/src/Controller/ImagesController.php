@@ -4,7 +4,6 @@ namespace Images\Controller;
 
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
-use Cake\Utility\Hash;
 
 class ImagesController extends ImagesAppController
 {

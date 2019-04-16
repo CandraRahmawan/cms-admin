@@ -2,7 +2,6 @@
 
 namespace Users\Controller;
 
-use Users\Controller\UsersAppController;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Filesystem\Folder;
 

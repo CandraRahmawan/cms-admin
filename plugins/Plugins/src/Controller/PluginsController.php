@@ -52,4 +52,17 @@ class PluginsController extends PluginsAppController
         }
     }
 
+    public function deletePluginDetail()
+    {
+        $this->viewBuilder()->layout(false);
+        $this->render(false);
+        if ($this->request->is('ajax') && !empty($this->request->query['id'])) {
+            $entity = $this->PluginsDetail->get($this->request->query['id']);
+            $this->PluginsDetail->delete($entity);
+            echo 'ok';
+        } else {
+            echo 'failed';
+        }
+    }
+
 }

@@ -47,7 +47,7 @@ $this->Html->css(array(
                                         </div>
                                         <div id="service<?= $key_id; ?>" class="panel-collapse collapse"
                                              aria-expanded="true">
-                                            <div class="form-group">
+                                            <div class="form-group" style="margin-top: 15px;">
                                                 <label for="name" class="col-sm-2 control-label">Title</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden" name="id[<?= $key_id; ?>]"
@@ -106,9 +106,7 @@ $this->Html->css(array(
 <?php
 $this->Html->script([
     '/assets/lte/plugins/fastclick/fastclick',
-    '/assets/lte/plugins/jquery-validation/dist/jquery.validate.min',
     '/assets/lte/dist/js/app.min',
-    '/assets/lte/plugins/iCheck/icheck.min',
     '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
 ?>
 
@@ -129,7 +127,7 @@ $this->Html->script([
         formGroup += '<a onclick="removeSection(`Remove: New Section ${countSection} ?`, countSection)" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
         formGroup += '</h4></div>';
         formGroup += '<div id="service' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
-        formGroup += '<div class="form-group">';
+        formGroup += '<div class="form-group" style="margin-top: 15px;">';
         formGroup += '<label for="name" class="col-sm-3 control-label">Title</label>';
         formGroup += '<div class="col-sm-9">';
         formGroup += '<input type="text" class="form-control" name="title[' + countSection + ']">';
@@ -152,7 +150,37 @@ $this->Html->script([
 
     function removeSection(message, key) {
         var confirmMessage = confirm(message);
-        confirmMessage ? document.getElementById(key).remove() : false;
+        var idPluginDetail = $(`input[name$="id[${key}]"]`).val();
+        if (confirmMessage) {
+            if (idPluginDetail) {
+                $.ajax({
+                    url: baseUrl + 'plugins/api/delete-plugin-detail/',
+                    data: {
+                        id: idPluginDetail
+                    },
+                    beforeSend: function (xhr) {
+                        $(`#remove-btn-${key} > i`).remove();
+                        $(`#remove-btn-${key}`).append('<i class="fa fa-spin fa-refresh"></i> Deleting...');
+                    }
+                }).done(function (data) {
+                    if (data === 'ok') {
+                        alert('success');
+                        document.getElementById(key).remove();
+                    } else {
+                        alert('failed');
+                    }
+                }).fail(function (jqXHR) {
+                    alert('internal server error');
+                    console.log('error', jqXHR);
+                    $(`#remove-btn-${key} > i`).remove();
+                    $(`#remove-btn-${key}`).append('<i class="fa fa-fw fa-close"></i>');
+                });
+            } else {
+                document.getElementById(key).remove();
+            }
+        } else {
+            return false;
+        }
     }
 </script>
 
