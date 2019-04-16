@@ -85,4 +85,13 @@ class UtilityHelper extends Helper
         }
     }
 
+    public function getPluginList($key)
+    {
+        $conn = ConnectionManager::get('default');
+        $cols = $conn->execute("SELECT plugin_id, name FROM plugins WHERE is_active='Y' AND `key`='{$key}'");
+        $results = $cols->fetchAll('assoc');
+        $results = Hash::combine($results, '{n}.plugin_id', '{n}.name');
+        return $results;
+    }
+
 }

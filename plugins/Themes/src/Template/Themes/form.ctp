@@ -53,6 +53,13 @@ $this->Html->css(array(
                                                         'tabindex' => '-1',
                                                         'default' => $item['value_1'],
                                                         'aria-hidden' => 'true']);
+                                                } else if ('Plugin' == $item['category']) {
+                                                    $option = $this->Utility->getPluginList($item['key']);
+                                                    echo $this->Form->select($item['key'], $option, [
+                                                        'class' => 'form-control select2 select2-hidden-accessible',
+                                                        'tabindex' => '-1',
+                                                        'default' => $item['value_1'],
+                                                        'aria-hidden' => 'true']);
                                                 } else {
                                                     $option = $this->Utility->categoryOption($item['category']);
                                                     echo $this->Form->select($item['key'], $option, [
