@@ -13,7 +13,7 @@
             'url' => ['controller' => 'Login', 'action' => 'login', '_ext' => 'html']]);
         ?>
         <div class="form-group has-feedback">
-            <input type="text" name="email" class="form-control" placeholder="Email/Username">
+            <input type="text" name="email" class="form-control" placeholder="Email/Username" autofocus>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
