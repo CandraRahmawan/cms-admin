@@ -1,7 +1,6 @@
 <?php
 $this->Html->css(array(
-    '/assets/lte/plugins/iCheck/all',
-    '/assets/lte/plugins/jquery-validation/demo/site-demos'), ['block' => 'css']);
+    '/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
 ?>
     <script type="text/javascript">
         var preview_path = null;

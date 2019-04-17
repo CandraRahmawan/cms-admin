@@ -12,6 +12,7 @@ class AppController extends Controller {
     public $session;
     public $session_user;
     public $base;
+    public $baseWebroot;
     public $utility;
     public $params_data;
     public $params_query;
@@ -28,6 +29,7 @@ class AppController extends Controller {
         $this->set('session', $this->session);
         $this->set('session_user', $this->session_user);
         $this->set('base', $this->base);
+        $this->set('baseWebroot', $this->request->base);
     }
 
     public function beforeRender(Event $event) {

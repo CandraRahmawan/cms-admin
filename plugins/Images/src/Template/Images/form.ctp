@@ -1,8 +1,7 @@
 <?php
 $this->Html->css(array(
     '/assets/lte/bootstrap/css/fileinput',
-    '/assets/lte/plugins/iCheck/all',
-    '/assets/lte/plugins/jquery-validation/demo/site-demos'), ['block' => 'css']);
+    '/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
 ?>
 <div class="wrapper">
     <?php

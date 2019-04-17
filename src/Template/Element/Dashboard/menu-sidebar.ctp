@@ -4,7 +4,12 @@
         <div class="pull-left image">
             <?php
             $attr = ['class' => 'img-circle', 'alt' => 'User Image', 'onerror' => 'javascript:this.src="' . $base . '/img/no-user.png"'];
-            echo $this->Html->image($session_user['path_img'], $attr);
+            $path_image_session = $session_user['path_img'];
+            if ($path_image_session != '-') {
+                echo $this->Html->image($session_user['path_img'], $attr);
+            } else {
+                echo $this->Html->image($base . '/img/no-user.png', $attr);
+            }
             ?>
         </div>
         <div class="pull-left info">

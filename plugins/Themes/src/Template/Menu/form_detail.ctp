@@ -1,5 +1,5 @@
 <?php
-$this->Html->css(array('/assets/lte/plugins/iCheck/all', '/assets/lte/plugins/jquery-validation/demo/site-demos'), ['block' => 'css']);
+$this->Html->css(array('/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
 ?>
 <div class="wrapper">
     <?php

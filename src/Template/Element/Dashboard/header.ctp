@@ -52,7 +52,12 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <?php
                         $attr = ['class' => 'user-image', 'alt' => 'User Image', 'onerror' => 'javascript:this.src="' . $base . '/img/no-user.png"'];
-                        echo $this->Html->image($session_user['path_img'], $attr);
+                        $path_image_session = $session_user['path_img'];
+                        if ($path_image_session != '-') {
+                            echo $this->Html->image($session_user['path_img'], $attr);
+                        } else {
+                            echo $this->Html->image($base . '/img/no-user.png', $attr);
+                        }
                         ?>
                         <span class="hidden-xs"><?php echo $session_user['first_name'] . ' ' . $session_user['last_name']; ?></span>
                     </a>
@@ -61,7 +66,12 @@
                         <li class="user-header">
                             <?php
                             $attr = ['class' => 'user-circle', 'alt' => 'User Image', 'onerror' => 'javascript:this.src="' . $base . '/img/no-user.png"'];
-                            echo $this->Html->image($session_user['path_img'], $attr);
+                            $path_image_session = $session_user['path_img'];
+                            if ($path_image_session != '-') {
+                                echo $this->Html->image($session_user['path_img'], $attr);
+                            } else {
+                                echo $this->Html->image($base . '/img/no-user.png', $attr);
+                            }
                             ?>
                             <p>
                                 <?php echo $session_user['first_name'] . ' ' . $session_user['last_name']; ?> - <?php echo $session_user['status']; ?>

@@ -28,6 +28,7 @@
     <body class="hold-transition skin-blue sidebar-mini">
         <script type="text/javascript">
             var baseUrl = '<?php echo $base; ?>';
+            var urlWebroot = '<?php echo $baseWebroot; ?>';
         </script>
         <?php
         echo $this->fetch('content');

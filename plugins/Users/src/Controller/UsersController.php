@@ -111,6 +111,7 @@ class UsersController extends UsersAppController {
             $files_system = $dir->find($entity->path_img, true);
             if (count($files_system) == 0)
                 $entity->path_img = '';
+            $this->session_user['path_img'] = '-';
         }
 
         if ($password != "") {
@@ -133,6 +134,7 @@ class UsersController extends UsersAppController {
         $this->session_user['first_name'] = $first_name;
         $this->session_user['last_name'] = $last_name;
         $this->session_user['user_name'] = $user_name;
+        $this->session_user['status'] = $status;
 
         try {
             $this->Users->save($entity);
