@@ -66,7 +66,7 @@ $this->Html->css(array(
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="type" class="col-sm-2 control-label">Image</label>
+                                                <label for="type" class="col-sm-2 control-label">Icon</label>
                                                 <div class="col-sm-9">
                                                     <input type="hidden" name="image[<?= $key_id; ?>]"
                                                            value="<?= $item['value_3']; ?>">
@@ -76,7 +76,7 @@ $this->Html->css(array(
                                                     <button type="button" class="btn btn-primary"
                                                             data-key="<?= 'image[' . $key_id . ']'; ?>"
                                                             data-toggle="modal" data-target="#modalListImage">Browse
-                                                        Image
+                                                        Icon
                                                     </button>
                                                 </div>
                                             </div>
