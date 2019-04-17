@@ -32,7 +32,7 @@
                 $('#listImage').append('<div class="modal-list-image-items" data-name="' + item.name + '" style="background-image:url(' + item.name + ');width:134px;height:134px;background-size:contain;margin:4px;border:1px solid #2c3e50;cursor: pointer;background-repeat: no-repeat;background-position: center;" onclick="selectedImage(this)"/>');
             });
         }).fail(function (jqXHR) {
-            console.log(jqXHR.responseJSON.msg);
+            console.log('error', jqXHR);
         });
     });
 
