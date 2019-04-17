@@ -237,7 +237,7 @@ class ContentController extends ContentAppController
                 $title_generator = preg_replace('/--+/', '-', $title_generator);
                 $content = $this->Content->get($save->content_id);
                 $content->seo_id = $seo->seo_id;
-                $content->link = Inflector::dasherize('/' . $title_generator . '-' . $save->content_id);
+                $content->link = Inflector::dasherize('/' . $title_generator . '-' . $save->content_id . '/');
                 $this->Content->save($content);
             }
 

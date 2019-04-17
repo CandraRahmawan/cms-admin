@@ -169,10 +169,11 @@ class MenuController extends ThemesAppController
         $status = isset($this->params_data['status']) ? $this->params_data['status'] : NULL;
 
         try {
+            $custom_link_trailing_slash = substr($custom_link, -1) == '/' ? $custom_link : $custom_link . '/';
             $entity->menu_id = $menu_id;
             $entity->name = $name;
             $entity->content_id = $content_id;
-            $entity->custom_link = $custom_link;
+            $entity->custom_link = $custom_link_trailing_slash;
             $entity->status = $status;
 
             if ($type == 'update') {
