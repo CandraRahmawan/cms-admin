@@ -6,6 +6,5 @@
 /webroot/components
 /logs/
 /nbproject/
-/tests/
 /.idea
 /config/.env
