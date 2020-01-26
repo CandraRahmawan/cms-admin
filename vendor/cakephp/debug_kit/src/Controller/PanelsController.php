@@ -15,10 +15,12 @@ namespace DebugKit\Controller;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Provides access to panel data.
+ *
+ * @property \DebugKit\Model\Table\PanelsTable $Panels
  */
 class PanelsController extends Controller
 {
@@ -35,7 +37,7 @@ class PanelsController extends Controller
      *
      * @param \Cake\Event\Event $event The event.
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      */
     public function beforeFilter(Event $event)
     {
@@ -53,7 +55,16 @@ class PanelsController extends Controller
      */
     public function beforeRender(Event $event)
     {
-        $this->viewBuilder()->layout('DebugKit.panel')->className('View');
+        $this->viewBuilder()
+            ->setHelpers([
+                'Form', 'Html', 'Number', 'Url', 'DebugKit.Toolbar',
+                'DebugKit.Credentials', 'DebugKit.SimpleGraph',
+            ])
+            ->setLayout('DebugKit.toolbar');
+
+        if (!$this->request->is('json')) {
+            $this->viewBuilder()->setClassName('DebugKit.Ajax');
+        }
     }
 
     /**
@@ -61,7 +72,7 @@ class PanelsController extends Controller
      *
      * @param string $requestId Request id
      * @return void
-     * @throws \Cake\Network\Exception\NotFoundException
+     * @throws \Cake\Http\Exception\NotFoundException
      */
     public function index($requestId = null)
     {
@@ -87,7 +98,10 @@ class PanelsController extends Controller
         $this->Cookie->configKey('debugKit_sort', 'encryption', false);
         $this->set('sort', $this->Cookie->read('debugKit_sort'));
         $panel = $this->Panels->get($id);
+
         $this->set('panel', $panel);
-        $this->set(unserialize($panel->content));
+        // @codingStandardsIgnoreStart
+        $this->set(@unserialize($panel->content));
+        // @codingStandardsIgnoreEnd
     }
 }

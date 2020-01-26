@@ -1,21 +1,20 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         3.2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace Cake\I18n;
 
 use Cake\Chronos\Chronos;
-use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use IntlDateFormatter;
@@ -33,10 +32,10 @@ class FrozenTime extends Chronos implements JsonSerializable
 
     /**
      * The format to use when formatting a time using `Cake\I18n\FrozenTime::i18nFormat()`
-     * and `__toString`
+     * and `__toString`. This format is also used by `parseDateTime()`.
      *
      * The format should be either the formatting constants from IntlDateFormatter as
-     * described in (http://www.php.net/manual/en/class.intldateformatter.php) or a pattern
+     * described in (https://secure.php.net/manual/en/class.intldateformatter.php) or a pattern
      * as specified in (http://www.icu-project.org/apiref/icu4c/classSimpleDateFormat.html#details)
      *
      * It is possible to provide an array of 2 constants. In this case, the first position
@@ -52,7 +51,7 @@ class FrozenTime extends Chronos implements JsonSerializable
      * The format to use when formatting a time using `Cake\I18n\FrozenTime::nice()`
      *
      * The format should be either the formatting constants from IntlDateFormatter as
-     * described in (http://www.php.net/manual/en/class.intldateformatter.php) or a pattern
+     * described in (https://secure.php.net/manual/en/class.intldateformatter.php) or a pattern
      * as specified in (http://www.icu-project.org/apiref/icu4c/classSimpleDateFormat.html#details)
      *
      * It is possible to provide an array of 2 constants. In this case, the first position
@@ -68,7 +67,7 @@ class FrozenTime extends Chronos implements JsonSerializable
      * The format to use when formatting a time using `Cake\I18n\FrozenTime::timeAgoInWords()`
      * and the difference is more than `Cake\I18n\FrozenTime::$wordEnd`
      *
-     * @var string
+     * @var string|array|int
      * @see \Cake\I18n\FrozenTime::timeAgoInWords()
      */
     public static $wordFormat = [IntlDateFormatter::SHORT, -1];
@@ -77,17 +76,17 @@ class FrozenTime extends Chronos implements JsonSerializable
      * The format to use when formatting a time using `Time::timeAgoInWords()`
      * and the difference is less than `Time::$wordEnd`
      *
-     * @var array
+     * @var string[]
      * @see \Cake\I18n\FrozenTime::timeAgoInWords()
      */
     public static $wordAccuracy = [
-        'year' => "day",
-        'month' => "day",
-        'week' => "day",
-        'day' => "hour",
-        'hour' => "minute",
-        'minute' => "minute",
-        'second' => "second",
+        'year' => 'day',
+        'month' => 'day',
+        'week' => 'day',
+        'day' => 'hour',
+        'hour' => 'minute',
+        'minute' => 'minute',
+        'second' => 'second',
     ];
 
     /**
@@ -99,13 +98,20 @@ class FrozenTime extends Chronos implements JsonSerializable
     public static $wordEnd = '+1 month';
 
     /**
+     * serialise the value as a Unix Timestamp
+     *
+     * @var string
+     */
+    const UNIX_TIMESTAMP_FORMAT = 'unixTimestampFormat';
+
+    /**
      * {@inheritDoc}
      */
     public function __construct($time = null, $tz = null)
     {
         if ($time instanceof DateTimeInterface) {
-            $tz = $time->getTimeZone();
-            $time = $time->format('Y-m-d H:i:s');
+            $tz = $time->getTimezone();
+            $time = $time->format('Y-m-d H:i:s.u');
         }
 
         if (is_numeric($time)) {
@@ -154,15 +160,15 @@ class FrozenTime extends Chronos implements JsonSerializable
      */
     public function timeAgoInWords(array $options = [])
     {
-        return $this->diffFormatter()->timeAgoInWords($this, $options);
+        return static::diffFormatter()->timeAgoInWords($this, $options);
     }
 
     /**
      * Get list of timezone identifiers
      *
-     * @param int|string $filter A regex to filter identifier
+     * @param int|string|null $filter A regex to filter identifier
      *   Or one of DateTimeZone class constants
-     * @param string $country A two-letter ISO 3166-1 compatible country code.
+     * @param string|null $country A two-letter ISO 3166-1 compatible country code.
      *   This option is only used when $filter is set to DateTimeZone::PER_COUNTRY
      * @param bool|array $options If true (default value) groups the identifiers list by primary region.
      *   Otherwise, an array containing `group`, `abbr`, `before`, and `after`
@@ -227,29 +233,11 @@ class FrozenTime extends Chronos implements JsonSerializable
                     $groupedIdentifiers[$item[0]] = [$tz => $item[0] . $abbr];
                 }
             }
+
             return $groupedIdentifiers;
         }
-        return array_combine($identifiers, $identifiers);
-    }
 
-    /**
-     * Returns true this instance will happen within the specified interval
-     *
-     * This overridden method provides backwards compatible behavior for integers,
-     * or strings with trailing spaces. This behavior is *deprecated* and will be
-     * removed in future versions of CakePHP.
-     *
-     * @param string|int $timeInterval the numeric value with space then time type.
-     *    Example of valid types: 6 hours, 2 days, 1 minute.
-     * @return bool
-     */
-    public function wasWithinLast($timeInterval)
-    {
-        $tmp = trim($timeInterval);
-        if (is_numeric($tmp)) {
-            $timeInterval = $tmp . ' days';
-        }
-        return parent::wasWithinLast($timeInterval);
+        return array_combine($identifiers, $identifiers);
     }
 
     /**
@@ -263,12 +251,42 @@ class FrozenTime extends Chronos implements JsonSerializable
      *    Example of valid types: 6 hours, 2 days, 1 minute.
      * @return bool
      */
+    public function wasWithinLast($timeInterval)
+    {
+        $tmp = trim($timeInterval);
+        if (is_numeric($tmp)) {
+            deprecationWarning(
+                'Passing int/numeric string into FrozenTime::wasWithinLast() is deprecated. ' .
+                'Pass strings including interval eg. "6 days"'
+            );
+            $timeInterval = $tmp . ' days';
+        }
+
+        return parent::wasWithinLast($timeInterval);
+    }
+
+    /**
+     * Returns true this instance will happen within the specified interval
+     *
+     * This overridden method provides backwards compatible behavior for integers,
+     * or strings with trailing spaces. This behavior is *deprecated* and will be
+     * removed in future versions of CakePHP.
+     *
+     * @param string|int $timeInterval the numeric value with space then time type.
+     *    Example of valid types: 6 hours, 2 days, 1 minute.
+     * @return bool
+     */
     public function isWithinNext($timeInterval)
     {
         $tmp = trim($timeInterval);
         if (is_numeric($tmp)) {
+            deprecationWarning(
+                'Passing int/numeric string into FrozenTime::isWithinNext() is deprecated. ' .
+                'Pass strings including interval eg. "6 days"'
+            );
             $timeInterval = $tmp . ' days';
         }
+
         return parent::isWithinNext($timeInterval);
     }
 }

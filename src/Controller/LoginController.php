@@ -18,7 +18,7 @@ class LoginController extends AppController {
             $data_login['password'] = $this->Hash->setPassword($password);
             $login = $this->Users->login($data_login);
 
-            if (count($login) == 1) {
+            if (count([$login]) == 1) {
                 if ($login['is_active'] == 'Y') {
                     $session_login['user_id'] = $login['user_id'];
                     $session_login['first_name'] = $login['first_name'];

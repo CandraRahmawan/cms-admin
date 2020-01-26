@@ -1,16 +1,16 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         0.10.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace Cake\I18n;
 
@@ -21,11 +21,10 @@ use NumberFormatter;
  *
  * Methods to make numbers more readable.
  *
- * @link http://book.cakephp.org/3.0/en/core-libraries/number.html
+ * @link https://book.cakephp.org/3/en/core-libraries/number.html
  */
 class Number
 {
-
     /**
      * Default locale
      *
@@ -50,7 +49,7 @@ class Number
     /**
      * Default currency used by Number::currency()
      *
-     * @var string
+     * @var string|null
      */
     protected static $_defaultCurrency;
 
@@ -65,11 +64,12 @@ class Number
      * @param int $precision The precision of the returned number.
      * @param array $options Additional options
      * @return string Formatted float.
-     * @link http://book.cakephp.org/3.0/en/core-libraries/number.html#formatting-floating-point-numbers
+     * @link https://book.cakephp.org/3/en/core-libraries/number.html#formatting-floating-point-numbers
      */
     public static function precision($value, $precision = 3, array $options = [])
     {
         $formatter = static::formatter(['precision' => $precision, 'places' => $precision] + $options);
+
         return $formatter->format($value);
     }
 
@@ -78,7 +78,7 @@ class Number
      *
      * @param int $size Size in bytes
      * @return string Human readable size
-     * @link http://book.cakephp.org/3.0/en/core-libraries/number.html#interacting-with-human-readable-values
+     * @link https://book.cakephp.org/3/en/core-libraries/number.html#interacting-with-human-readable-values
      */
     public static function toReadableSize($size)
     {
@@ -108,15 +108,16 @@ class Number
      * @param int $precision The precision of the returned number
      * @param array $options Options
      * @return string Percentage string
-     * @link http://book.cakephp.org/3.0/en/core-libraries/number.html#formatting-percentages
+     * @link https://book.cakephp.org/3/en/core-libraries/number.html#formatting-percentages
      */
     public static function toPercentage($value, $precision = 2, array $options = [])
     {
-        $options += ['multiply' => false];
-        if ($options['multiply']) {
-            $value *= 100;
+        $options += ['multiply' => false, 'type' => NumberFormatter::PERCENT];
+        if (!$options['multiply']) {
+            $value /= 100;
         }
-        return static::precision($value, $precision, $options) . '%';
+
+        return static::precision($value, $precision, $options);
     }
 
     /**
@@ -126,7 +127,7 @@ class Number
      *
      * - `places` - Minimum number or decimals to use, e.g 0
      * - `precision` - Maximum Number of decimal places to use, e.g. 2
-     * - `pattern` - An ICU number pattern to use for formatting the number. e.g #,###.00
+     * - `pattern` - An ICU number pattern to use for formatting the number. e.g #,##0.00
      * - `locale` - The locale name to use for formatting the number, e.g. fr_FR
      * - `before` - The string to place before whole numbers, e.g. '['
      * - `after` - The string to place after decimal numbers, e.g. ']'
@@ -139,6 +140,7 @@ class Number
     {
         $formatter = static::formatter($options);
         $options += ['before' => '', 'after' => ''];
+
         return $options['before'] . $formatter->format($value) . $options['after'];
     }
 
@@ -158,6 +160,7 @@ class Number
     public static function parseFloat($value, array $options = [])
     {
         $formatter = static::formatter($options);
+
         return (float)$formatter->parse($value, NumberFormatter::TYPE_DOUBLE);
     }
 
@@ -182,6 +185,7 @@ class Number
         $value = number_format($value, $options['places'], '.', '');
         $sign = $value > 0 ? '+' : '';
         $options['before'] = isset($options['before']) ? $options['before'] . $sign : $sign;
+
         return static::format($value, $options);
     }
 
@@ -199,7 +203,7 @@ class Number
      * - `zero` - The text to use for zero values, can be a string or a number. e.g. 0, 'Free!'
      * - `places` - Number of decimal places to use. e.g. 2
      * - `precision` - Maximum Number of decimal places to use, e.g. 2
-     * - `pattern` - An ICU number pattern to use for formatting the number. e.g #,###.00
+     * - `pattern` - An ICU number pattern to use for formatting the number. e.g #,##0.00
      * - `useIntlCode` - Whether or not to replace the currency symbol with the international
      *   currency code.
      *
@@ -220,23 +224,25 @@ class Number
         $formatter = static::formatter(['type' => static::FORMAT_CURRENCY] + $options);
         $abs = abs($value);
         if (!empty($options['fractionSymbol']) && $abs > 0 && $abs < 1) {
-            $value = $value * 100;
+            $value *= 100;
             $pos = isset($options['fractionPosition']) ? $options['fractionPosition'] : 'after';
+
             return static::format($value, ['precision' => 0, $pos => $options['fractionSymbol']]);
         }
 
         $before = isset($options['before']) ? $options['before'] : null;
         $after = isset($options['after']) ? $options['after'] : null;
+
         return $before . $formatter->formatCurrency($value, $currency) . $after;
     }
 
     /**
      * Getter/setter for default currency
      *
-     * @param string|bool|null $currency Default currency string to be used by currency()
+     * @param string|false|null $currency Default currency string to be used by currency()
      * if $currency argument is not provided. If boolean false is passed, it will clear the
      * currently stored value
-     * @return string Currency
+     * @return string|null Currency
      */
     public static function defaultCurrency($currency = null)
     {
@@ -270,7 +276,7 @@ class Number
      *    numbers representing money or a NumberFormatter constant.
      * - `places` - Number of decimal places to use. e.g. 2
      * - `precision` - Maximum Number of decimal places to use, e.g. 2
-     * - `pattern` - An ICU number pattern to use for formatting the number. e.g #,###.00
+     * - `pattern` - An ICU number pattern to use for formatting the number. e.g #,##0.00
      * - `useIntlCode` - Whether or not to replace the currency symbol with the international
      *   currency code.
      *
@@ -297,19 +303,21 @@ class Number
             static::$_formatters[$locale][$type] = new NumberFormatter($locale, $type);
         }
 
+        /** @var \NumberFormatter $formatter */
         $formatter = static::$_formatters[$locale][$type];
 
         $options = array_intersect_key($options, [
             'places' => null,
             'precision' => null,
             'pattern' => null,
-            'useIntlCode' => null
+            'useIntlCode' => null,
         ]);
         if (empty($options)) {
             return $formatter;
         }
 
         $formatter = clone $formatter;
+
         return static::_setAttributes($formatter, $options);
     }
 

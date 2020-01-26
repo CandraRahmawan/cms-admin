@@ -1,16 +1,16 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         2.2.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
 namespace Cake\Cache\Engine;
@@ -21,17 +21,15 @@ use RedisException;
 
 /**
  * Redis storage engine for cache.
- *
  */
 class RedisEngine extends CacheEngine
 {
-
     /**
      * Redis wrapper.
      *
      * @var \Redis
      */
-    protected $_Redis = null;
+    protected $_Redis;
 
     /**
      * The default config used unless overridden by runtime configuration
@@ -87,6 +85,7 @@ class RedisEngine extends CacheEngine
         }
 
         parent::init($config);
+
         return $this->_connect();
     }
 
@@ -116,6 +115,7 @@ class RedisEngine extends CacheEngine
         if ($return) {
             $return = $this->_Redis->select($this->_config['database']);
         }
+
         return $return;
     }
 
@@ -139,7 +139,7 @@ class RedisEngine extends CacheEngine
             return $this->_Redis->set($key, $value);
         }
 
-        return $this->_Redis->setex($key, $duration, $value);
+        return $this->_Redis->setEx($key, $duration, $value);
     }
 
     /**
@@ -153,41 +153,54 @@ class RedisEngine extends CacheEngine
         $key = $this->_key($key);
 
         $value = $this->_Redis->get($key);
-        if (ctype_digit($value)) {
-            $value = (int)$value;
+        if (preg_match('/^[-]?\d+$/', $value)) {
+            return (int)$value;
         }
         if ($value !== false && is_string($value)) {
-            $value = unserialize($value);
+            return unserialize($value);
         }
+
         return $value;
     }
 
     /**
-     * Increments the value of an integer cached key
+     * Increments the value of an integer cached key & update the expiry time
      *
      * @param string $key Identifier for the data
      * @param int $offset How much to increment
-     * @return bool|int New incremented value, false otherwise
+     * @return int|false New incremented value, false otherwise
      */
     public function increment($key, $offset = 1)
     {
+        $duration = $this->_config['duration'];
         $key = $this->_key($key);
 
-        return (int)$this->_Redis->incrBy($key, $offset);
+        $value = (int)$this->_Redis->incrBy($key, $offset);
+        if ($duration > 0) {
+            $this->_Redis->expire($key, $duration);
+        }
+
+        return $value;
     }
 
     /**
-     * Decrements the value of an integer cached key
+     * Decrements the value of an integer cached key & update the expiry time
      *
      * @param string $key Identifier for the data
      * @param int $offset How much to subtract
-     * @return bool|int New decremented value, false otherwise
+     * @return int|false New decremented value, false otherwise
      */
     public function decrement($key, $offset = 1)
     {
+        $duration = $this->_config['duration'];
         $key = $this->_key($key);
 
-        return (int)$this->_Redis->decrBy($key, $offset);
+        $value = (int)$this->_Redis->decrBy($key, $offset);
+        if ($duration > 0) {
+            $this->_Redis->expire($key, $duration);
+        }
+
+        return $value;
     }
 
     /**
@@ -200,7 +213,7 @@ class RedisEngine extends CacheEngine
     {
         $key = $this->_key($key);
 
-        return $this->_Redis->delete($key) > 0;
+        return $this->_Redis->del($key) > 0;
     }
 
     /**
@@ -214,10 +227,27 @@ class RedisEngine extends CacheEngine
         if ($check) {
             return true;
         }
-        $keys = $this->_Redis->getKeys($this->_config['prefix'] . '*');
-        $this->_Redis->del($keys);
 
-        return true;
+        $this->_Redis->setOption(Redis::OPT_SCAN, Redis::SCAN_RETRY);
+
+        $isAllDeleted = true;
+        $iterator = null;
+        $pattern = $this->_config['prefix'] . '*';
+
+        while (true) {
+            $keys = $this->_Redis->scan($iterator, $pattern);
+
+            if ($keys === false) {
+                break;
+            }
+
+            foreach ($keys as $key) {
+                $isDeleted = ($this->_Redis->del($key) > 0);
+                $isAllDeleted = $isAllDeleted && $isDeleted;
+            }
+        }
+
+        return $isAllDeleted;
     }
 
     /**
@@ -227,7 +257,7 @@ class RedisEngine extends CacheEngine
      * @param string $key Identifier for the data.
      * @param mixed $value Data to be cached.
      * @return bool True if the data was successfully cached, false on failure.
-     * @link https://github.com/phpredis/phpredis#setnx
+     * @link https://github.com/phpredis/phpredis#set
      */
     public function add($key, $value)
     {
@@ -238,10 +268,10 @@ class RedisEngine extends CacheEngine
             $value = serialize($value);
         }
 
-        // setnx() doesn't have an expiry option, so overwrite the key with one
-        if ($this->_Redis->setnx($key, $value)) {
-            return $this->_Redis->setex($key, $duration, $value);
+        if ($this->_Redis->set($key, $value, ['nx', 'ex' => $duration])) {
+            return true;
         }
+
         return false;
     }
 
@@ -250,7 +280,7 @@ class RedisEngine extends CacheEngine
      * If the group initial value was not found, then it initializes
      * the group accordingly.
      *
-     * @return array
+     * @return string[]
      */
     public function groups()
     {
@@ -263,6 +293,7 @@ class RedisEngine extends CacheEngine
             }
             $result[] = $group . $value;
         }
+
         return $result;
     }
 

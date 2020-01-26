@@ -13,12 +13,21 @@
 namespace DebugKit\Model\Table;
 
 use Cake\Core\Configure;
+use Cake\Database\Driver\Sqlite;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
-use DebugKit\Model\Table\LazyTableTrait;
+use DebugKit\Model\Entity\Request;
 
 /**
  * The requests table tracks basic information about each request.
+ *
+ * @method Request get($primaryKey, $options = [])
+ * @method Request newEntity($data = null, array $options = [])
+ * @method Request[] newEntities(array $data, array $options = [])
+ * @method Request save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method Request patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method Request[] patchEntities($entities, array $data, array $options = [])
+ * @method Request findOrCreate($search, callable $callback = null)
  */
 class RequestsTable extends Table
 {
@@ -57,7 +66,7 @@ class RequestsTable extends Table
     /**
      * Finder method to get recent requests as a simple array
      *
-     * @param Cake\ORM\Query $query The query
+     * @param \Cake\ORM\Query $query The query
      * @param array $options The options
      * @return Query The query.
      */
@@ -70,7 +79,8 @@ class RequestsTable extends Table
     /**
      * Garbage collect old request data.
      *
-     * Delete request data that is older than 2 weeks old.
+     * Delete request data that is older than latest 20 requests.
+     * You can use the `DebugKit.requestCount` config to change this limit.
      * This method will only trigger periodically.
      *
      * @return void
@@ -82,11 +92,8 @@ class RequestsTable extends Table
         }
         $noPurge = $this->find()
             ->select(['id'])
-            ->hydrate(false)
             ->order(['requested_at' => 'desc'])
-            ->limit(Configure::read('DebugKit.requestCount') ?: 20)
-            ->extract('id')
-            ->toArray();
+            ->limit(Configure::read('DebugKit.requestCount') ?: 20);
 
         $query = $this->Panels->query()
             ->delete()
@@ -100,5 +107,10 @@ class RequestsTable extends Table
 
         $statement = $query->execute();
         $statement->closeCursor();
+
+        $conn = $this->getConnection();
+        if ($conn->getDriver() instanceof Sqlite) {
+            $conn->execute('VACUUM;');
+        }
     }
 }

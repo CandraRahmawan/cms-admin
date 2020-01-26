@@ -1,16 +1,16 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         2.0.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace Cake\Console;
 
@@ -31,7 +31,6 @@ use Cake\Utility\Inflector;
  */
 class ShellDispatcher
 {
-
     /**
      * Contains arguments parsed from the command line.
      *
@@ -124,6 +123,7 @@ class ShellDispatcher
     public static function run($argv, $extra = [])
     {
         $dispatcher = new ShellDispatcher($argv);
+
         return $dispatcher->dispatch($extra);
     }
 
@@ -141,9 +141,9 @@ class ShellDispatcher
         }
 
         if (function_exists('ini_set')) {
-            ini_set('html_errors', false);
-            ini_set('implicit_flush', true);
-            ini_set('max_execution_time', 0);
+            ini_set('html_errors', '0');
+            ini_set('implicit_flush', '1');
+            ini_set('max_execution_time', '0');
         }
 
         $this->shiftArgs();
@@ -183,9 +183,13 @@ class ShellDispatcher
             return $e->getCode();
         }
         if ($result === null || $result === true) {
-            return 0;
+            return Shell::CODE_SUCCESS;
         }
-        return 1;
+        if (is_int($result)) {
+            return $result;
+        }
+
+        return Shell::CODE_ERROR;
     }
 
     /**
@@ -195,7 +199,7 @@ class ShellDispatcher
      * to be dispatched.
      * Built-in extra parameter is :
      * - `requested` : if used, will prevent the Shell welcome message to be displayed
-     * @return bool
+     * @return bool|int|null
      * @throws \Cake\Console\Exception\MissingShellMethodException
      */
     protected function _dispatch($extra = [])
@@ -204,16 +208,24 @@ class ShellDispatcher
 
         if (!$shell) {
             $this->help();
+
             return false;
         }
         if (in_array($shell, ['help', '--help', '-h'])) {
             $this->help();
+
+            return true;
+        }
+        if (in_array($shell, ['version', '--version'])) {
+            $this->version();
+
             return true;
         }
 
         $Shell = $this->findShell($shell);
 
         $Shell->initialize();
+
         return $Shell->runCommand($this->args, true, $extra);
     }
 
@@ -234,7 +246,7 @@ class ShellDispatcher
         $io->setLoggers(false);
         $list = $task->getShellList() + ['app' => []];
         $fixed = array_flip($list['app']) + array_flip($list['CORE']);
-        $aliases = [];
+        $aliases = $others = [];
 
         foreach ($plugins as $plugin) {
             if (!isset($list[$plugin])) {
@@ -243,6 +255,11 @@ class ShellDispatcher
 
             foreach ($list[$plugin] as $shell) {
                 $aliases += [$shell => $plugin];
+                if (!isset($others[$shell])) {
+                    $others[$shell] = [$plugin];
+                } else {
+                    $others[$shell] = array_merge($others[$shell], [$plugin]);
+                }
             }
         }
 
@@ -259,12 +276,26 @@ class ShellDispatcher
             $other = static::alias($shell);
             if ($other) {
                 $other = $aliases[$shell];
-                Log::write(
-                    'debug',
-                    "command '$shell' in plugin '$plugin' was not aliased, conflicts with '$other'",
-                    ['shell-dispatcher']
-                );
+                if ($other !== $plugin) {
+                    Log::write(
+                        'debug',
+                        "command '$shell' in plugin '$plugin' was not aliased, conflicts with '$other'",
+                        ['shell-dispatcher']
+                    );
+                }
                 continue;
+            }
+
+            if (isset($others[$shell])) {
+                $conflicts = array_diff($others[$shell], [$plugin]);
+                if (count($conflicts) > 0) {
+                    $conflictList = implode("', '", $conflicts);
+                    Log::write(
+                        'debug',
+                        "command '$shell' in plugin '$plugin' was not aliased, conflicts with '$conflictList'",
+                        ['shell-dispatcher']
+                    );
+                }
             }
 
             static::alias($shell, "$plugin.$shell");
@@ -314,6 +345,7 @@ class ShellDispatcher
         }
 
         $class = array_map('Cake\Utility\Inflector::camelize', explode('.', $shell));
+
         return implode('.', $class);
     }
 
@@ -321,7 +353,7 @@ class ShellDispatcher
      * Check if a shell class exists for the given name.
      *
      * @param string $shell The shell name to look for.
-     * @return string|bool Either the classname or false.
+     * @return string|false Either the classname or false.
      */
     protected function _shellExists($shell)
     {
@@ -329,6 +361,7 @@ class ShellDispatcher
         if (class_exists($class)) {
             return $class;
         }
+
         return false;
     }
 
@@ -344,6 +377,7 @@ class ShellDispatcher
         list($plugin) = pluginSplit($shortName);
         $instance = new $className();
         $instance->plugin = trim($plugin, '.');
+
         return $instance;
     }
 
@@ -365,6 +399,17 @@ class ShellDispatcher
     public function help()
     {
         $this->args = array_merge(['command_list'], $this->args);
+        $this->dispatch();
+    }
+
+    /**
+     * Prints the currently installed version of CakePHP. Performs an internal dispatch to the CommandList Shell
+     *
+     * @return void
+     */
+    public function version()
+    {
+        $this->args = array_merge(['command_list', '--version'], $this->args);
         $this->dispatch();
     }
 }

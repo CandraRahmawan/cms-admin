@@ -32,8 +32,7 @@ class UsersController extends UsersAppController {
                         'user_id' => $id_user
                     ])
                     ->first();
-
-            if (count($profile) == 1) {
+            if (count([$profile]) == 1) {
                 $this->set(compact('profile'));
             } else {
                 return $this->redirect(['plugin' => 'Dashboard', 'controller' => 'Dashboard', 'action' => 'index']);
