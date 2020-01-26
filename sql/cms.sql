@@ -23,23 +23,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `agenda`
---
-
-CREATE TABLE `agenda` (
-  `agenda_id` int(11) NOT NULL,
-  `name` varchar(80) NOT NULL,
-  `description` tinytext,
-  `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  `user_id` smallint(6) NOT NULL,
-  `status` enum('Y','N','T') NOT NULL COMMENT 'Y : active, N : non active, T : trash',
-  `trash_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `category`
 --
 
@@ -111,19 +94,6 @@ CREATE TABLE `guestbook` (
   `read_msg` enum('Y','N') NOT NULL DEFAULT 'N',
   `read_date` datetime DEFAULT NULL,
   `read_by` smallint(6) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `guestcounter`
---
-
-CREATE TABLE `guestcounter` (
-  `ip_address` varchar(50) NOT NULL,
-  `date` date NOT NULL,
-  `location` varchar(80) DEFAULT NULL,
-  `hit` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -290,8 +260,7 @@ CREATE TABLE `themes` (
 --
 
 INSERT INTO `themes` (`id_theme`, `name`, `path`, `index`, `install_date`, `update_date`, `active`, `type`) VALUES
-(1, 'TopBiz', NULL, '', '2016-12-04 17:00:00', NULL, 'N', ''),
-(2, 'ElectronicServices', NULL, '', '2019-01-12 07:16:11', NULL, 'Y', '');
+(1, 'ElectronicServices', NULL, '', '2019-01-12 07:16:11', NULL, 'Y', '');
 
 -- --------------------------------------------------------
 
@@ -315,44 +284,27 @@ CREATE TABLE `themes_setting` (
 --
 
 INSERT INTO `themes_setting` (`id_theme`, `key`, `field_name`, `group`, `value_1`, `is_active`, `type`, `category`) VALUES
-(1, 'base_url', 'Base Url Admin', NULL, 'http://localhost/admin-cms/', 'Y', 'text', NULL),
-(1, 'copyright_footer', 'Footer CopyRight', 'footer', '', 'Y', 'text', NULL),
-(1, 'description_meta', 'Description Meta', NULL, '', 'Y', 'text', NULL),
-(1, 'facebook', 'Link Account Facebook', 'social_media', '', 'Y', 'text', NULL),
-(1, 'footer_info', 'Footer Info', 'footer', '', 'Y', 'text', NULL),
-(1, 'google', 'Link Account Google Plus', 'social_media', '', 'Y', 'text', NULL),
+(1, 'area_coverage', 'Area Coverage Plugin', 'plugin', '', 'Y', 'embed', 'Plugin'),
+(1, 'area_coverage_title', 'Area Coverage Title', 'plugin', '', 'Y', 'text', NULL),
+(1, 'company_title', 'Company Title', 'company', '', 'Y', 'text', NULL),
+(1, 'contact_email', 'Contact Email', 'contact', '', 'Y', 'text', NULL),
+(1, 'contact_phone', 'Contact Phone', 'contact', '', 'Y', 'text', NULL),
+(1, 'contact_whatsapp', 'Contact Whatsapp', 'contact', '', 'Y', 'text', NULL),
+(1, 'footer_address', 'Footer Address', 'footer', '', 'Y', 'text', NULL),
+(1, 'footer_address_title', 'Footer Address Title', 'heading', '', 'Y', 'text', NULL),
+(1, 'footer_copyright', 'Footer CopyRight', 'footer', '', 'Y', 'text', NULL),
+(1, 'footer_title_blog', 'Footer Artikel Title', 'heading', '', 'Y', 'text', NULL),
+(1, 'footer_title_contact', 'Footer Contact Title', 'heading', '', 'Y', 'text', NULL),
+(1, 'image_logo', 'Image Logo', 'image', '', 'Y', 'image', NULL),
 (1, 'menu_header', 'Menu Header', NULL, '1', 'Y', 'embed', 'Page'),
-(1, 'section_1', 'Section 1', 'section', '', 'Y', 'embed', 'Section'),
-(1, 'section_2', 'Section 2', 'section', '', 'Y', 'embed', 'Section'),
-(1, 'section_3', 'Section 3', 'section', '', 'Y', 'embed', 'Section'),
-(1, 'section_4', 'Section 4', 'section', '', 'Y', 'embed', 'Section'),
-(1, 'section_5', 'Section 5', 'section', '', 'Y', 'embed', 'Section'),
-(1, 'section_6', 'Section 6', 'section', '', 'Y', 'embed', 'Section'),
-(1, 'title_logo', 'Title Logo', NULL, '', 'Y', 'text', NULL),
-(1, 'title_web', 'Title Website', NULL, '', 'Y', 'text', NULL),
-(1, 'top_slider', 'Top Slider', NULL, '', 'Y', 'embed', 'Slider Banner'),
-(1, 'twitter', 'Link Twitter', 'social_media', '', 'Y', 'text', NULL),
-(2, 'area_coverage', 'Area Coverage Plugin', 'plugin', '', 'Y', 'embed', 'Plugin'),
-(2, 'area_coverage_title', 'Area Coverage Title', 'plugin', '', 'Y', 'text', NULL),
-(2, 'company_title', 'Company Title', 'company', '', 'Y', 'text', NULL),
-(2, 'contact_email', 'Contact Email', 'contact', '', 'Y', 'text', NULL),
-(2, 'contact_phone', 'Contact Phone', 'contact', '', 'Y', 'text', NULL),
-(2, 'contact_whatsapp', 'Contact Whatsapp', 'contact', '', 'Y', 'text', NULL),
-(2, 'footer_address', 'Footer Address', 'footer', '', 'Y', 'text', NULL),
-(2, 'footer_address_title', 'Footer Address Title', 'heading', '', 'Y', 'text', NULL),
-(2, 'footer_copyright', 'Footer CopyRight', 'footer', '', 'Y', 'text', NULL),
-(2, 'footer_title_blog', 'Footer Artikel Title', 'heading', '', 'Y', 'text', NULL),
-(2, 'footer_title_contact', 'Footer Contact Title', 'heading', '', 'Y', 'text', NULL),
-(2, 'image_logo', 'Image Logo', 'image', '', 'Y', 'image', NULL),
-(2, 'menu_header', 'Menu Header', NULL, '1', 'Y', 'embed', 'Page'),
-(2, 'path_url_admin', 'Path Url Admin', NULL, '', 'Y', 'text', NULL),
-(2, 'section_1', 'Section Welcome Homepage', 'section', '', 'Y', 'embed', 'Section'),
-(2, 'section_1_title', 'Title Welcome Homepage', 'heading', '', 'Y', 'text', NULL),
-(2, 'service_page', 'Service Page Plugin', 'plugin', '', 'Y', 'embed', 'Plugin'),
-(2, 'service_page_title', 'Service Page Title', 'plugin', '', 'Y', 'text', NULL),
-(2, 'top_image_carousel', 'Homepage Image Banner', 'image', '', 'Y', 'embed', 'Slider Banner'),
-(2, 'why_choose_us', 'Why Choose Us Plugin', 'plugin', '', 'Y', 'embed', 'Plugin'),
-(2, 'why_choose_us_title', 'Why Choose Us Title', 'plugin', '', 'Y', 'text', NULL);
+(1, 'path_url_admin', 'Path Url Admin', NULL, '', 'Y', 'text', NULL),
+(1, 'section_1', 'Section Welcome Homepage', 'section', '', 'Y', 'embed', 'Section'),
+(1, 'section_1_title', 'Title Welcome Homepage', 'heading', '', 'Y', 'text', NULL),
+(1, 'service_page', 'Service Page Plugin', 'plugin', '', 'Y', 'embed', 'Plugin'),
+(1, 'service_page_title', 'Service Page Title', 'plugin', '', 'Y', 'text', NULL),
+(1, 'top_image_carousel', 'Homepage Image Banner', 'image', '', 'Y', 'embed', 'Slider Banner'),
+(1, 'why_choose_us', 'Why Choose Us Plugin', 'plugin', '', 'Y', 'embed', 'Plugin'),
+(1, 'why_choose_us_title', 'Why Choose Us Title', 'plugin', '', 'Y', 'text', NULL);
 
 -- --------------------------------------------------------
 
@@ -386,13 +338,6 @@ INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `user_name`, `passwor
 --
 
 --
--- Indexes for table `agenda`
---
-ALTER TABLE `agenda`
-  ADD PRIMARY KEY (`agenda_id`),
-  ADD KEY `userid` (`user_id`) USING BTREE;
-
---
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -424,12 +369,6 @@ ALTER TABLE `gallery`
 ALTER TABLE `guestbook`
   ADD PRIMARY KEY (`guestbook_id`),
   ADD KEY `read_by` (`read_by`);
-
---
--- Indexes for table `guestcounter`
---
-ALTER TABLE `guestcounter`
-  ADD PRIMARY KEY (`ip_address`,`date`);
 
 --
 -- Indexes for table `images_list`
@@ -513,11 +452,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `agenda`
---
-ALTER TABLE `agenda`
-  MODIFY `agenda_id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
@@ -590,12 +524,6 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `agenda`
---
-ALTER TABLE `agenda`
-  ADD CONSTRAINT `userid` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `content`
