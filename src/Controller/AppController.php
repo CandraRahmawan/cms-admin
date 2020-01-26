@@ -21,7 +21,6 @@ class AppController extends Controller {
     parent::initialize();
     $this->loadComponent('Flash');
     $this->loadModel('Guestbook');
-    $this->loadModel('Guestcounter');
     $this->utility = new UtilityHelper(new \Cake\View\View());
     $this->session = $this->request->session();
     $this->session_user = $this->session->read('user_login');
@@ -49,11 +48,8 @@ class AppController extends Controller {
       }
     }
     
-    $query_guestcounter = $this->Guestcounter->find();
-    $query_guestcounter->select(['hit' => $query_guestcounter->func()->sum('hit')]);
-    $count_guestcounter = $query_guestcounter->toArray()[0]->hit;
     $global_guestbook = $this->Guestbook->find()->where(['read_msg' => 'N']);
-    $this->set(compact('global_guestbook', 'count_guestcounter'));
+    $this->set(compact('global_guestbook'));
   }
   
 }
