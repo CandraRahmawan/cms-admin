@@ -1,8 +1,7 @@
 ---
 deployment:
   tasks:
-    - export USERNAME=whoami
-    - export DEPLOYPATH=/home/$USERNAME/public_html
+    - export DEPLOYPATH=/home/<username>/public_html
     - /bin/cp -R config $DEPLOYPATH/content-management/config
     - /bin/cp -R plugins $DEPLOYPATH/content-management/
     - /bin/cp -R src $DEPLOYPATH/content-management/
