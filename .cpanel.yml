@@ -2,7 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/tduzipfs/public_html
-    - /bin/cp -R config $DEPLOYPATH/content-management/
+    - /bin/cp -R config/* $DEPLOYPATH/content-management/
     - /bin/cp -R plugins $DEPLOYPATH/content-management/
     - /bin/cp -R src $DEPLOYPATH/content-management/
     - /bin/cp -R vendor $DEPLOYPATH/content-management/
