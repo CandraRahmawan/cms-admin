@@ -1,25 +1,25 @@
-Backend Admin CMS Version 1.1.0
+##Backend Admin CMS Version 1.1.0
 > contains dashboard Administrator CMS, build use CakePHP Version 3.8.9
 
-Requirement :
+####Requirement :
 - PHP >= 5.6
 - MySQL >= 5.5.3
 - MariaDB >= 5.5
 - SQLite 3
 
-Depedencies :
-- cms-web https://bitbucket.org/candra_rahmawan/cms-web/src/master/
+####Depedencies :
+- [cms-web](https://bitbucket.org/candra_rahmawan/cms-web/src/master/)
 
-Login :
+####Login :
 - user `candra`, pass `candra`
 
-Database import :
+####Database import :
 - `sql/cms.sql`
 
-Configuration :
+####Configuration :
 - copy files `.env.default` into `.env` and adjust your configuration
 
-Deployment :
+####Deployment :
 - we use deployment .cpanel.yml, but this is for production only, considering there is no environment. [guide deployment](https://docs.cpanel.net/knowledge-base/web-services/guide-to-git-deployment/)
 - for development you can use manual upload from FTP or git.
 - default deployment production url is `/content-management`
