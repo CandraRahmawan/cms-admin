@@ -17,7 +17,7 @@ Database import :
 - `sql/cms.sql`
 
 Configuration :
-- rename `.env.default` file into `.env` and adjust your configuration
+- copy files `.env.default` into `.env` and adjust your configuration
 
 Deployment :
 - we use deployment .cpanel.yml, but this is for production only, considering there is no environment. [guide deployment](https://docs.cpanel.net/knowledge-base/web-services/guide-to-git-deployment/)
