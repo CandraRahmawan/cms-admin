@@ -2,6 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/$USER/public_html
+    - /bin/mkdir $DEPLOYPATH/content-management
     - /bin/cp index.php $DEPLOYPATH/content-management/
     - /bin/cp .htaccess $DEPLOYPATH/content-management/
     - /bin/cp -R src $DEPLOYPATH/content-management/
