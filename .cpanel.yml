@@ -2,10 +2,10 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/$USER/public_html
-    - /bin/cp -R config $DEPLOYPATH/content-management/config/
     - /bin/cp -R plugins $DEPLOYPATH/content-management/
     - /bin/cp -R src $DEPLOYPATH/content-management/
     - /bin/cp -R vendor $DEPLOYPATH/content-management/
     - /bin/cp -R webroot $DEPLOYPATH/content-management/
     - /bin/cp .htaccess $DEPLOYPATH/content-management/
     - /bin/cp index.php $DEPLOYPATH/content-management/
+    - /bin/cp -R config $DEPLOYPATH/content-management/config/
