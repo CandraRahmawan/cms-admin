@@ -178,6 +178,7 @@ class MenuController extends ThemesAppController
             $entity->name = $name;
             if (is_int($content_id)) {
                 $entity->content_id = $content_id;
+            } else {
                 $entity->custom_link = $custom_link_trailing_slash;
             }
             $entity->status = $status;
