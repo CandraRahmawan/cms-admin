@@ -174,6 +174,7 @@ class MenuController extends ThemesAppController
 
         try {
             $custom_link_trailing_slash = substr($custom_link, -1) == '/' ? $custom_link : $custom_link . '/';
+            $custom_link_trailing_slash = substr($custom_link_trailing_slash, 0, 1) != '/' ? '/' . $custom_link_trailing_slash : $custom_link_trailing_slash;
             $entity->menu_id = $menu_id;
             $entity->name = $name;
             if (is_int($content_id)) {
