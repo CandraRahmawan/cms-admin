@@ -117,7 +117,11 @@ class MenuController extends ThemesAppController
             ->where(['md.status' => 'Y', 'm.menu_id' => $menu_id, 'md.content_id' => 0])
             ->toArray();
         $listMenu = Hash::sort(Hash::merge($listMenuByContent, $listMenuCustom), '{n}.order_id', 'asc');
-        $this->set(compact('listMenu', 'menuDetail'));
+        if (!empty($menuDetail)) {
+            $this->set(compact('listMenu', 'menuDetail'));
+        } else {
+            $this->set(compact('listMenu', []));
+        }
     }
 
     public function detail()
@@ -172,7 +176,7 @@ class MenuController extends ThemesAppController
             $custom_link_trailing_slash = substr($custom_link, -1) == '/' ? $custom_link : $custom_link . '/';
             $entity->menu_id = $menu_id;
             $entity->name = $name;
-            $entity->content_id = $content_id;
+            $entity->content_id = is_int($content_id) ? $content_id : 0;
             $entity->custom_link = $custom_link_trailing_slash;
             $entity->status = $status;
 

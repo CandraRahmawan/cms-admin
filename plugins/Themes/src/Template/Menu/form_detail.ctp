@@ -24,8 +24,18 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
                         }
                         $checkedCustomLinkUrl = $menu_detail['custom_link'] ? 'checked' : '';
                         echo $this->Form->create($menu_detail, ['class' => 'form-horizontal', 'id' => 'form_menu_detail', 'name' => 'form_menu_detail', 'onsubmit' => 'event.preventDefault();']);
+                        $menu_id = isset($this->request->query['menu_id']) ? $this->request->query['menu_id'] : '0';
                         ?>
+
                         <div class="box-body">
+                            <div class="box-header">
+                                <h3 class="box-title">
+                                    <button class="btn btn-primary" type="button"
+                                            onclick="location.href = '<?= $this->Url->build(['plugin' => 'Themes', 'controller' => 'Menu', 'action' => 'detail', '_ext' => 'html' . '?menu_id=' . $menu_id]); ?>'">
+                                        <i class="fa fa-fw fa-list"></i> List Menu Detail
+                                    </button>
+                                </h3>
+                            </div>
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label">Name Menu</label>
                                 <div class="col-sm-10">
@@ -37,9 +47,15 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
                                            value="<?= $menu_detail['name']; ?>">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">Custom Url ?</label>
+                                <div class="col-sm-10">
+                                    <input class="flat-red" type="checkbox" id="is_custom_url" />
+                                </div>
+                            </div>
                             <div class="form-group" id="link_url_content">
                                 <input type="hidden" name="type" value="Content">
-                                <label for="category" class="col-sm-2 control-label">Link Url</label>
+                                <label for="category" class="col-sm-2 control-label">Dynamic Link Url from Content</label>
                                 <div class="col-sm-10">
                                     <select name="content_id" class="form-control select2 select2-hidden-accessible"
                                             tabindex="-1" aria-hidden="true">
@@ -109,16 +125,24 @@ $this->Html->script([
 ?>
 
 <script type="text/javascript">
-    var checkedCustomLinkUrl = "<?= $menu_detail['custom_link'] ? 'checked' : ''; ?>";
-    $(document).ready(function () {
-        if (checkedCustomLinkUrl === 'checked') {
-            $("#is_custom_url").iCheck('check');
+    $('#is_custom_url').on('ifChanged', function(event) {
+        if (event.target.checked) {
             $("#custom_link_url").show();
             $("#link_url_content").hide();
         } else {
-            $("#is_custom_url").iCheck('uncheck');
-            $("#custom_link_url").hide();
             $("#link_url_content").show();
+            $("#custom_link_url").hide();
+        }
+    });
+    var checkedCustomLinkUrl = "<?= $menu_detail['custom_link'] ? 'checked' : ''; ?>";
+    $(document).ready(function () {
+        $('#is_custom_url').iCheck('check');
+        if (checkedCustomLinkUrl === 'checked') {
+            $("#custom_link_url").show();
+            $("#link_url_content").hide();
+        } else {
+            $("#custom_link_url").show();
+            $("#link_url_content").hide();
         }
 
         $("#form_menu_detail").validate({

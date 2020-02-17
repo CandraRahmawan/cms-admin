@@ -16,8 +16,8 @@ class Menu extends Entity
 
     protected function _getActionMenu()
     {
-        $setting = "<a href=\"" . $this->request . "setting-menu.html?menu_id=" . $this->_properties['menu_id'] . "\"><i class=\"fa fa-fw fa-gear\"></i> Setting </a>";
-        $update = "<a href=\"" . $this->request . "menu-detail.html?menu_id=" . $this->_properties['menu_id'] . "\"><i class=\"fa fa-fw fa-eye\"></i> View Detail </a>";
+        $setting = "<a href=\"" . $this->request . "setting-menu.html?menu_id=" . $this->_properties['menu_id'] . "\"><i class=\"fa fa-fw fa-sort\"></i> Sort Menu </a>";
+        $update = "<a href=\"" . $this->request . "menu-detail.html?menu_id=" . $this->_properties['menu_id'] . "\"><i class=\"fa fa-fw fa-gear\"></i> Settings </a>";
         return $setting . ' | ' . $update;
     }
 
