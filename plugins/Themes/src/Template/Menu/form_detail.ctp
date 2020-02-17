@@ -25,6 +25,7 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
                         $checkedCustomLinkUrl = $menu_detail['custom_link'] ? 'checked' : '';
                         echo $this->Form->create($menu_detail, ['class' => 'form-horizontal', 'id' => 'form_menu_detail', 'name' => 'form_menu_detail', 'onsubmit' => 'event.preventDefault();']);
                         $menu_id = isset($this->request->query['menu_id']) ? $this->request->query['menu_id'] : '0';
+                        $id = isset($this->request->query['id']) ? $this->request->query['id'] : null;
                         ?>
 
                         <div class="box-body">
@@ -47,8 +48,8 @@ $this->Html->css(array('/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
                                            value="<?= $menu_detail['name']; ?>">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">Custom Url ?</label>
+                            <div class="form-group" id="is_custom_url_form">
+                                <label for="is_custom_url" class="col-sm-2 control-label">Custom Url ?</label>
                                 <div class="col-sm-10">
                                     <input class="flat-red" type="checkbox" id="is_custom_url" />
                                 </div>
@@ -126,6 +127,7 @@ $this->Html->script([
 
 <script type="text/javascript">
     $('#is_custom_url').on('ifChanged', function(event) {
+        $("select[name=content_id]").prop('selectedIndex',0);
         if (event.target.checked) {
             $("#custom_link_url").show();
             $("#link_url_content").hide();
@@ -134,12 +136,18 @@ $this->Html->script([
             $("#custom_link_url").hide();
         }
     });
-    var checkedCustomLinkUrl = "<?= $menu_detail['custom_link'] ? 'checked' : ''; ?>";
+    var contentId = "<?= $menu_detail['content_id'] ? 'true' : 'false'; ?>";
+    var updateAction = "<?= !empty($id) ? 'true' : 'false' ?>";
     $(document).ready(function () {
-        $('#is_custom_url').iCheck('check');
-        if (checkedCustomLinkUrl === 'checked') {
-            $("#custom_link_url").show();
-            $("#link_url_content").hide();
+        if (updateAction == 'false') {
+            $('#is_custom_url').iCheck('check');
+            $('#is_custom_url_form').show();
+        } else {
+            $('#is_custom_url_form').hide();
+        }
+        if (contentId == 'true') {
+            $("#custom_link_url").hide();
+            $("#link_url_content").show();
         } else {
             $("#custom_link_url").show();
             $("#link_url_content").hide();

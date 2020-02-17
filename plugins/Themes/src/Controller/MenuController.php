@@ -176,8 +176,10 @@ class MenuController extends ThemesAppController
             $custom_link_trailing_slash = substr($custom_link, -1) == '/' ? $custom_link : $custom_link . '/';
             $entity->menu_id = $menu_id;
             $entity->name = $name;
-            $entity->content_id = is_int($content_id) ? $content_id : 0;
-            $entity->custom_link = $custom_link_trailing_slash;
+            if (is_int($content_id)) {
+                $entity->content_id = $content_id;
+                $entity->custom_link = $custom_link_trailing_slash;
+            }
             $entity->status = $status;
 
             if ($type == 'update') {
