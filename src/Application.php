@@ -40,6 +40,7 @@ class Application extends BaseApplication
         $this->addPlugin('Gallery');
         $this->addPlugin('Images');
         $this->addPlugin('Message');
+        $this->addPlugin('Comments');
         $this->addPlugin('Plugins');
         $this->addPlugin('Themes');
         $this->addPlugin('Users');

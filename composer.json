@@ -16,6 +16,7 @@
       "Gallery\\": "plugins/Gallery/src",
       "Images\\": "plugins/Images/src",
       "Message\\": "plugins/Message/src",
+      "Comments\\": "plugins/Comments/src",
       "Plugins\\": "plugins/Plugins/src",
       "Themes\\": "plugins/Themes/src",
       "Users\\": "plugins/Users/src"

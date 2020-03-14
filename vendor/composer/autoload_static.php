@@ -102,6 +102,7 @@ class ComposerStaticInit4a0a14e86b563d655226fc038d9bd6a9
             'Composer\\Semver\\' => 16,
             'Composer\\CaBundle\\' => 18,
             'Composer\\' => 9,
+            'Comments\\' => 9,
             'Category\\' => 9,
             'Cake\\Composer\\' => 14,
             'Cake\\Chronos\\' => 13,
@@ -264,6 +265,10 @@ class ComposerStaticInit4a0a14e86b563d655226fc038d9bd6a9
         'Composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/composer/src/Composer',
+        ),
+        'Comments\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/plugins/Comments/src',
         ),
         'Category\\' => 
         array (
