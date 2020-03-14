@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2019 at 06:33 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- Generation Time: Mar 14, 2020 at 05:55 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.3.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `cms`
 --
+CREATE DATABASE IF NOT EXISTS `cms` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `cms`;
 
 -- --------------------------------------------------------
 
@@ -47,7 +51,7 @@ CREATE TABLE `content` (
   `content_id` int(11) NOT NULL,
   `title` varchar(80) DEFAULT NULL,
   `description` text NOT NULL,
-  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL DEFAULT current_timestamp(),
   `update_date` datetime DEFAULT NULL,
   `user_id` smallint(6) NOT NULL,
   `category_id` smallint(6) NOT NULL,
@@ -142,13 +146,13 @@ CREATE TABLE `menu_detail` (
   `menu_detail_id` int(11) NOT NULL,
   `menu_id` smallint(6) NOT NULL,
   `name` varchar(150) NOT NULL,
-  `parent_id` int(11) NOT NULL DEFAULT '0',
-  `drop_down` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1 = drop down ,0 = no',
-  `content_id` int(11) NOT NULL DEFAULT '0',
+  `parent_id` int(11) NOT NULL DEFAULT 0,
+  `drop_down` tinyint(4) NOT NULL DEFAULT 0 COMMENT '1 = drop down ,0 = no',
+  `content_id` int(11) NOT NULL DEFAULT 0,
   `custom_link` varchar(255) DEFAULT NULL,
   `order_id` tinyint(4) DEFAULT NULL,
   `status` enum('Y','N') NOT NULL DEFAULT 'N',
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_date` datetime DEFAULT NULL,
   `seo_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -179,22 +183,26 @@ CREATE TABLE `message` (
 CREATE TABLE `plugins` (
   `plugin_id` int(11) NOT NULL,
   `type` enum('video','slider','page','section') NOT NULL,
-  `install_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `install_date` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_date` datetime DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `key` varchar(50) NOT NULL,
-  `is_active` enum('Y','N') NOT NULL DEFAULT 'N'
+  `is_active` enum('Y','N') NOT NULL DEFAULT 'N',
+  `id_theme` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `plugins`
 --
 
-INSERT INTO `plugins` (`plugin_id`, `type`, `install_date`, `updated_date`, `name`, `description`, `key`, `is_active`) VALUES
-(1, 'page', '2019-02-21 22:45:45', NULL, 'Service Page', NULL, 'service_page', 'Y'),
-(2, 'section', '2019-04-08 22:39:16', NULL, 'Area Coverage', NULL, 'area_coverage', 'Y'),
-(3, 'section', '2019-04-17 09:01:34', NULL, 'Why Choose Us', NULL, 'why_choose_us', 'Y');
+INSERT INTO `plugins` (`plugin_id`, `type`, `install_date`, `updated_date`, `name`, `description`, `key`, `is_active`, `id_theme`) VALUES
+(1, 'page', '2019-02-21 22:45:45', NULL, 'Service Page', NULL, 'service_page', 'Y', 1),
+(2, 'section', '2019-04-08 22:39:16', NULL, 'Area Coverage', NULL, 'area_coverage', 'Y', 1),
+(3, 'section', '2019-04-17 09:01:34', NULL, 'Why Choose Us', NULL, 'why_choose_us', 'Y', 1),
+(4, 'page', '2020-02-17 16:17:18', NULL, 'Product Category Page', NULL, 'product_category_page', 'Y', 2),
+(5, 'page', '2020-02-20 06:13:32', NULL, 'Where To Buy Page', NULL, 'where_to_buy_page', 'Y', 2),
+(6, 'page', '2020-02-20 14:27:01', NULL, 'Our Story Page', NULL, 'our_story_page', 'Y', 2);
 
 -- --------------------------------------------------------
 
@@ -205,12 +213,28 @@ INSERT INTO `plugins` (`plugin_id`, `type`, `install_date`, `updated_date`, `nam
 CREATE TABLE `plugins_detail` (
   `plugin_detail_id` bigint(20) NOT NULL,
   `plugin_id` int(11) NOT NULL,
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_date` datetime DEFAULT NULL,
   `value_1` varchar(255) DEFAULT NULL,
-  `value_2` text,
-  `value_3` mediumtext
+  `value_2` text DEFAULT NULL,
+  `value_3` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `review_id` mediumint(9) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `email` varchar(80) NOT NULL,
+  `phone_number` varchar(12) DEFAULT NULL,
+  `comment` text NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `is_show` enum('Y','N') NOT NULL DEFAULT 'N'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -222,7 +246,7 @@ CREATE TABLE `seo` (
   `seo_id` bigint(20) NOT NULL,
   `meta_title` varchar(250) NOT NULL,
   `meta_description` varchar(320) NOT NULL,
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -260,7 +284,8 @@ CREATE TABLE `themes` (
 --
 
 INSERT INTO `themes` (`id_theme`, `name`, `path`, `index`, `install_date`, `update_date`, `active`, `type`) VALUES
-(1, 'ElectronicServices', NULL, '', '2019-01-12 07:16:11', NULL, 'Y', '');
+(1, 'ElectronicServices', NULL, '', '2019-01-12 07:16:11', NULL, 'N', ''),
+(2, 'DbeMotion', NULL, '', '2020-02-13 22:34:10', NULL, 'Y', '');
 
 -- --------------------------------------------------------
 
@@ -273,7 +298,7 @@ CREATE TABLE `themes_setting` (
   `key` varchar(100) NOT NULL,
   `field_name` varchar(100) NOT NULL,
   `group` enum('footer','social_media','section','company','contact','image','heading','plugin') DEFAULT NULL,
-  `value_1` mediumtext,
+  `value_1` mediumtext DEFAULT NULL,
   `is_active` enum('Y','N') NOT NULL DEFAULT 'Y',
   `type` enum('embed','text','image') NOT NULL DEFAULT 'text',
   `category` enum('Slider Banner','Page','Section','Plugin') DEFAULT NULL
@@ -304,7 +329,9 @@ INSERT INTO `themes_setting` (`id_theme`, `key`, `field_name`, `group`, `value_1
 (1, 'service_page_title', 'Service Page Title', 'plugin', '', 'Y', 'text', NULL),
 (1, 'top_image_carousel', 'Homepage Image Banner', 'image', '', 'Y', 'embed', 'Slider Banner'),
 (1, 'why_choose_us', 'Why Choose Us Plugin', 'plugin', '', 'Y', 'embed', 'Plugin'),
-(1, 'why_choose_us_title', 'Why Choose Us Title', 'plugin', '', 'Y', 'text', NULL);
+(1, 'why_choose_us_title', 'Why Choose Us Title', 'plugin', '', 'Y', 'text', NULL),
+(2, 'menu_footer', 'Menu Footer', NULL, '1', 'Y', 'embed', 'Page'),
+(2, 'menu_header', 'Menu Header', NULL, '1', 'Y', 'embed', 'Page');
 
 -- --------------------------------------------------------
 
@@ -405,7 +432,8 @@ ALTER TABLE `message`
 --
 ALTER TABLE `plugins`
   ADD PRIMARY KEY (`plugin_id`),
-  ADD UNIQUE KEY `key` (`key`);
+  ADD UNIQUE KEY `key` (`key`),
+  ADD KEY `id_theme` (`id_theme`);
 
 --
 -- Indexes for table `plugins_detail`
@@ -413,6 +441,12 @@ ALTER TABLE `plugins`
 ALTER TABLE `plugins_detail`
   ADD PRIMARY KEY (`plugin_detail_id`),
   ADD KEY `FK_plugin_detail_plugin` (`plugin_id`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`review_id`);
 
 --
 -- Indexes for table `seo`
@@ -456,71 +490,91 @@ ALTER TABLE `users`
 --
 ALTER TABLE `category`
   MODIFY `category_id` smallint(6) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `content`
 --
 ALTER TABLE `content`
   MODIFY `content_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
   MODIFY `gallery_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `guestbook`
 --
 ALTER TABLE `guestbook`
   MODIFY `guestbook_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `images_list`
 --
 ALTER TABLE `images_list`
   MODIFY `id_images` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
   MODIFY `menu_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `menu_detail`
 --
 ALTER TABLE `menu_detail`
   MODIFY `menu_detail_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
   MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `plugins`
 --
 ALTER TABLE `plugins`
-  MODIFY `plugin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `plugin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `plugins_detail`
 --
 ALTER TABLE `plugins_detail`
   MODIFY `plugin_detail_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `review_id` mediumint(9) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `seo`
 --
 ALTER TABLE `seo`
   MODIFY `seo_id` bigint(20) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `setting`
 --
 ALTER TABLE `setting`
   MODIFY `id_setting` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `themes`
 --
 ALTER TABLE `themes`
   MODIFY `id_theme` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- Constraints for dumped tables
 --
@@ -571,6 +625,12 @@ ALTER TABLE `menu_detail`
 ALTER TABLE `message`
   ADD CONSTRAINT `guestbook_id` FOREIGN KEY (`guestbook_id`) REFERENCES `guestbook` (`guestbook_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `send_by` FOREIGN KEY (`send_by`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `plugins`
+--
+ALTER TABLE `plugins`
+  ADD CONSTRAINT `FK_plugins_themes` FOREIGN KEY (`id_theme`) REFERENCES `themes` (`id_theme`);
 
 --
 -- Constraints for table `plugins_detail`
