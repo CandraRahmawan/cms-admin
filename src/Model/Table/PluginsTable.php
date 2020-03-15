@@ -10,6 +10,10 @@ class PluginsTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
+        $this->belongsTo('Themes', [
+            'foreignKey' => 'id_theme',
+            'joinType' => 'INNER',
+        ]);
     }
 
     public function getById($id)

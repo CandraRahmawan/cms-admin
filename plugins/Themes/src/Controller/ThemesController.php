@@ -33,6 +33,7 @@ class ThemesController extends ThemesAppController {
         $option['field'] = $this->option_field;
         $option['search'] = ['name'];
         $option['orderby'] = ['id_theme' => 'DESC'];
+        $option['where'] = ['themes.active' => 'Y'];
         $json = $this->DataTables->getResponse($option);
         echo $json;
     }

@@ -32,7 +32,9 @@ class PluginsController extends PluginsAppController
         $this->render(false);
         $option['table'] = 'plugins';
         $option['field'] = $this->option_field;
-        $option['search'] = ['name', 'description'];
+        $option['search'] = ['plugins.name', 'description'];
+        $option['join'] = ['Themes'];
+        $option['where'] = ['Themes.active' => 'Y'];
         $option['orderby'] = ['plugin_id' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
         echo $json;
