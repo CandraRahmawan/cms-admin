@@ -3,6 +3,7 @@
 namespace Api\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Mailer\Email;
 
 class ApiAppController extends Controller
 {
@@ -10,13 +11,13 @@ class ApiAppController extends Controller
     public function initialize()
     {
         parent::initialize();
-        $this->loadModel('Reviews');
         $this->viewBuilder()->layout(false);
         $this->render(false);
     }
 
     public function apiSendReview()
     {
+        $this->loadModel('Reviews');
         if ($this->request->is('post') && $this->request->is('ajax')) {
             $validate_captcha = $this->__validateRecaptcha();
             if ($validate_captcha) {
@@ -41,6 +42,33 @@ class ApiAppController extends Controller
         }
     }
 
+    public function apiSendMailbox()
+    {
+        $this->loadModel('Mailbox');
+        if ($this->request->is('post') && $this->request->is('ajax')) {
+            $validate_captcha = $this->__validateRecaptcha();
+            if ($validate_captcha) {
+                $name = $this->request->data['name'];
+                $email = $this->request->data['email'];
+                $phone_number = $this->request->data['phone_number'];
+                $message = $this->request->data['message'];
+                $mailbox = $this->Mailbox->newEntity();
+                try {
+                    $mailbox->name = $name;
+                    $mailbox->email = $email;
+                    $mailbox->phone_number = $phone_number;
+                    $mailbox->message = $message;
+                    $this->Mailbox->save($mailbox);
+                    echo 'Success Send Message';
+                } catch (\Exception $ex) {
+                    echo 'Failed Send Message';
+                }
+            } else {
+                echo 'Access Denied';
+            }
+        }
+    }
+
     private function __validateRecaptcha()
     {
         $secret = $this->request->data['secret'];
@@ -52,6 +80,5 @@ class ApiAppController extends Controller
         }
         return true;
     }
-
 
 }
