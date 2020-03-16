@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2020 at 05:55 PM
+-- Generation Time: Mar 16, 2020 at 09:55 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.13
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cms`
 --
-CREATE DATABASE IF NOT EXISTS `cms` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `cms`;
 
 -- --------------------------------------------------------
 
@@ -85,24 +83,6 @@ CREATE TABLE `gallery` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `guestbook`
---
-
-CREATE TABLE `guestbook` (
-  `guestbook_id` int(11) NOT NULL,
-  `full_name` varchar(60) NOT NULL,
-  `email` varchar(60) NOT NULL,
-  `subject` varchar(100) NOT NULL,
-  `message` tinytext NOT NULL,
-  `send_date` datetime NOT NULL,
-  `read_msg` enum('Y','N') NOT NULL DEFAULT 'N',
-  `read_date` datetime DEFAULT NULL,
-  `read_by` smallint(6) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `images_list`
 --
 
@@ -113,6 +93,25 @@ CREATE TABLE `images_list` (
   `updated_date` datetime DEFAULT NULL,
   `user_id` smallint(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mailbox`
+--
+
+CREATE TABLE `mailbox` (
+  `mailbox_id` int(11) NOT NULL,
+  `name` varchar(60) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `phone_number` varchar(15) DEFAULT NULL,
+  `send_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `read_date` datetime DEFAULT NULL,
+  `is_read` enum('Y','N') NOT NULL DEFAULT 'N',
+  `message` text NOT NULL,
+  `status` enum('A','T') NOT NULL DEFAULT 'A' COMMENT 'A : active, T : trash',
+  `status_update_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -160,23 +159,6 @@ CREATE TABLE `menu_detail` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `message`
---
-
-CREATE TABLE `message` (
-  `message_id` int(11) NOT NULL,
-  `from_msg` varchar(80) NOT NULL,
-  `to_msg` varchar(80) NOT NULL,
-  `subject` varchar(150) NOT NULL,
-  `message` tinytext NOT NULL,
-  `send_date` datetime NOT NULL,
-  `send_by` smallint(6) NOT NULL,
-  `guestbook_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `plugins`
 --
 
@@ -202,7 +184,8 @@ INSERT INTO `plugins` (`plugin_id`, `type`, `install_date`, `updated_date`, `nam
 (3, 'section', '2019-04-17 09:01:34', NULL, 'Why Choose Us', NULL, 'why_choose_us', 'Y', 1),
 (4, 'page', '2020-02-17 16:17:18', NULL, 'Product Category Page', NULL, 'product_category_page', 'Y', 2),
 (5, 'page', '2020-02-20 06:13:32', NULL, 'Where To Buy Page', NULL, 'where_to_buy_page', 'Y', 2),
-(6, 'page', '2020-02-20 14:27:01', NULL, 'Our Story Page', NULL, 'our_story_page', 'Y', 2);
+(6, 'page', '2020-02-20 14:27:01', NULL, 'Our Story Page', NULL, 'our_story_page', 'Y', 2),
+(7, 'video', '2020-03-15 17:31:59', NULL, 'Youtube Review', NULL, 'youtube_review', 'Y', 2);
 
 -- --------------------------------------------------------
 
@@ -391,18 +374,17 @@ ALTER TABLE `gallery`
   ADD KEY `user_idr` (`user_id`) USING BTREE;
 
 --
--- Indexes for table `guestbook`
---
-ALTER TABLE `guestbook`
-  ADD PRIMARY KEY (`guestbook_id`),
-  ADD KEY `read_by` (`read_by`);
-
---
 -- Indexes for table `images_list`
 --
 ALTER TABLE `images_list`
   ADD PRIMARY KEY (`id_images`),
   ADD KEY `user_id_img` (`user_id`);
+
+--
+-- Indexes for table `mailbox`
+--
+ALTER TABLE `mailbox`
+  ADD PRIMARY KEY (`mailbox_id`);
 
 --
 -- Indexes for table `menu`
@@ -418,14 +400,6 @@ ALTER TABLE `menu_detail`
   ADD PRIMARY KEY (`menu_detail_id`),
   ADD KEY `menu_id` (`menu_id`),
   ADD KEY `seo_id2` (`seo_id`);
-
---
--- Indexes for table `message`
---
-ALTER TABLE `message`
-  ADD PRIMARY KEY (`message_id`),
-  ADD KEY `send_by` (`send_by`),
-  ADD KEY `guestbook_id` (`guestbook_id`);
 
 --
 -- Indexes for table `plugins`
@@ -504,16 +478,16 @@ ALTER TABLE `gallery`
   MODIFY `gallery_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `guestbook`
---
-ALTER TABLE `guestbook`
-  MODIFY `guestbook_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `images_list`
 --
 ALTER TABLE `images_list`
   MODIFY `id_images` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `mailbox`
+--
+ALTER TABLE `mailbox`
+  MODIFY `mailbox_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `menu`
@@ -528,16 +502,10 @@ ALTER TABLE `menu_detail`
   MODIFY `menu_detail_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `message`
---
-ALTER TABLE `message`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `plugins`
 --
 ALTER TABLE `plugins`
-  MODIFY `plugin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `plugin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `plugins_detail`
@@ -595,12 +563,6 @@ ALTER TABLE `gallery`
   ADD CONSTRAINT `user_idr` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `guestbook`
---
-ALTER TABLE `guestbook`
-  ADD CONSTRAINT `read_by` FOREIGN KEY (`read_by`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `images_list`
 --
 ALTER TABLE `images_list`
@@ -620,13 +582,6 @@ ALTER TABLE `menu_detail`
   ADD CONSTRAINT `seo_id2` FOREIGN KEY (`seo_id`) REFERENCES `seo` (`seo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `message`
---
-ALTER TABLE `message`
-  ADD CONSTRAINT `guestbook_id` FOREIGN KEY (`guestbook_id`) REFERENCES `guestbook` (`guestbook_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `send_by` FOREIGN KEY (`send_by`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `plugins`
 --
 ALTER TABLE `plugins`
@@ -637,6 +592,7 @@ ALTER TABLE `plugins`
 --
 ALTER TABLE `plugins_detail`
   ADD CONSTRAINT `FK_plugin_detail_plugin` FOREIGN KEY (`plugin_id`) REFERENCES `plugins` (`plugin_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
