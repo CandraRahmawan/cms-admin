@@ -50,4 +50,5 @@ return array(
     'Cake\\' => array($vendorDir . '/cakephp/cakephp/src'),
     'Aura\\Intl\\' => array($vendorDir . '/aura/intl/src'),
     'App\\' => array($baseDir . '/src'),
+    'Api\\' => array($baseDir . '/plugins/Api/src'),
 );

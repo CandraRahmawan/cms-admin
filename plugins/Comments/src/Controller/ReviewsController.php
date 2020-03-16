@@ -2,8 +2,6 @@
 
 namespace Comments\Controller;
 
-use Comments\Controller\CommentsAppController;
-
 class ReviewsController extends CommentsAppController
 {
 
@@ -57,29 +55,6 @@ class ReviewsController extends CommentsAppController
             return false;
         }
         return $this->redirect(['action' => 'lists', '_ext' => 'html']);
-    }
-
-    public function apiSendReview()
-    {
-        $this->viewBuilder()->layout(false);
-        $this->render(false);
-        if ($this->request->is('post') && $this->request->is('ajax')) {
-            $name = $this->params_data['name'];
-            $email = $this->params_data['email'];
-            $phone_number = $this->params_data['phone_number'];
-            $comment = $this->params_data['comment'];
-            $review = $this->Reviews->newEntity();
-            try {
-                $review->name = $name;
-                $review->email = $email;
-                $review->phone_number = $phone_number;
-                $review->comment = $comment;
-                $this->Reviews->save($review);
-                echo 'Success Send Review';
-            } catch (\Exception $ex) {
-                echo 'Failed Send Review';
-            }
-        }
     }
 
 }
