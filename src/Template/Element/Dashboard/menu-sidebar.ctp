@@ -80,6 +80,7 @@
             </a>
             <ul class="treeview-menu">
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Message', 'controller' => 'Guestbook', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> Guestbook</a></li>
+                <li><a href="<?php echo $this->Url->build(['plugin' => 'Message', 'controller' => 'Mailbox', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-circle-o"></i> MailBox</a></li>
             </ul>
         </li>
         <li class="treeview">
