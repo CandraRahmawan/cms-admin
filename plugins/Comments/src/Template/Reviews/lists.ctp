@@ -70,7 +70,6 @@ echo $this->Element('modal_review_detail');
 $this->Html->script([
     '/assets/lte/plugins/datatables/jquery.dataTables.min',
     '/assets/lte/plugins/datatables/dataTables.bootstrap.min',
-    '/assets/lte/plugins/slimScroll/jquery.slimscroll.min',
     '/assets/lte/plugins/fastclick/fastclick',
     '/assets/lte/dist/js/app.min',
     '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
@@ -85,7 +84,7 @@ $this->Html->script([
             "ajax": "<?php echo $this->Url->build(['plugin' => 'Comments', 'controller' => 'Reviews', 'action' => 'serverSide', '_ext' => 'html']); ?>",
             initComplete: function () {
                 var api = this.api();
-                $('#list_guestbook_filter input')
+                $('#list_reviews_filter input')
                     .off('.DT')
                     .on('keyup.DT', function (e) {
                         if (e.keyCode == 13) {

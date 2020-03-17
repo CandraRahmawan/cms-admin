@@ -16,6 +16,7 @@
 <script>
     $("#modalReviewComment").on('shown.bs.modal', function (data) {
         const comment = data.relatedTarget.dataset.comment;
+        $('#commentDetail').empty();
         $('#commentDetail').append('<div>' + comment + '</div>');
     });
 </script>

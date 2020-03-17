@@ -49,7 +49,6 @@
 </div>
 <?php
 $this->Html->script([
-    '/assets/lte/plugins/slimScroll/jquery.slimscroll.min',
     '/assets/lte/plugins/fastclick/fastclick',
     '/assets/lte/dist/js/app.min',
     '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);

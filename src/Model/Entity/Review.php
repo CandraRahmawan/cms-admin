@@ -16,9 +16,9 @@ class Review extends Entity
 
     protected function _getActionReviews()
     {
-        $change_status = "<a href=\"" . $this->request . "change-status/" . $this->_properties['is_show'] . "?id=" . $this->_properties['review_id'] . "\" onclick=\"return confirm('Confirm Changes Status ID = " . $this->_properties['review_id'] . "')\"><i class=\"fa fa-undo\"></i> Change Status (Y/N)</a>";
-        return $change_status . " | <a href=\"#modalReviewComment\" data-toggle=\"modal\" data-comment=\"" . $this->_properties['comment'] . "\">Comment
-<i class=\"fa fa-fw fa-commenting-o\"></i></a>";
+        $change_status = "<a href=\"" . $this->request . "review/change-status/" . $this->_properties['is_show'] . "?id=" . $this->_properties['review_id'] . "\"><i class=\"fa fa-undo\"></i> Change Status (Y/N)</a>";
+        $view_review = "<a href=\"#modalReviewComment\" data-toggle=\"modal\" data-comment=\"" . $this->_properties['comment'] . "\">Comment<i class=\"fa fa-fw fa-commenting-o\"></i></a>";
+        return $change_status . " | " . $view_review;
     }
 
     protected function _getEntityIsShow()

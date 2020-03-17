@@ -43,7 +43,7 @@ class ReviewsController extends CommentsAppController
 
     public function changeStatus()
     {
-        $status = $this->params_data['status'];
+        $status = $this->request->params['status'];
         $id = $this->params_query['id'];
         $reviews = $this->Reviews->get($id);
         $reviews->is_show = $status == 'Y' ? 'N' : 'Y';

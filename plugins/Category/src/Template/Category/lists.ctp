@@ -70,7 +70,6 @@ $this->Html->css([
 $this->Html->script([
     '/assets/lte/plugins/datatables/jquery.dataTables.min',
     '/assets/lte/plugins/datatables/dataTables.bootstrap.min',
-    '/assets/lte/plugins/slimScroll/jquery.slimscroll.min',
     '/assets/lte/plugins/fastclick/fastclick',
     '/assets/lte/dist/js/app.min',
     '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
