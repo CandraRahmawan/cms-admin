@@ -97,6 +97,10 @@ $this->Html->script([
     var countSection = <?= sizeof($pluginDetail); ?>;
 
     function addSection() {
+        if (countSection > 1) {
+            alert('Limit Video Input only 2');
+            return;
+        }
         var formGroup = '';
         countSection = countSection + 1;
         var container = document.getElementById('accordion');
@@ -137,6 +141,7 @@ $this->Html->script([
                     if (data === 'ok') {
                         alert('success');
                         document.getElementById(key).remove();
+                        location.reload();
                     } else {
                         alert('failed');
                     }
