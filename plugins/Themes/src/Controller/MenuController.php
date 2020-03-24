@@ -190,7 +190,7 @@ class MenuController extends ThemesAppController
                     $seoEntity->updated_date = date('Y-m-d H:i:s');
                 }
             } else {
-                $entity->order_id = 130;
+                $entity->order_id = 1;
             }
 
             if (!empty($seoEntity) && $entity->content_id == 0) {
