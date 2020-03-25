@@ -2,6 +2,8 @@
 
 namespace Api\Controller;
 
+use Cake\Log\Log;
+
 class ApiController extends ApiAppController
 {
 
@@ -31,6 +33,7 @@ class ApiController extends ApiAppController
                     $this->Reviews->save($review);
                     echo 'Success Send Review';
                 } catch (\Exception $ex) {
+                    Log::error($ex);
                     echo 'Failed Send Review';
                 }
             } else {
@@ -58,6 +61,7 @@ class ApiController extends ApiAppController
                     $this->Mailbox->save($mailbox);
                     echo 'Success Send Message';
                 } catch (\Exception $ex) {
+                    Log::error($ex);
                     echo 'Failed Send Message';
                 }
             } else {

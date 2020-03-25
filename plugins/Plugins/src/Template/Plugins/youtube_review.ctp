@@ -160,8 +160,6 @@ $this->Html->script([
     }
 </script>
 
-<?= $this->Element('Images.modal_list'); ?>
-
 <?php
 
 use Cake\Datasource\ConnectionManager;
@@ -182,11 +180,11 @@ if ($this->request->is('post')) {
     }
 
     foreach ($result as $item) {
-        $title = $item['youtube_id'];
+        $youtube_id = $item['youtube_id'];
         if (!empty($item['id'])) {
-            $connection->update('plugins_detail', ['value_1' => $title, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
+            $connection->update('plugins_detail', ['value_1' => $youtube_id, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
         } else {
-            $connection->insert('plugins_detail', ['value_1' => $title, 'plugin_id' => $this->request->query('plugin_id')]);
+            $connection->insert('plugins_detail', ['value_1' => $youtube_id, 'plugin_id' => $this->request->query('plugin_id')]);
         }
     }
     header("Refresh:0");

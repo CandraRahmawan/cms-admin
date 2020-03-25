@@ -24,33 +24,24 @@
                                 <div class="col-md-2">
                                     Email
                                 </div>
-                                <div class="col-md-1">
-                                    :
-                                </div>
                                 <div class="col-md-9">
-                                    <i><?= $mailbox['email']; ?></i>
+                                    : <i><?= $mailbox['email']; ?></i>
                                 </div>
                             </div>
                             <div class="mailbox-read-message">
                                 <div class="col-md-2">
                                     Phone Number
                                 </div>
-                                <div class="col-md-1">
-                                    :
-                                </div>
                                 <div class="col-md-9">
-                                    <i><?= $mailbox['phone_number']; ?></i>
+                                    : <i><?= $mailbox['phone_number']; ?></i>
                                 </div>
                             </div>
                             <div class="mailbox-read-message">
                                 <div class="col-md-2">
                                     Send Date
                                 </div>
-                                <div class="col-md-1">
-                                    :
-                                </div>
                                 <div class="col-md-9">
-                                    <i><?= date("d-M-Y, H:i", strtotime($mailbox['send_date'])); ?></i>
+                                    : <i><?= date("d-M-Y, H:i", strtotime($mailbox['send_date'])); ?></i>
                                 </div>
                             </div>
                         </div>
