@@ -277,7 +277,7 @@ return [
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
              */
             //'encoding' => 'utf8mb4',
-            'timezone' => 'UTC',
+            'timezone' => env('DB_TIMEZONE', 'UTC'),
             'flags' => [],
             'cacheMetadata' => true,
             'log' => false,
@@ -333,7 +333,7 @@ return [
         'debug' => [
             'className' => FileLog::class,
             'path' => LOGS,
-            'file' => 'debug',
+            'file' => 'debug_' . date('Y-m-d'),
             'url' => env('LOG_DEBUG_URL', null),
             'scopes' => false,
             'levels' => ['notice', 'info', 'debug'],
@@ -341,7 +341,7 @@ return [
         'error' => [
             'className' => FileLog::class,
             'path' => LOGS,
-            'file' => 'error',
+            'file' => 'error_' . date('Y-m-d'),
             'url' => env('LOG_ERROR_URL', null),
             'scopes' => false,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
