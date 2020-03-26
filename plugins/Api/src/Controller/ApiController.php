@@ -93,7 +93,6 @@ class ApiController extends ApiAppController {
           'comment' => $item['comment']
         ];
       }
-      $this->response->type('application/json');
       echo json_encode($result);
     }
   }
