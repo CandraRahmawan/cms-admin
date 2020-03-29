@@ -10,7 +10,7 @@ class MailboxController extends MessageAppController
     public $option_field = [
         'Name' => 'entity_name',
         'Message' => 'message',
-        'Send Date' => 'send_date',
+        'Send Date' => 'entity_send_date',
         'Action' => 'action_mailbox',
         'Read' => 'is_read'
     ];

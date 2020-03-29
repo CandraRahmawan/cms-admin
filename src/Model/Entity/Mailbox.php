@@ -8,14 +8,14 @@ use App\Controller\Component\CommonHelperComponent;
 class Mailbox extends Entity
 {
 
-    protected $_virtual = ['entity_name', 'send_date', 'action_mailbox'];
+    protected $_virtual = ['entity_name', 'entity_send_date', 'action_mailbox'];
 
     protected function _getEntityName()
     {
         return "<a href=\"" . $this->request . "mailbox/read.html?mailbox_id=" . $this->_properties['mailbox_id'] . "\" title='Read Mail'>" . $this->_properties['name'] . "</a>";
     }
 
-    protected function _getSendDate()
+    protected function _getEntitySendDate()
     {
         return CommonHelperComponent::getTimeAgo($this->_properties['send_date']);
     }
