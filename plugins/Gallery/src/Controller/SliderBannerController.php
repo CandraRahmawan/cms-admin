@@ -39,7 +39,7 @@ class SliderBannerController extends GalleryAppController {
         $option['orderby'] = ['gallery_id' => 'DESC'];
         $option['join'] = ['Category', 'Users'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function form() {

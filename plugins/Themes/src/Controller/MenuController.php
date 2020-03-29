@@ -48,7 +48,7 @@ class MenuController extends ThemesAppController
         $option['search'] = ['name'];
         $option['orderby'] = ['menu_id' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function serverSideDetail()
@@ -60,7 +60,7 @@ class MenuController extends ThemesAppController
         $option['search'] = ['name'];
         $option['orderby'] = ['order_id' => 'ASC'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
 

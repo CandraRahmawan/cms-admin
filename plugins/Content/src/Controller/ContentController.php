@@ -84,7 +84,7 @@ class ContentController extends ContentAppController
         }
 
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function formArticle()

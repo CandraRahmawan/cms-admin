@@ -20,13 +20,12 @@ class UtilityController extends AppController {
 
             $files_system = new File(WWW_ROOT . $key, false, 0777);
             if ($files_system->delete())
-                echo json_encode("Success");
+                die(json_encode("Success"));
             else
-                echo "Error Deleting Files";
+                die("Error Deleting Files");
         } else {
-            echo "Something Wrong, Try Again Later";
+            die("Something Wrong, Try Again Later");
         }
-        die;
     }
 
 }

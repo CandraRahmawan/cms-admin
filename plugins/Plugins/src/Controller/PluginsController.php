@@ -37,7 +37,7 @@ class PluginsController extends PluginsAppController
         $option['where'] = ['Themes.active' => 'Y'];
         $option['orderby'] = ['plugin_id' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function formAction()
@@ -61,9 +61,9 @@ class PluginsController extends PluginsAppController
         if ($this->request->is('ajax') && !empty($this->request->query['id'])) {
             $entity = $this->PluginsDetail->get($this->request->query['id']);
             $this->PluginsDetail->delete($entity);
-            echo 'ok';
+            die('ok');
         } else {
-            echo 'failed';
+            die('failed');
         }
     }
 

@@ -35,7 +35,7 @@ class ThemesController extends ThemesAppController {
         $option['orderby'] = ['id_theme' => 'DESC'];
         $option['where'] = ['themes.active' => 'Y'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function form() {

@@ -40,7 +40,7 @@ class ImagesController extends ImagesAppController
         $option['orderby'] = ['id_images' => 'DESC'];
         $option['join'] = ['Users'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function form()
@@ -128,7 +128,7 @@ class ImagesController extends ImagesAppController
             $result[$key]['name'] = $this->base . $this->utility->basePathImages() . date('Ymd', strtotime($item['created_date'])) . '/' . $item['name'];
         }
 
-        echo json_encode($result);
+        die(json_encode($result));
     }
 
 

@@ -34,7 +34,7 @@ class CategoryController extends CategoryAppController {
         $option['search'] = ['name', 'type', 'status', 'description'];
         $option['orderby'] = ['category_id' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function form() {

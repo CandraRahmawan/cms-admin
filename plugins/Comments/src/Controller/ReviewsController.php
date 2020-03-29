@@ -38,7 +38,7 @@ class ReviewsController extends CommentsAppController
         $option['search'] = ['name', 'email'];
         $option['orderby'] = ['review_id' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function changeStatus()

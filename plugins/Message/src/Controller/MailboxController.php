@@ -39,7 +39,7 @@ class MailboxController extends MessageAppController
         $option['search'] = ['name', 'email'];
         $option['orderby'] = ['mailbox_id' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function read()

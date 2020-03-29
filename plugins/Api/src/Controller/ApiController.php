@@ -28,13 +28,13 @@ class ApiController extends ApiAppController {
           $review->phone_number = $phone_number;
           $review->comment = $comment;
           $this->Reviews->save($review);
-          echo 'Success Send Review';
+          die('Success Send Review');
         } catch (\Exception $ex) {
           Log::error($ex);
-          echo 'Failed Send Review';
+          die('Failed Send Review');
         }
       } else {
-        echo 'Access Denied';
+        die('Access Denied');
       }
     }
   }
@@ -55,13 +55,13 @@ class ApiController extends ApiAppController {
           $mailbox->phone_number = $phone_number;
           $mailbox->message = $message;
           $this->Mailbox->save($mailbox);
-          echo 'Success Send Message';
+          die('Success Send Message');
         } catch (\Exception $ex) {
           Log::error($ex);
-          echo 'Failed Send Message';
+          die('Failed Send Message');
         }
       } else {
-        echo 'Access Denied';
+        die('Access Denied');
       }
     }
   }
@@ -93,7 +93,7 @@ class ApiController extends ApiAppController {
           'comment' => $item['comment']
         ];
       }
-      echo json_encode($result);
+      die(json_encode($result));
     }
   }
   

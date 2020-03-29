@@ -67,7 +67,7 @@ class UsersController extends UsersAppController {
         $option['search'] = ['user_name', 'email', 'status', 'first_name', 'last_name', 'CONCAT (first_name ," ", last_name)'];
         $option['orderby'] = ['user_id' => 'DESC'];
         $json = $this->DataTables->getResponse($option);
-        echo $json;
+        die($json);
     }
 
     public function add() {
@@ -190,7 +190,7 @@ class UsersController extends UsersAppController {
                 if ($query->count() == 1)
                     $result = 'That ' . $request_name . ' is already taken';
             }
-            echo json_encode($result);
+            die(json_encode($result));
         }
         die;
     }
