@@ -80,16 +80,17 @@ class SliderBannerController extends GalleryAppController {
         //picture
         $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
         $arr_ext = array('jpg', 'jpeg', 'png');
-        $setNewFileName = md5($category_id . '%' . $title . '%' . $file['name']);
+        $setNewFileName = md5($category_id . '%' . $title . '%' . $file['name']) . '.' . $ext;
+        $path_img = $this->utility->basePathImgSliderBanner() . $category_id . DS;
+        $getEntityFilName = explode(DS, $entity->path);
         if (in_array($ext, $arr_ext)) {
-            $files_system = new File(WWW_ROOT . $this->utility->basePathImgSliderBanner() . $category_id . '/' . $entity->path, false, 0777);
+            $files_system = new File(WWW_ROOT . $entity->path, false, 0777);
             $files_system->delete();
-            move_uploaded_file($file['tmp_name'], WWW_ROOT . $this->utility->basePathImgSliderBanner() . $category_id . '/' . $setNewFileName . '.' . $ext);
-            $path_img = $setNewFileName . '.' . $ext;
-            $entity->path = $path_img;
+            move_uploaded_file($file['tmp_name'], WWW_ROOT . $path_img . $setNewFileName);
+            $entity->path = $path_img . $setNewFileName;
         } else {
-            $dir = new Folder(WWW_ROOT . $this->utility->basePathImgSliderBanner() . $category_id);
-            $files_system = $dir->find($entity->path, true);
+            $dir = new Folder(WWW_ROOT . $path_img);
+            $files_system = $dir->find(end($getEntityFilName), true);
             if (count($files_system) == 0)
                 $entity->path = '';
         }

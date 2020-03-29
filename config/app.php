@@ -336,7 +336,7 @@ return [
             'file' => 'debug_' . date('Y-m-d'),
             'url' => env('LOG_DEBUG_URL', null),
             'scopes' => false,
-            'levels' => ['notice', 'info', 'debug'],
+            'levels' => ['info', 'debug'],
         ],
         'error' => [
             'className' => FileLog::class,
@@ -344,7 +344,7 @@ return [
             'file' => 'error_' . date('Y-m-d'),
             'url' => env('LOG_ERROR_URL', null),
             'scopes' => false,
-            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
+            'levels' => ['warning', 'error', 'critical', 'alert', 'emergency', 'notice'],
         ],
         // To enable this dedicated query log, you need set your datasource's log flag to true
         'queries' => [
