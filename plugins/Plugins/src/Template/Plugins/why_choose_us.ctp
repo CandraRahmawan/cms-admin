@@ -88,6 +88,11 @@ $this->Html->css(array(
                         <div class="box-footer">
                             <div class="form-group">
                                 <div class="col-sm-10">
+                                    <button class="btn btn-default" type="button"
+                                            onclick="location.href = '<?= $this->Url->build(['plugin' => 'Plugins', 'controller' => 'Plugins', 'action' => 'lists', '_ext' => 'html']); ?>'">
+                                        <i class="fa fa-angle-left"></i>
+                                        Back
+                                    </button>
                                     <button type="submit" class="btn btn-info">Submit</button>
                                 </div>
                             </div>

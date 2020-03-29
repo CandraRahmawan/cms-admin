@@ -15,16 +15,16 @@ $this->Html->css([
       ?>
         <section class="content">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Product Category Page</h3>
+                            <h3 class="box-title"><?= $plugin['name']; ?></h3>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" id="btn-add-wrapper">
                             <h3 class="box-title" style="margin-left: 8px;">
                                 <button class="btn btn-primary" type="button"
                                         onclick="addSection()">
-                                    <i class="fa fa-fw fa-plus"></i> Add Product Category Page
+                                    <i class="fa fa-fw fa-plus"></i> Add <?= $plugin['name']; ?>
                                 </button>
                             </h3>
                         </div>
@@ -36,7 +36,7 @@ $this->Html->css([
                                       <div class="box-header with-border">
                                           <h4 class="box-title" style="display: block;">
                                               <a data-toggle="collapse" data-parent="#accordion"
-                                                 href="#productCategory<?= $key_id; ?>" aria-expanded="true" class="">
+                                                 href="#service<?= $key_id; ?>" aria-expanded="true" class="">
                                                 <?= $item['value_1']; ?>
                                               </a>
                                               <a onclick="removeSection('Remove: <?= $item['value_1']; ?> ?', '<?= $key_id; ?>')"
@@ -45,42 +45,24 @@ $this->Html->css([
                                               </a>
                                           </h4>
                                       </div>
-                                      <div id="productCategory<?= $key_id; ?>" class="panel-collapse collapse"
+                                      <div id="service<?= $key_id; ?>" class="panel-collapse collapse"
                                            aria-expanded="true">
                                           <div class="form-group" style="margin-top: 15px;">
-                                              <label for="name" class="col-sm-3 control-label">
-                                                  Category Name
-                                              </label>
-                                              <div class="col-sm-9">
+                                              <label for="value_1" class="col-sm-2 control-label">Value 1</label>
+                                              <div class="col-sm-10">
                                                   <input type="hidden" name="id[<?= $key_id; ?>]"
                                                          value="<?= $item['plugin_detail_id']; ?>">
                                                   <input type="text" class="form-control"
-                                                         name="category_name[<?= $key_id; ?>]"
+                                                         name="value_1[<?= $key_id; ?>]"
                                                          value="<?= $item['value_1']; ?>">
                                               </div>
                                           </div>
-                                          <div class="form-group" style="margin-top: 15px;">
-                                              <label for="name" class="col-sm-3 control-label">
-                                                  Background Color Code
-                                              </label>
-                                              <div class="col-sm-9">
-                                                  <div class="input-group input-group-sm">
-                                                      <input type="text" class="form-control"
-                                                             name="bg_color_code[<?= $key_id; ?>]"
-                                                             value="<?= $item['value_2']; ?>">
-                                                      <div class="input-group-btn">
-                                                          <div style="width:40px;height:31px;background-color:<?= $item['value_2']; ?>;"></div>
-                                                      </div>
-
-                                                  </div>
-                                              </div>
-                                          </div>
                                           <div class="form-group">
-                                              <label for="type" class="col-sm-3 control-label">Image</label>
-                                              <div class="col-sm-9">
+                                              <label for="image" class="col-sm-2 control-label">Image</label>
+                                              <div class="col-sm-10">
                                                   <input type="hidden" name="image[<?= $key_id; ?>]"
-                                                         value="<?= $item['value_3']; ?>">
-                                                  <img src="<?= $item['value_3']; ?>"
+                                                         value="<?= $item['value_2']; ?>">
+                                                  <img src="<?= $item['value_2']; ?>"
                                                        id="<?= 'image[' . $key_id . ']'; ?>"
                                                        style="height:150px;width:150px;margin-right:8px;object-fit:contain;"/>
                                                   <button type="button" class="btn btn-primary"
@@ -103,7 +85,7 @@ $this->Html->css([
                                         <i class="fa fa-angle-left"></i>
                                         Back
                                     </button>
-                                    <button type="submit" class="btn btn-info">Submit</button>
+                                    <button type="submit" class="btn btn-info right">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +100,8 @@ $this->Html->css([
   ?>
     <div class="control-sidebar-bg"></div>
 </div>
-<?= $this->Html->script([
+<?php
+$this->Html->script([
   '/assets/lte/plugins/fastclick/fastclick',
   '/assets/lte/dist/js/app.min',
   '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
@@ -131,36 +114,30 @@ $this->Html->css([
         var formGroup = '';
         countSection = countSection + 1;
         var container = document.getElementById('accordion');
-        var productCategorySection = document.createElement("div");
-        productCategorySection.setAttribute('class', 'box-body');
-        productCategorySection.setAttribute('id', countSection);
+        var serviceSection = document.createElement("div");
+        serviceSection.setAttribute('class', 'box-body');
+        serviceSection.setAttribute('id', countSection);
         formGroup += '<div class="panel box box-primary">';
         formGroup += '<div class="box-header with-border">';
         formGroup += '<h4 class="box-title" style="display: block;">';
-        formGroup += '<a data-toggle="collapse" data-parent="#accordion" href="#productCategory' + countSection + '" aria-expanded="true">Category Section ' + countSection + '</a>';
-        formGroup += '<a onclick="removeSection(`Remove: Youtube Review ${countSection} ?`, countSection)" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
+        formGroup += '<a data-toggle="collapse" data-parent="#accordion" href="#service' + countSection + '" aria-expanded="true">New Section ' + countSection + '</a>';
+        formGroup += '<a onclick="removeSection(`Remove: New Section ${countSection} ?`, countSection)" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
         formGroup += '</h4></div>';
-        formGroup += '<div id="productCategory' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
+        formGroup += '<div id="service' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
-        formGroup += '<label for="name" class="col-sm-3 control-label">Category Name</label>';
-        formGroup += '<div class="col-sm-9">';
-        formGroup += '<input type="text" class="form-control" name="category_name[' + countSection + ']">';
-        formGroup += '</div></div>';
-        formGroup += '<div class="form-group" style="margin-top: 15px;">';
-        formGroup += '<label for="name" class="col-sm-3 control-label">Background Color Code</label>';
-        formGroup += '<div class="col-sm-9">';
-        formGroup += '<input type="text" class="form-control" name="bg_color_code[' + countSection + ']">';
+        formGroup += '<label for="value_1" class="col-sm-2 control-label">Value 1</label>';
+        formGroup += '<div class="col-sm-10">';
+        formGroup += '<input type="text" class="form-control" name="value_1[' + countSection + ']">';
         formGroup += '</div></div>';
         formGroup += '<div class="form-group">';
-        formGroup += '<label for="name" class="col-sm-3 control-label">Image</label>';
-        formGroup += '<div class="col-sm-9">';
+        formGroup += '<label for="image" class="col-sm-2 control-label">Image</label>';
+        formGroup += '<div class="col-sm-10">';
         formGroup += '<input type="hidden" name="image[' + countSection + ']">';
         formGroup += '<img id="image[' + countSection + ']" style="height:150px;width:150px;margin-right:8px;object-fit:contain;"/>';
         formGroup += ' <button type="button" class="btn btn-primary" data-key="image[' + countSection + ']" data-toggle="modal" data-target="#modalListImage">Browse Image</button>';
-        formGroup += '</div></div>';
-        formGroup += '</div>';
-        productCategorySection.innerHTML = formGroup;
-        container.appendChild(productCategorySection);
+        formGroup += '</div></div></div>';
+        serviceSection.innerHTML = formGroup;
+        container.appendChild(serviceSection);
     }
 
     function removeSection(message, key) {
@@ -181,7 +158,6 @@ $this->Html->css([
                     if (data === 'ok') {
                         alert('success');
                         document.getElementById(key).remove();
-                        location.reload();
                     } else {
                         alert('failed');
                     }
@@ -200,9 +176,8 @@ $this->Html->css([
     }
 </script>
 
-<?= $this->Element('Images.modal_list'); ?>
-
 <?php
+echo $this->Element('Images.modal_list');
 
 use Cake\Datasource\ConnectionManager;
 
@@ -216,14 +191,9 @@ if ($this->request->is('post')) {
     }
   }
   
-  foreach ($data['category_name'] as $key => $item) {
+  foreach ($data['value_1'] as $key => $item) {
     $value = empty($item) ? '-' : $item;
-    $result[$key]['category_name'] = $value;
-  }
-  
-  foreach ($data['bg_color_code'] as $key => $item) {
-    $value = empty($item) ? '-' : $item;
-    $result[$key]['bg_color_code'] = $value;
+    $result[$key]['value_1'] = $value;
   }
   
   foreach ($data['image'] as $key => $item) {
@@ -232,14 +202,12 @@ if ($this->request->is('post')) {
   }
   
   foreach ($result as $item) {
-    $val1 = $item['category_name'];
-    $val2 = $item['bg_color_code'];
-    $val3 = $item['image'];
-    
+    $value_1 = $item['value_1'];
+    $image = $item['image'];
     if (!empty($item['id'])) {
-      $connection->update('plugins_detail', ['value_1' => $val1, 'value_2' => $val2, 'value_3' => $val3, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
+      $connection->update('plugins_detail', ['value_1' => $value_1, 'value_2' => $image, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
     } else {
-      $connection->insert('plugins_detail', ['value_1' => $val1, 'value_2' => $val2, 'value_3' => $val3, 'plugin_id' => $this->request->query('plugin_id')]);
+      $connection->insert('plugins_detail', ['value_1' => $value_1, 'value_2' => $image, 'plugin_id' => $this->request->query('plugin_id')]);
     }
   }
   header("Refresh:0");
