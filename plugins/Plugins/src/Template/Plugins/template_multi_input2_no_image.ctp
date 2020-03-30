@@ -58,7 +58,7 @@ $this->Html->css([
                                               </div>
                                           </div>
                                           <div class="form-group">
-                                              <label for="description"
+                                              <label for="value_2"
                                                      class="col-sm-2 control-label">Value 2</label>
                                               <div class="col-sm-10">
                                                     <textarea class="form-control" name="value_2[<?= $key_id; ?>]"
