@@ -48,25 +48,16 @@ $this->Html->css([
                                     <div class="form-group">
                                         <label for="value_2" class="col-sm-2 control-label">Value 2</label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" name="value_2"
-                                                      rows="10"><?= $value_2; ?></textarea>
+                                           <textarea class="form-control" name="value_2"
+                                                     rows="5"><?= $value_2 ?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="image" class="col-sm-2 control-label">Image</label>
+                                        <label for="value_3" class="col-sm-2 control-label">Value 3</label>
                                         <div class="col-sm-10">
-                                            <input type="hidden" name="image" value="<?= $value_3; ?>"/>
-                                            <img src="<?= $value_3; ?>" id=image
-                                                 style="height:150px;width:150px;margin-right:8px;object-fit:contain;"/>
-                                            <button
-                                                    type="button"
-                                                    class="btn btn-primary"
-                                                    data-key="image"
-                                                    data-toggle="modal"
-                                                    data-target="#modalListImage"
-                                            >
-                                                Browse Image
-                                            </button>
+                                            <input type="text" class="form-control"
+                                                   name="value_3"
+                                                   value="<?= $value_3; ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -100,8 +91,6 @@ $this->Html->script([
   '/assets/lte/dist/js/app.min',
   '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
 
-echo $this->Element('Images.modal_list');
-
 use Cake\Datasource\ConnectionManager;
 
 if ($this->request->is('post')) {
@@ -114,7 +103,7 @@ if ($this->request->is('post')) {
   
   $value_1 = empty($data['value_1']) ? '-' : $data['value_1'];
   $value_2 = empty($data['value_2']) ? '-' : $data['value_2'];
-  $value_3 = empty($data['image']) ? '-' : $data['image'];;
+  $value_3 = empty($data['value_3']) ? '-' : $data['value_3'];;
   if (!empty($id)) {
     $connection->update('plugins_detail', ['value_1' => $value_1, 'value_2' => $value_2, 'value_3' => $value_3, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $id]);
   } else {
