@@ -1,18 +1,18 @@
 <?php
-$this->Html->css(array(
-    '/assets/lte/plugins/iCheck/all'), ['block' => 'css']);
+$this->Html->css([
+  '/assets/lte/plugins/iCheck/all'], ['block' => 'css']);
 ?>
 <div class="wrapper">
-    <?php
-    echo $this->Element('Dashboard/header');
-    ?>
+  <?php
+  echo $this->Element('Dashboard/header');
+  ?>
     <aside class="main-sidebar">
-        <?php echo $this->Element('Dashboard/menu-sidebar'); ?>
+      <?php echo $this->Element('Dashboard/menu-sidebar'); ?>
     </aside>
     <div class="content-wrapper">
-        <?php
-        echo $this->Element('Dashboard/breadcrumb');
-        ?>
+      <?php
+      echo $this->Element('Dashboard/breadcrumb');
+      ?>
         <section class="content">
             <div class="row">
                 <div class="col-md-6">
@@ -28,45 +28,45 @@ $this->Html->css(array(
                                 </button>
                             </h3>
                         </div>
-                        <?= $this->Form->create(null, ['class' => 'form-horizontal']); ?>
+                      <?= $this->Form->create(null, ['class' => 'form-horizontal']); ?>
                         <div class="box-group" id="accordion">
-                            <?php foreach ($pluginDetail as $key => $item): $key_id = $key + 1; ?>
-                                <div class="box-body" id="<?= $key_id; ?>">
-                                    <div class="panel box box-primary">
-                                        <div class="box-header with-border">
-                                            <h4 class="box-title" style="display: block;">
-                                                <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="#youtube<?= $key_id; ?>" aria-expanded="true" class="">
-                                                    <?= $item['value_1']; ?>
-                                                </a>
-                                                <a onclick="removeSection('Remove: <?= $item['value_1']; ?> ?', '<?= $key_id; ?>')"
-                                                   style="float: right;cursor: pointer;">
-                                                    <i class="fa fa-fw fa-close"></i>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="youtube<?= $key_id; ?>" class="panel-collapse collapse"
-                                             aria-expanded="true">
-                                            <div class="form-group" style="margin-top: 15px;">
-                                                <label for="name" class="col-sm-2 control-label">Youtube Embed
-                                                    ID</label>
-                                                <div class="col-sm-9">
-                                                    <input type="hidden" name="id[<?= $key_id; ?>]"
-                                                           value="<?= $item['plugin_detail_id']; ?>">
-                                                    <input type="text" class="form-control"
-                                                           name="youtube_id[<?= $key_id; ?>]"
-                                                           value="<?= $item['value_1']; ?>">
-                                                </div>
-                                                <div class="col-sm-9" style="margin-top: 15px;">
-                                                    <iframe width="440" height="315"
-                                                            src="https://www.youtube.com/embed/<?= $item['value_1']; ?>">
-                                                    </iframe>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                          <?php foreach ($pluginDetail as $key => $item): $key_id = $key + 1; ?>
+                              <div class="box-body" id="<?= $key_id; ?>">
+                                  <div class="panel box box-primary">
+                                      <div class="box-header with-border">
+                                          <h4 class="box-title" style="display: block;">
+                                              <a data-toggle="collapse" data-parent="#accordion"
+                                                 href="#youtube<?= $key_id; ?>" aria-expanded="true" class="">
+                                                <?= $item['value_1']; ?>
+                                              </a>
+                                              <a onclick="removeSection('Remove: <?= $item['value_1']; ?> ?', '<?= $key_id; ?>')"
+                                                 style="float: right;cursor: pointer;">
+                                                  <i class="fa fa-fw fa-close"></i>
+                                              </a>
+                                          </h4>
+                                      </div>
+                                      <div id="youtube<?= $key_id; ?>" class="panel-collapse collapse"
+                                           aria-expanded="true">
+                                          <div class="form-group" style="margin-top: 15px;">
+                                              <label for="name" class="col-sm-2 control-label">Youtube Embed
+                                                  ID</label>
+                                              <div class="col-sm-9">
+                                                  <input type="hidden" name="id[<?= $key_id; ?>]"
+                                                         value="<?= $item['plugin_detail_id']; ?>">
+                                                  <input type="text" class="form-control"
+                                                         name="youtube_id[<?= $key_id; ?>]"
+                                                         value="<?= $item['value_1']; ?>">
+                                              </div>
+                                              <div class="col-sm-9" style="margin-top: 15px;">
+                                                  <iframe width="440" height="315"
+                                                          src="https://www.youtube.com/embed/<?= $item['value_1']; ?>">
+                                                  </iframe>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          <?php endforeach; ?>
                         </div>
                         <div class="box-footer">
                             <div class="form-group">
@@ -80,22 +80,22 @@ $this->Html->css(array(
                                 </div>
                             </div>
                         </div>
-                        <?php echo $this->Form->end(); ?>
+                      <?php echo $this->Form->end(); ?>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-    <?php
-    echo $this->Element('Dashboard/footer');
-    ?>
+  <?php
+  echo $this->Element('Dashboard/footer');
+  ?>
     <div class="control-sidebar-bg"></div>
 </div>
 <?php
 $this->Html->script([
-    '/assets/lte/plugins/fastclick/fastclick',
-    '/assets/lte/dist/js/app.min',
-    '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
+  '/assets/lte/plugins/fastclick/fastclick',
+  '/assets/lte/dist/js/app.min',
+  '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
 ?>
 
 <script>
@@ -116,7 +116,7 @@ $this->Html->script([
         formGroup += '<div class="box-header with-border">';
         formGroup += '<h4 class="box-title" style="display: block;">';
         formGroup += '<a data-toggle="collapse" data-parent="#accordion" href="#youtube' + countSection + '" aria-expanded="true">Youtube Review ' + countSection + '</a>';
-        formGroup += '<a onclick="removeSection(`Remove: Youtube Review ${countSection} ?`, countSection)" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
+        formGroup += '<a onclick="removeSection(\'Remove: New Youtube Review ' + countSection + ' ?\', ' + countSection + ')" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
         formGroup += '</h4></div>';
         formGroup += '<div id="youtube' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
@@ -170,29 +170,29 @@ $this->Html->script([
 use Cake\Datasource\ConnectionManager;
 
 if ($this->request->is('post')) {
-    $connection = ConnectionManager::get('default');
-    $data = $this->request->data;
-    $result = [];
-    if (!empty($data['id'])) {
-        foreach ($data['id'] as $key => $item) {
-            $result[$key]['id'] = $item;
-        }
+  $connection = ConnectionManager::get('default');
+  $data = $this->request->data;
+  $result = [];
+  if (!empty($data['id'])) {
+    foreach ($data['id'] as $key => $item) {
+      $result[$key]['id'] = $item;
     }
-
-    foreach ($data['youtube_id'] as $key => $item) {
-        $value = empty($item) ? '-' : $item;
-        $result[$key]['youtube_id'] = $value;
+  }
+  
+  foreach ($data['youtube_id'] as $key => $item) {
+    $value = empty($item) ? '-' : $item;
+    $result[$key]['youtube_id'] = $value;
+  }
+  
+  foreach ($result as $item) {
+    $youtube_id = $item['youtube_id'];
+    if (!empty($item['id'])) {
+      $connection->update('plugins_detail', ['value_1' => $youtube_id, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
+    } else {
+      $connection->insert('plugins_detail', ['value_1' => $youtube_id, 'plugin_id' => $this->request->query('plugin_id')]);
     }
-
-    foreach ($result as $item) {
-        $youtube_id = $item['youtube_id'];
-        if (!empty($item['id'])) {
-            $connection->update('plugins_detail', ['value_1' => $youtube_id, 'updated_date' => date('Y-m-d H:i:s')], ['plugin_detail_id' => $item['id']]);
-        } else {
-            $connection->insert('plugins_detail', ['value_1' => $youtube_id, 'plugin_id' => $this->request->query('plugin_id')]);
-        }
-    }
-    header("Refresh:0");
+  }
+  header("Refresh:0");
 }
 
 ?>

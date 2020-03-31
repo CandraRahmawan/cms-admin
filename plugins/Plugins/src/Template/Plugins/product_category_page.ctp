@@ -138,7 +138,7 @@ $this->Html->css([
         formGroup += '<div class="box-header with-border">';
         formGroup += '<h4 class="box-title" style="display: block;">';
         formGroup += '<a data-toggle="collapse" data-parent="#accordion" href="#productCategory' + countSection + '" aria-expanded="true">Category Section ' + countSection + '</a>';
-        formGroup += '<a onclick="removeSection(`Remove: Youtube Review ${countSection} ?`, countSection)" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
+        formGroup += '<a onclick="removeSection(\'Remove: New Category Section ' + countSection + ' ?\', ' + countSection + ')" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
         formGroup += '</h4></div>';
         formGroup += '<div id="productCategory' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
         formGroup += '<div class="form-group" style="margin-top: 15px;">';

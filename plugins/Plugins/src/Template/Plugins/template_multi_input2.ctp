@@ -121,7 +121,7 @@ $this->Html->script([
         formGroup += '<div class="box-header with-border">';
         formGroup += '<h4 class="box-title" style="display: block;">';
         formGroup += '<a data-toggle="collapse" data-parent="#accordion" href="#service' + countSection + '" aria-expanded="true">New Section ' + countSection + '</a>';
-        formGroup += '<a onclick="removeSection(`Remove: New Section ${countSection} ?`, countSection)" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
+        formGroup += '<a onclick="removeSection(\'Remove: New Section ' + countSection + ' ?\', ' + countSection + ')" style="float: right;cursor: pointer;"><i class="fa fa-fw fa-close"></i></a>';
         formGroup += '</h4></div>';
         formGroup += '<div id="service' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
