@@ -13,6 +13,7 @@
       "Api\\": "plugins/Api/src",
       "Category\\": "plugins/Category/src",
       "Content\\": "plugins/Content/src",
+      "Products\\": "plugins/Products/src",
       "Dashboard\\": "plugins/Dashboard/src",
       "Gallery\\": "plugins/Gallery/src",
       "Images\\": "plugins/Images/src",

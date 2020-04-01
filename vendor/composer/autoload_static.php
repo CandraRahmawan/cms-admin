@@ -67,6 +67,7 @@ class ComposerStaticInit4a0a14e86b563d655226fc038d9bd6a9
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Prophecy\\' => 9,
+            'Products\\' => 9,
             'Plugins\\' => 8,
         ),
         'M' => 
@@ -198,6 +199,10 @@ class ComposerStaticInit4a0a14e86b563d655226fc038d9bd6a9
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'Products\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/plugins/Products/src',
         ),
         'Plugins\\' => 
         array (

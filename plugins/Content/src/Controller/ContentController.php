@@ -101,7 +101,7 @@ class ContentController extends ContentAppController
             $content = $this->Content->get($content_id);
             $seo = $this->Seo->get($content->seo_id);
             $type = 'update';
-            $param = '?content_id=' . $content;
+            $param = '?content_id=' . $content_id;
             $category = 'article';
         }
 
@@ -132,7 +132,7 @@ class ContentController extends ContentAppController
             $content = $this->Content->get($content_id);
             $seo = $this->Seo->get($content->seo_id);
             $type = 'update';
-            $param = '?content_id=' . $content;
+            $param = '?content_id=' . $content_id;
             $category = 'page';
         }
 
@@ -161,7 +161,7 @@ class ContentController extends ContentAppController
         } else {
             $content = $this->Content->get($content_id);
             $type = 'update';
-            $param = '?content_id=' . $content;
+            $param = '?content_id=' . $content_id;
             $category = 'section';
         }
 

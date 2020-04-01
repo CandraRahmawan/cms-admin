@@ -37,6 +37,7 @@ class Application extends BaseApplication
         $this->addPlugin('Api');
         $this->addPlugin('Category');
         $this->addPlugin('Content');
+        $this->addPlugin('Products');
         $this->addPlugin('Dashboard');
         $this->addPlugin('Gallery');
         $this->addPlugin('Images');

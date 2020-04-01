@@ -26,6 +26,7 @@ return array(
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src/Prophecy'),
+    'Products\\' => array($baseDir . '/plugins/Products/src'),
     'Plugins\\' => array($baseDir . '/plugins/Plugins/src'),
     'Message\\' => array($baseDir . '/plugins/Message/src'),
     'M1\\Env\\' => array($vendorDir . '/m1/env/src'),
