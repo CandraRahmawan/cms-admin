@@ -97,14 +97,18 @@ $this->Html->css([
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="specification" class="col-sm-2 control-label">Features</label>
+                                <label for="features" class="col-sm-2 control-label">Features</label>
                                 <div class="col-sm-10">
                                     <select class="form-control select2"
                                             multiple="multiple"
-                                            name="features"
+                                            name="features[]"
                                             style="width:100%"
                                     >
-                                        <option></option>
+                                      <?php
+                                      foreach (json_decode($product['features']) as $subitem) {
+                                        echo '<option selected="true">' . $subitem . '</option>';
+                                      }
+                                      ?>
                                     </select>
                                 </div>
                             </div>

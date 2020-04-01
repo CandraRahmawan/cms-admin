@@ -80,8 +80,6 @@ class ProductsController extends ProductsAppController {
     $status = isset($this->params_data['status']) ? $this->params_data['status'] : null;
     $category_id = isset($this->params_data['category_id']) ? $this->params_data['category_id'] : null;
     
-    debug($features);die;
-    
     if ($type == 'update') {
       $entity->update_date = date('Y-m-d H:i:s');
     }
@@ -93,7 +91,7 @@ class ProductsController extends ProductsAppController {
     $entity->price = $price;
     $entity->prefix_currency = $prefix_currency;
     $entity->specification = $specification;
-    $entity->features = $features;
+    $entity->features = json_encode($features);
     $entity->feature_note = $feature_note;
     $entity->additional_info = $additional_info;
     $entity->status = $status;
