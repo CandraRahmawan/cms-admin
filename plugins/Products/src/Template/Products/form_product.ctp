@@ -35,10 +35,20 @@ $this->Html->css([
                       ?>
                         <div class="box-body">
                             <div class="form-group">
+                                <label for="category_id" class="col-sm-2 control-label">Select Template</label>
+                                <div class="col-sm-10">
+                                    <select name="category_id" class="form-control">
+                                      <?php
+                                      echo '<option disabled selected>Select Template</option>';
+                                      $this->Utility->multiSelectThemesSettingOptionView($list_themes_setting, $product['render_template_filename']);
+                                      ?>
+                                    </select>
+                                    <b><i>Temporary note : template_1(GM500), template_2(dbe hardcase), template_3(Dbe Comfit Eartips)</i></b>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="category_id" class="col-sm-2 control-label">Product Category</label>
                                 <div class="col-sm-10">
-                                  <?php
-                                  ?>
                                     <select name="category_id" class="form-control">
                                       <?php
                                       echo '<option disabled selected>Select Category</option>';

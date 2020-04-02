@@ -20,6 +20,7 @@ class ProductsController extends ProductsAppController {
   public function beforeFilter(\Cake\Event\Event $event) {
     parent::beforeFilter($event);
     $this->loadModel('Category');
+    $this->loadModel('ThemesSetting');
     $this->params_data = $this->request->data;
     $this->params_query = $this->request->query;
   }
@@ -64,7 +65,8 @@ class ProductsController extends ProductsAppController {
     }
     
     $list_category = $this->Category->getListCategory('product');
-    $this->set(compact('product', 'list_category'));
+    $list_themes_setting = $this->ThemesSetting->getListMultipleSelect('filename_product_template');
+    $this->set(compact('product', 'list_category', 'list_themes_setting'));
   }
   
   private function __saveItem($type, $entity) {
