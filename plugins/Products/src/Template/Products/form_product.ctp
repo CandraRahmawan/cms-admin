@@ -43,7 +43,7 @@ $this->Html->css([
                                       $this->Utility->multiSelectThemesSettingOptionView($list_themes_setting, $product['render_template_filename']);
                                       ?>
                                     </select>
-                                    <b><i>Temporary note : template_1(GM500), template_2(dbe hardcase), template_3(Dbe Comfit Eartips)</i></b>
+                                    <b><i>Temporary note : template_1(GM500), template_2(Dbe Comfit Eartips), template_3(dbe hardcase)</i></b>
                                 </div>
                             </div>
                             <div class="form-group">
