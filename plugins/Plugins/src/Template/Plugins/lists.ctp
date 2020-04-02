@@ -27,7 +27,7 @@ $this->Html->css([
                         </div>
                         <!--/.box-header -->
                         <div class="box-body">
-                            <table id="list_plugins" class="table table-bordered table-striped">
+                            <table id="list_plugins" class="table table-bordered table-striped table-hover">
                                 <thead>
                                 <tr>
                                     <?php

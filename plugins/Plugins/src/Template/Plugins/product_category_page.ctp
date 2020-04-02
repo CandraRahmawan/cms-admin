@@ -37,9 +37,9 @@ $this->Html->css([
                                           <h4 class="box-title" style="display: block;">
                                               <a data-toggle="collapse" data-parent="#accordion"
                                                  href="#productCategory<?= $key_id; ?>" aria-expanded="true" class="">
-                                                <?= $item['value_1']; ?>
+                                                <?= json_decode($item['value_1'])->name; ?>
                                               </a>
-                                              <a onclick="removeSection('Remove: <?= $item['value_1']; ?> ?', '<?= $key_id; ?>')"
+                                              <a onclick="removeSection('Remove: <?= json_decode($item['value_1'])->name; ?> ?', '<?= $key_id; ?>')"
                                                  style="float: right;cursor: pointer;">
                                                   <i class="fa fa-fw fa-close"></i>
                                               </a>
@@ -54,9 +54,11 @@ $this->Html->css([
                                               <div class="col-sm-9">
                                                   <input type="hidden" name="id[<?= $key_id; ?>]"
                                                          value="<?= $item['plugin_detail_id']; ?>">
-                                                  <input type="text" class="form-control"
-                                                         name="category_name[<?= $key_id; ?>]"
-                                                         value="<?= $item['value_1']; ?>">
+                                                  <select class="form-control select-category"
+                                                          name="category_name[<?= $key_id; ?>]"
+                                                          data-value="<?= json_decode($item['value_1'])->id; ?>">
+                                                      <option disabled selected>Select Category</option>
+                                                  </select>
                                               </div>
                                           </div>
                                           <div class="form-group" style="margin-top: 15px;">
@@ -71,7 +73,6 @@ $this->Html->css([
                                                       <div class="input-group-btn">
                                                           <div style="width:40px;height:31px;background-color:<?= $item['value_2']; ?>;"></div>
                                                       </div>
-
                                                   </div>
                                               </div>
                                           </div>
@@ -125,7 +126,16 @@ $this->Html->css([
 ?>
 
 <script>
-    var countSection = <?= sizeof($pluginDetail); ?>;
+    let countSection = <?= sizeof($pluginDetail); ?>;
+    let getStatusCategoryList = false;
+
+    $(document).ready(function () {
+        $('.select-category').each(function () {
+            const value = $(this).attr('data-value');
+            const name = $(this).attr('name');
+            getCategoryList(value, name);
+        });
+    });
 
     function addSection() {
         var formGroup = '';
@@ -144,7 +154,7 @@ $this->Html->css([
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
         formGroup += '<label for="name" class="col-sm-3 control-label">Category Name</label>';
         formGroup += '<div class="col-sm-9">';
-        formGroup += '<input type="text" class="form-control" name="category_name[' + countSection + ']">';
+        formGroup += '<select class="form-control" name="category_name[' + countSection + ']"><option disabled selected>Select Category</option></select>';
         formGroup += '</div></div>';
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
         formGroup += '<label for="name" class="col-sm-3 control-label">Background Color Code</label>';
@@ -161,6 +171,7 @@ $this->Html->css([
         formGroup += '</div>';
         productCategorySection.innerHTML = formGroup;
         container.appendChild(productCategorySection);
+        getCategoryList('', 'category_name[' + countSection + ']');
     }
 
     function removeSection(message, key) {
@@ -198,6 +209,25 @@ $this->Html->css([
             return false;
         }
     }
+
+    function getCategoryList(selectedKey, name) {
+        $.ajax({
+            url: baseUrl + 'plugins/api/get-category-list/',
+            data: {
+                type: 'product'
+            }
+        }).done(function (data) {
+            if (data !== 'failed') {
+                JSON.parse(data).map(item => {
+                    let selected = selectedKey == item.category_id ? 'selected' : '';
+                    $(`select[name="${name}"]`).append(`<option value="${[item.category_id, item.name]}" ${selected}>${item.name}</option>`);
+                });
+                getStatusCategoryList = true;
+            }
+        }).fail(function (jqXHR) {
+            console.log('error', jqXHR);
+        });
+    }
 </script>
 
 <?= $this->Element('Images.modal_list'); ?>
@@ -217,8 +247,11 @@ if ($this->request->is('post')) {
   }
   
   foreach ($data['category_name'] as $key => $item) {
-    $value = empty($item) ? '-' : $item;
-    $result[$key]['category_name'] = $value;
+    $explode = explode(',', $item);
+    $result[$key]['category_name'] = [
+      'id' => $explode[0],
+      'name' => $explode[1]
+    ];
   }
   
   foreach ($data['bg_color_code'] as $key => $item) {
@@ -232,7 +265,7 @@ if ($this->request->is('post')) {
   }
   
   foreach ($result as $item) {
-    $val1 = $item['category_name'];
+    $val1 = json_encode($item['category_name']);
     $val2 = $item['bg_color_code'];
     $val3 = $item['image'];
     

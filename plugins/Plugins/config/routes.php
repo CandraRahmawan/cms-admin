@@ -7,5 +7,6 @@ Router::plugin('Plugins', ['path' => '/plugins'], function ($routes) {
     $routes->connect('/list', ['controller' => 'Plugins', 'action' => 'lists']);
     $routes->connect('/form-action', ['controller' => 'Plugins', 'action' => 'form_action']);
     $routes->connect('/api/delete-plugin-detail', ['controller' => 'Plugins', 'action' => 'delete_plugin_detail']);
+    $routes->connect('/api/get-category-list', ['controller' => 'Plugins', 'action' => 'get_category_list']);
     $routes->fallbacks('DashedRoute');
 });
