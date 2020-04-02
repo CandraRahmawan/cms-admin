@@ -32,7 +32,7 @@ $this->Html->css([
                             </h3>
                         </div>
                         <div class="box-body">
-                            <table id="list_products" class="table table-bordered table-striped">
+                            <table id="list_products" class="table table-bordered table-striped table-hover">
                                 <thead>
                                 <tr>
                                   <?php
