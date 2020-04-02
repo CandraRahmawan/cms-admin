@@ -81,7 +81,6 @@
             <ul class="treeview-menu">
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Products', 'controller' => 'Products', 'action' => 'formProduct', '_ext' => 'html']); ?>"><i class="fa fa-cart-plus"></i> Add Item</a></li>
                 <li><a href="<?php echo $this->Url->build(['plugin' => 'Products', 'controller' => 'Products', 'action' => 'lists', '_ext' => 'html']); ?>"><i class="fa fa-th-list"></i> List Product</a></li>
-                <li><a href="<?php echo $this->Url->build(['plugin' => 'Products', 'controller' => 'Products', 'action' => 'formArticle', '_ext' => 'html']); ?>"><i class="fa fa-asterisk"></i> Featured Category</a></li>
             </ul>
         </li>
         <li class="treeview">
