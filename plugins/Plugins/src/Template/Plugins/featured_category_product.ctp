@@ -20,15 +20,11 @@ $this->Html->css([
                             <div class="box-header with-border">
                                 <h3 class="box-title"><?= $plugin['name']; ?></h3>
                               <?php
-                              $plugin_detail_id = '';
-                              $value_1 = '';
-                              $value_2 = '';
-                              $value_3 = '';
-                              foreach ($pluginDetail as $item) {
-                                $plugin_detail_id = $item['plugin_detail_id'];
-                                $value_1 = json_decode($item['value_1']);
-                                $value_2 = json_decode($item['value_2']);
-                                $value_3 = $item['value_3'];
+                              $value_1 = [];
+                              $value_2 = [];
+                              foreach ($pluginDetail as $index => $item) {
+                                $value_1[$index] = json_decode($item['value_1']);
+                                $value_2[$index] = json_decode($item['value_2']);
                               }
                               ?>
                             </div>
@@ -49,9 +45,9 @@ $this->Html->css([
                                               <h4 class="box-title" style="display: block;">
                                                   <a data-toggle="collapse" data-parent="#accordion"
                                                      href="#featuredProduct<?= $key_id; ?>">
-                                                    <?= $value_1->name . ' - ' . $value_2->title; ?>
+                                                    <?= $value_1[$key]->name . ' - ' . $value_2[$key]->title; ?>
                                                   </a>
-                                                  <a onclick="removeSection('Remove: <?= $value_1->name; ?> ?', '<?= $key_id; ?>')"
+                                                  <a onclick="removeSection('Remove: <?= $value_1[$key]->name; ?> ?', '<?= $key_id; ?>')"
                                                      style="float: right;cursor: pointer;">
                                                       <i class="fa fa-fw fa-close"></i>
                                                   </a>
@@ -68,7 +64,7 @@ $this->Html->css([
                                                              value="<?= $item['plugin_detail_id']; ?>">
                                                       <select class="form-control select-category"
                                                               name="category_name[<?= $key_id; ?>]"
-                                                              data-value="<?= $value_1->id; ?>">
+                                                              data-value="<?= $value_1[$key]->id; ?>">
                                                           <option disabled selected>Select Category</option>
                                                       </select>
                                                   </div>
@@ -80,7 +76,7 @@ $this->Html->css([
                                                   <div class="col-sm-10">
                                                       <input type="text" class="form-control"
                                                              name="title[<?= $key_id; ?>]"
-                                                             value="<?= $value_2->title; ?>">
+                                                             value="<?= $value_2[$key]->title; ?>">
                                                   </div>
                                               </div>
                                               <div class="form-group" style="margin-top: 15px;">
@@ -90,7 +86,7 @@ $this->Html->css([
                                                   <div class="col-sm-10">
                                                       <input type="text" class="form-control"
                                                              name="subtitle[<?= $key_id; ?>]"
-                                                             value="<?= $value_2->subtitle; ?>">
+                                                             value="<?= $value_2[$key]->subtitle; ?>">
                                                   </div>
                                               </div>
                                               <div class="form-group" style="margin-top: 15px;">
@@ -99,7 +95,7 @@ $this->Html->css([
                                                   </label>
                                                   <div class="col-sm-10">
                                                       <textarea class="form-control" name="description[<?= $key_id; ?>]"
-                                                                rows="5"><?= $value_2->description; ?></textarea>
+                                                                rows="5"><?= $value_2[$key]->description; ?></textarea>
                                                   </div>
                                               </div>
                                               <div class="form-group" style="margin-top: 15px;">
@@ -110,9 +106,9 @@ $this->Html->css([
                                                       <div class="input-group input-group-sm">
                                                           <input type="text" class="form-control"
                                                                  name="bg_color[<?= $key_id; ?>]"
-                                                                 value="<?= $value_2->bg_color; ?>">
+                                                                 value="<?= $value_2[$key]->bg_color; ?>">
                                                           <div class="input-group-btn">
-                                                              <div style="width:40px;height:31px;background-color:<?= $value_2->bg_color; ?>;"></div>
+                                                              <div style="width:40px;height:31px;background-color:<?= $value_2[$key]->bg_color; ?>;"></div>
                                                           </div>
                                                       </div>
                                                   </div>
