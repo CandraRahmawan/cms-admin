@@ -60,7 +60,7 @@ $this->Html->css([
                                           <div id="featuredProduct<?= $key_id; ?>" class="panel-collapse collapse"
                                                aria-expanded="true">
                                               <div class="form-group" style="margin-top: 15px;">
-                                                  <label for="name" class="col-sm-2 control-label">
+                                                  <label for="category_name" class="col-sm-2 control-label">
                                                       Category Name
                                                   </label>
                                                   <div class="col-sm-10">
@@ -100,6 +100,16 @@ $this->Html->css([
                                                   <div class="col-sm-10">
                                                       <textarea class="form-control" name="description[<?= $key_id; ?>]"
                                                                 rows="5"><?= $value_2->description; ?></textarea>
+                                                  </div>
+                                              </div>
+                                              <div class="form-group" style="margin-top: 15px;">
+                                                  <label for="bg_color" class="col-sm-2 control-label">
+                                                      Background Color Code
+                                                  </label>
+                                                  <div class="col-sm-10">
+                                                      <input type="text" class="form-control"
+                                                             name="bg_color[<?= $key_id; ?>]"
+                                                             value="<?= $value_2->bg_color; ?>">
                                                   </div>
                                               </div>
                                               <div class="form-group">
@@ -178,24 +188,29 @@ $this->Html->css([
             formGroup += '</h4></div>';
             formGroup += '<div id="featuredProduct' + countSection + '" class="panel-collapse collapse in" aria-expanded="true">';
             formGroup += '<div class="form-group" style="margin-top: 15px;">';
-            formGroup += '<label for="name" class="col-sm-2 control-label">Category Name</label>';
+            formGroup += '<label for="category_name" class="col-sm-2 control-label">Category Name</label>';
             formGroup += '<div class="col-sm-10">';
             formGroup += '<select class="form-control" name="category_name[' + countSection + ']"><option disabled selected>Select Category</option></select>';
             formGroup += '</div></div>';
             formGroup += '<div class="form-group" style="margin-top: 15px;">';
-            formGroup += '<label for="name" class="col-sm-2 control-label">Title</label>';
+            formGroup += '<label for="title" class="col-sm-2 control-label">Title</label>';
             formGroup += '<div class="col-sm-10">';
             formGroup += '<input type="text" class="form-control" name="title[' + countSection + ']">';
             formGroup += '</div></div>';
             formGroup += '<div class="form-group" style="margin-top: 15px;">';
-            formGroup += '<label for="name" class="col-sm-2 control-label">Subtitle</label>';
+            formGroup += '<label for="subtitle" class="col-sm-2 control-label">Subtitle</label>';
             formGroup += '<div class="col-sm-10">';
             formGroup += '<input type="text" class="form-control" name="subtitle[' + countSection + ']">';
             formGroup += '</div></div>';
             formGroup += '<div class="form-group">';
-            formGroup += '<label for="value_2" class="col-sm-2 control-label">Description</label>';
+            formGroup += '<label for="description" class="col-sm-2 control-label">Description</label>';
             formGroup += '<div class="col-sm-10">';
             formGroup += '<textarea class="form-control" name="description[' + countSection + ']" rows="5"></textarea>';
+            formGroup += '</div></div>';
+            formGroup += '<div class="form-group" style="margin-top: 15px;">';
+            formGroup += '<label for="bg_color" class="col-sm-2 control-label">Background Color Code</label>';
+            formGroup += '<div class="col-sm-10">';
+            formGroup += '<input type="text" class="form-control" name="bg_color[' + countSection + ']">';
             formGroup += '</div></div>';
             formGroup += '<div class="form-group">';
             formGroup += '<label for="name" class="col-sm-2 control-label">Image</label>';
@@ -305,6 +320,11 @@ if ($this->request->is('post')) {
     $result[$key]['description'] = $value;
   }
   
+  foreach ($data['bg_color'] as $key => $item) {
+    $value = empty($item) ? '#fff' : $item;
+    $result[$key]['bg_color'] = $value;
+  }
+  
   foreach ($data['image'] as $key => $item) {
     $value = empty($item) ? '-' : $item;
     $result[$key]['image'] = $value;
@@ -315,7 +335,8 @@ if ($this->request->is('post')) {
     $val2 = json_encode([
       'title' => $item['title'],
       'subtitle' => $item['subtitle'],
-      'description' => $item['description']
+      'description' => $item['description'],
+      'bg_color' => $item['bg_color']
     ]);
     $val3 = $item['image'];
     
