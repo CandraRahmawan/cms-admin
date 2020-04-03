@@ -49,7 +49,7 @@ $this->Html->css([
                                               <h4 class="box-title" style="display: block;">
                                                   <a data-toggle="collapse" data-parent="#accordion"
                                                      href="#featuredProduct<?= $key_id; ?>">
-                                                    <?= $value_1->name; ?>
+                                                    <?= $value_1->name . ' - ' . $value_2->title; ?>
                                                   </a>
                                                   <a onclick="removeSection('Remove: <?= $value_1->name; ?> ?', '<?= $key_id; ?>')"
                                                      style="float: right;cursor: pointer;">
