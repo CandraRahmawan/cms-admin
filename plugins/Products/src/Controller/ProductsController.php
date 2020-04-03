@@ -83,6 +83,7 @@ class ProductsController extends ProductsAppController {
     $additional_info = isset($this->params_data['additional_info']) ? $this->params_data['additional_info'] : null;
     $status = isset($this->params_data['status']) ? $this->params_data['status'] : null;
     $category_id = isset($this->params_data['category_id']) ? $this->params_data['category_id'] : null;
+    $render_template_filename = isset($this->params_data['render_template_filename']) ? $this->params_data['render_template_filename'] : null;
     
     if ($type == 'update') {
       $entity->update_date = date('Y-m-d H:i:s');
@@ -104,7 +105,7 @@ class ProductsController extends ProductsAppController {
     $entity->status = $status;
     $entity->category_id = $category_id;
     $entity->user_id = $this->session_user['user_id'];
-    $entity->render_template_filename = 'template_3';
+    $entity->render_template_filename = $render_template_filename;
     
     try {
       $insert = $this->Products->save($entity);

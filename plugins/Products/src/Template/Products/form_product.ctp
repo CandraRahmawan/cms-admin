@@ -37,7 +37,7 @@ $this->Html->css([
                             <div class="form-group">
                                 <label for="category_id" class="col-sm-2 control-label">Select Template</label>
                                 <div class="col-sm-10">
-                                    <select name="category_id" class="form-control">
+                                    <select name="render_template_filename" class="form-control">
                                       <?php
                                       echo '<option disabled selected>Select Template</option>';
                                       $this->Utility->multiSelectThemesSettingOptionView($list_themes_setting, $product['render_template_filename']);
