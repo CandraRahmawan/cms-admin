@@ -11,9 +11,9 @@ class ThemesSettingTable extends Table {
     $this->primaryKey('id_theme');
   }
   
-  public function getListMultipleSelect($key) {
+  public function getThemesSetting($key) {
     $result = $this->find()
-      ->where(['`key`' => $key, 'category' => 'MultiSelect']);
+      ->where(['`key` LIKE' => '%' . $key . '%']);
     return $result;
   }
   

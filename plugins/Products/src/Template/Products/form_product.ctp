@@ -11,6 +11,15 @@ $this->Html->css([
 <div class="wrapper">
   <?php
   echo $this->Element('Dashboard/header');
+  $list_template = '';
+  $list_template_note = '';
+  foreach ($themes_setting as $item) {
+    if ($item['key'] == 'filename_product_template') {
+      $list_template = $item['value_1'];
+    } else {
+      $list_template_note = $item['value_1'];
+    }
+  }
   ?>
     <aside class="main-sidebar">
       <?php echo $this->Element('Dashboard/menu-sidebar'); ?>
@@ -40,10 +49,10 @@ $this->Html->css([
                                     <select name="render_template_filename" class="form-control">
                                       <?php
                                       echo '<option disabled selected>Select Template</option>';
-                                      $this->Utility->multiSelectThemesSettingOptionView($list_themes_setting, $product['render_template_filename']);
+                                      $this->Utility->multiSelectThemesSettingOptionView($list_template, $product['render_template_filename']);
                                       ?>
                                     </select>
-                                    <b><i>Temporary note : template_1(GM500), template_2(Dbe Comfit Eartips), template_3(dbe hardcase)</i></b>
+                                    <b><i><?= $list_template_note; ?></i></b>
                                 </div>
                             </div>
                             <div class="form-group">

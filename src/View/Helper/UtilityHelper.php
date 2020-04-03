@@ -83,11 +83,11 @@ class UtilityHelper extends Helper {
     return $results;
   }
   
-  public function multiSelectThemesSettingOptionView($list_themes_setting, $value) {
-    foreach ($list_themes_setting as $item) {
+  public function multiSelectThemesSettingOptionView($list, $selected) {
+    foreach ($list as $item) {
       $value_1 = json_decode($item['value_1']);
       foreach ($value_1 as $subItem) {
-        if ($value == $subItem)
+        if ($selected == $subItem)
           echo '<option value="' . $subItem . '" selected>' . $subItem . '</option>';
         else
           echo '<option value="' . $subItem . '">' . $subItem . '</option>';

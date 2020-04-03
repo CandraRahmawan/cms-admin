@@ -65,8 +65,8 @@ class ProductsController extends ProductsAppController {
     }
     
     $list_category = $this->Category->getListCategory('product');
-    $list_themes_setting = $this->ThemesSetting->getListMultipleSelect('filename_product_template');
-    $this->set(compact('product', 'list_category', 'list_themes_setting'));
+    $themes_setting = $this->ThemesSetting->getThemesSetting('filename_product_template');
+    $this->set(compact('product', 'list_category', 'themes_setting'));
   }
   
   private function __saveItem($type, $entity) {
