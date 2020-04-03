@@ -11,10 +11,4 @@ class ThemesSettingTable extends Table {
     $this->primaryKey('id_theme');
   }
   
-  public function getThemesSetting($key) {
-    $result = $this->find()
-      ->where(['`key` LIKE' => '%' . $key . '%']);
-    return $result;
-  }
-  
 }

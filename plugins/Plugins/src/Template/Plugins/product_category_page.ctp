@@ -65,7 +65,7 @@ $this->Html->css([
                                               <label for="name" class="col-sm-3 control-label">
                                                   Background Color Code
                                               </label>
-                                              <div class="col-sm-9">
+                                              <div class="col-sm-3">
                                                   <div class="input-group input-group-sm">
                                                       <input type="text" class="form-control"
                                                              name="bg_color_code[<?= $key_id; ?>]"

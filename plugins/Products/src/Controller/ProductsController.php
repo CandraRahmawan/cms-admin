@@ -65,7 +65,7 @@ class ProductsController extends ProductsAppController {
     }
     
     $list_category = $this->Category->getListCategory('product');
-    $themes_setting = $this->ThemesSetting->getThemesSetting('filename_product_template');
+    $themes_setting = $this->ThemesSetting->find();
     $this->set(compact('product', 'list_category', 'themes_setting'));
   }
   

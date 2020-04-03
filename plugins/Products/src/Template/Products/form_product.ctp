@@ -13,11 +13,20 @@ $this->Html->css([
   echo $this->Element('Dashboard/header');
   $list_template = '';
   $list_template_note = '';
+  $image_upload_note = '';
   foreach ($themes_setting as $item) {
-    if ($item['key'] == 'filename_product_template') {
-      $list_template = $item['value_1'];
-    } else {
-      $list_template_note = $item['value_1'];
+    switch ($item['key']) {
+      case 'filename_product_template':
+        $list_template = $item['value_1'];
+        break;
+      case 'filename_product_template_note':
+        $list_template_note = $item['value_1'];
+        break;
+      case 'images_upload_note':
+        $image_upload_note = $item['value_1'];
+        break;
+      default:
+        null;
     }
   }
   ?>
@@ -30,7 +39,7 @@ $this->Html->css([
       ?>
         <section class="content">
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-12">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">New Users</h3>
@@ -132,10 +141,23 @@ $this->Html->css([
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="features_color" class="col-sm-2 control-label">Features Color</label>
+                                <div class="col-sm-3">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" id="features_color"
+                                               name="features_color"
+                                               value="<?= $product['features_color']; ?>">
+                                        <div class="input-group-btn">
+                                            <div style="width:40px;height:31px;background-color:<?= $product['features_color']; ?>;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="feature_note" class="col-sm-2 control-label">Feature Note</label>
                                 <div class="col-sm-10">
                                     <textarea id="feature_note" name="feature_note" rows="3"
-                                              cols="127"><?= $product['feature_note']; ?></textarea>
+                                              style="width: 100%"><?= $product['feature_note']; ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -149,6 +171,7 @@ $this->Html->css([
                                 <label for="path_img" class="col-sm-2 control-label">Upload Images</label>
                                 <div class="col-sm-10">
                                     <input id="img_user" name="path_img" type="file" multiple=true>
+                                    <b><i><?= $image_upload_note; ?></i></b>
                                 </div>
                             </div>
                             <div class="form-group">

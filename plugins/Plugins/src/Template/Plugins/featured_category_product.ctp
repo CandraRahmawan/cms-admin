@@ -106,10 +106,15 @@ $this->Html->css([
                                                   <label for="bg_color" class="col-sm-2 control-label">
                                                       Background Color Code
                                                   </label>
-                                                  <div class="col-sm-10">
-                                                      <input type="text" class="form-control"
-                                                             name="bg_color[<?= $key_id; ?>]"
-                                                             value="<?= $value_2->bg_color; ?>">
+                                                  <div class="col-sm-3">
+                                                      <div class="input-group input-group-sm">
+                                                          <input type="text" class="form-control"
+                                                                 name="bg_color[<?= $key_id; ?>]"
+                                                                 value="<?= $value_2->bg_color; ?>">
+                                                          <div class="input-group-btn">
+                                                              <div style="width:40px;height:31px;background-color:<?= $value_2->bg_color; ?>;"></div>
+                                                          </div>
+                                                      </div>
                                                   </div>
                                               </div>
                                               <div class="form-group">
