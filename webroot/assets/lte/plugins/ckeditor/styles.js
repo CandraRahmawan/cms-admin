@@ -59,6 +59,10 @@ CKEDITOR.stylesSet.add( 'default', [
 
 	{ name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
 
+	{ name: 'Specification List',element: 'div', attributes: { 'class': 'specification-list' } },
+	{ name: 'Specification',	element: 'div', attributes: { 'class': 'specification' } },
+	{ name: 'Span',				element: 'span'},
+
 	{ name: 'Big',				element: 'big' },
 	{ name: 'Small',			element: 'small' },
 	{ name: 'Typewriter',		element: 'tt' },
