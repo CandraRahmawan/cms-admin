@@ -228,7 +228,7 @@ $this->Html->script([
   '/assets/lte/plugins/jquery-validation/dist/jquery.validate.min',
   '/assets/lte/dist/js/app.min',
   '/assets/lte/plugins/iCheck/icheck.min',
-  'https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js',
+  '/assets/lte/plugins/ckeditor/ckeditor',
   '/assets/lte/dist/js/main'], ['block' => 'scriptBottom']);
 echo $this->Element('loading_modal');
 ?>
