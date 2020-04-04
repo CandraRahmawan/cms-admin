@@ -42,8 +42,8 @@ $this->Html->css([
                 <div class="col-md-12">
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#form" data-toggle="tab">Product Form</a></li>
-                            <li><a href="#image" data-toggle="tab">Upload Image</a></li>
+                            <li class="active" id="tab-form"><a href="#form" data-toggle="tab">Product Form</a></li>
+                            <li id="tab-image"><a href="#image" data-toggle="tab">Upload Image</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="active tab-pane" id="form">
@@ -235,6 +235,19 @@ echo $this->Element('loading_modal');
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        if (window.location.hash == '#tabImage') {
+            $('#tab-form').removeClass('active');
+            $('#tab-image').addClass('active')
+            $('#form').removeClass('active');
+            $('#image').addClass('active')
+        } else {
+            $('#tab-image').removeClass('active');
+            $('#tab-form').addClass('active')
+            $('#image').removeClass('active');
+            $('#form').addClass('active')
+        }
+
         CKEDITOR.replace('description_1');
         CKEDITOR.replace('description_2');
         CKEDITOR.replace('specification');
@@ -294,7 +307,12 @@ echo $this->Element('loading_modal');
         });
 
         $('#multiple_images').on('fileuploaded', function () {
-            //window.location.reload();
+            let url = window.location.href;
+            if (url.indexOf('#tabImage') === -1) {
+                url += '#tabImage'
+            }
+            window.location.href = url;
+            window.location.reload();
         });
 
         $('#multiple_images').on('filesorted', function (event, params) {
