@@ -44,8 +44,8 @@ class UtilityHelper extends Helper {
       $cekY = '';
       $cekN = 'checked';
     }
-    echo '<label><input class="flat - red" type="radio" ' . $cekY . ' value="Y" name="' . $name . '"> Active</label><br>';
-    echo '<label><input class="flat - red" type="radio" ' . $cekN . ' value="N" name="' . $name . '"> Non Active</label>';
+    echo '<label><input class="flat-red" type="radio" ' . $cekY . ' value="Y" name="' . $name . '"> Active</label><br>';
+    echo '<label><input class="flat-red" type="radio" ' . $cekN . ' value="N" name="' . $name . '"> Non Active</label>';
   }
   
   public function categoryOption($params) {
