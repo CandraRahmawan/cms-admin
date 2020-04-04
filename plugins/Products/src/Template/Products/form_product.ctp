@@ -285,9 +285,11 @@ echo $this->Element('loading_modal');
             url: '<?= $this->Url->build(['plugin' => 'Products', 'controller' => 'Products', 'action' => 'getImage']); ?>',
             data: 'product_id=' + product_id
         }).done(function (data) {
-            const jsonData = JSON.parse(data);
-            gallery_image = jsonData.items;
-            config_image = jsonData.config;
+            if (data != 'failed') {
+                const jsonData = JSON.parse(data);
+                gallery_image = jsonData.items;
+                config_image = jsonData.config;
+            }
         }).fail(function (jqXHR, msg) {
             console.log(msg);
         }).then(function () {
