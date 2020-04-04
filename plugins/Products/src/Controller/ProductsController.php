@@ -128,9 +128,11 @@ class ProductsController extends ProductsAppController {
       $product = $this->Products->get($product_id);
       $path_images = [];
       $config = [];
-      foreach (json_decode($product->img_path) as $img) {
-        $path_images[] = "<img src='" . $this->base . $img . "' width='380' height='240' style='object-fit:contain;'/>'";
-        $config[] = ['key' => $img, 'extra' => ['product_id' => $product_id], 'url' => Router::url(['controller' => 'Products', 'action' => 'removeImage'])];
+      if (!empty($product->img_path)) {
+        foreach (json_decode($product->img_path) as $img) {
+          $path_images[] = "<img src='" . $this->base . $img . "' width='380' height='240' style='object-fit:contain;'/>'";
+          $config[] = ['key' => $img, 'extra' => ['product_id' => $product_id], 'url' => Router::url(['controller' => 'Products', 'action' => 'removeImage'])];
+        }
       }
       die(json_encode(['msg' => 'Success', 'items' => $path_images, 'config' => $config]));
     }
