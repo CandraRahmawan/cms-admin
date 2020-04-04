@@ -3,6 +3,8 @@
 namespace Products\Controller;
 
 use Cake\Filesystem\Folder;
+use Cake\Routing\Router;
+use Cake\Filesystem\File;
 
 class ProductsController extends ProductsAppController {
   
@@ -47,21 +49,15 @@ class ProductsController extends ProductsAppController {
     
     if (empty($product_id)) {
       $product = $this->Products->newEntity();
-      $param = '';
       $type = 'add';
     } else {
       $product = $this->Products->get($product_id);
       $type = 'update';
-      $param = '?product_id=' . $product_id;
     }
     
     if ($this->request->is('post') || $this->request->is('put')) {
-      $success = $this->__saveItem($type, $product);
-      if ($success) {
-        return $this->redirect(['action' => 'lists', '_ext' => 'html']);
-      } else {
-        return $this->redirect(['action' => 'add', '_ext' => 'html' . $param . '']);
-      }
+      $product_id = $this->__saveItem($type, $product);
+      return $this->redirect(['action' => 'formProduct', '_ext' => 'html' . '?product_id=' . $product_id . '']);
     }
     
     $list_category = $this->Category->getListCategory('product');
@@ -110,6 +106,7 @@ class ProductsController extends ProductsAppController {
     try {
       $insert = $this->Products->save($entity);
       if ($type == 'update') {
+        $product_id = $entity->product_id;
         $this->Flash->success('Product Item Has Been Updated');
       } else {
         $product_id = $insert->product_id;
@@ -118,10 +115,93 @@ class ProductsController extends ProductsAppController {
         $this->Products->save($update);
         $this->Flash->success('Product Item Has Been Added');
       }
-      return true;
+      return $product_id;
     } catch (\Exception $ex) {
       $this->Flash->error($ex);
       return $this->redirect(['action' => 'lists', '_ext' => 'html']);
     }
+  }
+  
+  public function getImage() {
+    $product_id = isset($this->params_query['product_id']) ? $this->params_query['product_id'] : null;
+    if ($this->request->is('ajax') && !empty($product_id)) {
+      $product = $this->Products->get($product_id);
+      $path_images = [];
+      $config = [];
+      foreach (json_decode($product->img_path) as $img) {
+        $path_images[] = "<img src='" . $this->base . $img . "' width='380' height='240' style='object-fit:contain;'/>'";
+        $config[] = ['key' => $img, 'extra' => ['product_id' => $product_id], 'url' => Router::url(['controller' => 'Products', 'action' => 'removeImage'])];
+      }
+      die(json_encode(['msg' => 'Success', 'items' => $path_images, 'config' => $config]));
+    }
+    die('failed');
+  }
+  
+  public function uploadImage() {
+    $product_id = isset($this->params_query['product_id']) ? $this->params_query['product_id'] : null;
+    
+    if ($this->request->is('ajax') && !empty($product_id)) {
+      $file = isset($this->params_data['img_path']) ? $this->params_data['img_path'] : null;
+      $entity = $this->Products->get($product_id);
+      $destination_img = $this->utility->basePathImages('product') . $entity->category_id . DS . $entity->unique_id;
+      
+      new Folder(WWW_ROOT . $destination_img, true, 0777);
+      $ext = substr(strtolower(strrchr($file['name'], '.')), 1);
+      $setNewFileName = md5(date('YmdHis') . '%' . $file['name']) . '.' . $ext;
+      move_uploaded_file($file['tmp_name'], WWW_ROOT . $destination_img . DS . $setNewFileName);
+      $img_list = [];
+      if (!empty($entity->img_path)) {
+        foreach (json_decode($entity->img_path) as $item) {
+          $img_list[] = $item;
+        }
+      }
+      array_push($img_list, $destination_img . DS . $setNewFileName);
+      $entity->img_path = json_encode($img_list);
+      $this->Products->save($entity);
+      die(json_encode(['msg' => 'Success']));
+    }
+    die(json_encode(['msg' => 'Failed Upload Images']));
+  }
+  
+  public function sortImage() {
+    $product_id = isset($this->params_query['product_id']) ? $this->params_query['product_id'] : null;
+    $sortItem = isset($this->params_query['sortItem']) ? $this->params_query['sortItem'] : null;
+    
+    $entity = $this->Products->get($product_id);
+    $img_list = [];
+    foreach ($sortItem as $item) {
+      $img_list[] = $item['key'];
+    }
+    $entity->img_path = json_encode($img_list);
+    $this->Products->save($entity);
+    die(json_encode(['msg' => 'Sort Image Success']));
+  }
+  
+  public function removeImage() {
+    $product_id = isset($this->params_data['product_id']) ? $this->params_data['product_id'] : null;
+    $key = isset($this->params_data['key']) ? $this->params_data['key'] : null;
+    
+    $entity = $this->Products->get($product_id);
+    $dir = new Folder(WWW_ROOT . $this->utility->basePathImages('product') . $entity->category_id . DS . $entity->unique_id);
+    $files_system = [];
+    
+    $img_list = [];
+    foreach (json_decode($entity->img_path) as $item) {
+      $filename_img = explode(DS, $item);
+      if ($key != $item) {
+        $img_list[] = $item;
+      } else {
+        $files_system = $dir->find(end($filename_img), true);
+      }
+    }
+    
+    if (count($files_system) > 0) {
+      $file_img = new File(WWW_ROOT . $key, false, 0777);
+      $file_img->delete();
+    }
+    
+    $entity->img_path = json_encode($img_list);
+    $this->Products->save($entity);
+    die(json_encode(['msg' => 'Success']));
   }
 }

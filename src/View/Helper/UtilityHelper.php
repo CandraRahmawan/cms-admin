@@ -24,9 +24,8 @@ class UtilityHelper extends Helper {
     return $base;
   }
   
-  public function basePathImages() {
-    $base = Configure::read('urlImage.image_management');
-    return $base;
+  public function basePathImages($key = 'image_management') {
+    return Configure::read('urlImage.' . $key . '');
   }
   
   public function enumValue($table, $field) {
@@ -45,13 +44,13 @@ class UtilityHelper extends Helper {
       $cekY = '';
       $cekN = 'checked';
     }
-    echo '<label><input class="flat-red" type="radio" ' . $cekY . ' value="Y" name="' . $name . '"> Active</label><br>';
-    echo '<label><input class="flat-red" type="radio" ' . $cekN . ' value="N" name="' . $name . '"> Non Active</label>';
+    echo '<label><input class="flat - red" type="radio" ' . $cekY . ' value="Y" name="' . $name . '"> Active</label><br>';
+    echo '<label><input class="flat - red" type="radio" ' . $cekN . ' value="N" name="' . $name . '"> Non Active</label>';
   }
   
   public function categoryOption($params) {
     $conn = ConnectionManager::get('default');
-    $cols = $conn->execute("SELECT category_id, name FROM category WHERE status='Y' AND type='{$params}'");
+    $cols = $conn->execute("SELECT category_id, name FROM category WHERE status = 'Y' AND type = '{$params}'");
     $results = $cols->fetchAll('assoc');
     $results = Hash::combine($results, '{n}.category_id', '{n}.name');
     return $results;
@@ -77,7 +76,7 @@ class UtilityHelper extends Helper {
   
   public function getPluginList($key) {
     $conn = ConnectionManager::get('default');
-    $cols = $conn->execute("SELECT plugin_id, name FROM plugins WHERE is_active='Y' AND `key`='{$key}'");
+    $cols = $conn->execute("SELECT plugin_id, name FROM plugins WHERE is_active = 'Y' AND `key` = '{$key}'");
     $results = $cols->fetchAll('assoc');
     $results = Hash::combine($results, '{n}.plugin_id', '{n}.name');
     return $results;
