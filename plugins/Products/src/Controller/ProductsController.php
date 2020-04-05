@@ -82,7 +82,7 @@ class ProductsController extends ProductsAppController {
     $render_template_filename = isset($this->params_data['render_template_filename']) ? $this->params_data['render_template_filename'] : null;
     
     if ($type == 'update') {
-      $entity->update_date = date('Y-m-d H:i:s');
+      $entity->updated_date = date('Y-m-d H:i:s');
     } else {
       $entity->unique_id = 'P' . date('ym') . $category_id . rand(100, 999);
     }
@@ -159,6 +159,7 @@ class ProductsController extends ProductsAppController {
       }
       array_push($img_list, $destination_img . DS . $setNewFileName);
       $entity->img_path = json_encode($img_list);
+      $entity->updated_date = date('Y-m-d H:i:s');
       $this->Products->save($entity);
       die(json_encode(['msg' => 'Success']));
     }
@@ -175,6 +176,7 @@ class ProductsController extends ProductsAppController {
       $img_list[] = $item['key'];
     }
     $entity->img_path = json_encode($img_list);
+    $entity->updated_date = date('Y-m-d H:i:s');
     $this->Products->save($entity);
     die(json_encode(['msg' => 'Sort Image Success']));
   }
@@ -203,6 +205,7 @@ class ProductsController extends ProductsAppController {
     }
     
     $entity->img_path = json_encode($img_list);
+    $entity->updated_date = date('Y-m-d H:i:s');
     $this->Products->save($entity);
     die(json_encode(['msg' => 'Success']));
   }
