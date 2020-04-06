@@ -12,11 +12,11 @@ class ProductsController extends ProductsAppController {
     'ID' => 'unique_id',
     'Product Name' => 'entity_name',
     'Created Date' => 'entity_created_date',
-    'Currency' => 'prefix_currency',
-    'Price' => 'price',
+    'Last Update' => 'entity_updated_date',
     'Status' => 'entity_status',
     'Category' => 'entity_category_name',
-    'Author' => 'entity_author'
+    'Author' => 'entity_author',
+    'Last Update By' => 'entity_user_last_update'
   ];
   
   public function beforeFilter(\Cake\Event\Event $event) {
@@ -37,8 +37,8 @@ class ProductsController extends ProductsAppController {
     $this->render(false);
     $option['table'] = 'products';
     $option['field'] = $this->option_field;
-    $option['search'] = ['products.name', 'subtitle'];
-    $option['join'] = ['Category', 'Users'];
+    $option['search'] = ['products.name', 'products.unique_id', 'category.name'];
+    $option['join'] = ['Category', 'Author', 'LastBy'];
     $option['orderby'] = ['product_id' => 'DESC'];
     $json = $this->DataTables->getResponse($option);
     die($json);
@@ -83,8 +83,10 @@ class ProductsController extends ProductsAppController {
     
     if ($type == 'update') {
       $entity->updated_date = date('Y-m-d H:i:s');
+      $entity->user_last_update = $this->session_user['user_id'];
     } else {
       $entity->unique_id = 'P' . date('ym') . $category_id . rand(100, 999);
+      $entity->author = $this->session_user['user_id'];
     }
     
     $entity->name = $name;
@@ -100,7 +102,6 @@ class ProductsController extends ProductsAppController {
     $entity->additional_info = $additional_info;
     $entity->status = $status;
     $entity->category_id = $category_id;
-    $entity->user_id = $this->session_user['user_id'];
     $entity->render_template_filename = $render_template_filename;
     
     try {
@@ -160,6 +161,7 @@ class ProductsController extends ProductsAppController {
       array_push($img_list, $destination_img . DS . $setNewFileName);
       $entity->img_path = json_encode($img_list);
       $entity->updated_date = date('Y-m-d H:i:s');
+      $entity->user_last_update = $this->session_user['user_id'];
       $this->Products->save($entity);
       die(json_encode(['msg' => 'Success']));
     }
@@ -177,6 +179,7 @@ class ProductsController extends ProductsAppController {
     }
     $entity->img_path = json_encode($img_list);
     $entity->updated_date = date('Y-m-d H:i:s');
+    $entity->user_last_update = $this->session_user['user_id'];
     $this->Products->save($entity);
     die(json_encode(['msg' => 'Sort Image Success']));
   }
@@ -206,6 +209,7 @@ class ProductsController extends ProductsAppController {
     
     $entity->img_path = json_encode($img_list);
     $entity->updated_date = date('Y-m-d H:i:s');
+    $entity->user_last_update = $this->session_user['user_id'];
     $this->Products->save($entity);
     die(json_encode(['msg' => 'Success']));
   }

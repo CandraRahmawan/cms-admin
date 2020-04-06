@@ -24,7 +24,7 @@ class CommonHelperComponent extends Component
             $diff = round($diff);
             return $diff . " " . $strTime[$i] . "(s) ago";
         }
-        return 'Just now';
+        return '-';
     }
 
 }
