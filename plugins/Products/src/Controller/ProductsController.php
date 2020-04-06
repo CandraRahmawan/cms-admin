@@ -83,7 +83,7 @@ class ProductsController extends ProductsAppController {
     
     if ($type == 'update') {
       $entity->updated_date = date('Y-m-d H:i:s');
-      $entity->user_last_update = $this->session_user['user_id'];
+      $entity->last_updated_by = $this->session_user['user_id'];
     } else {
       $entity->unique_id = 'P' . date('ym') . $category_id . rand(100, 999);
       $entity->author = $this->session_user['user_id'];
@@ -161,7 +161,7 @@ class ProductsController extends ProductsAppController {
       array_push($img_list, $destination_img . DS . $setNewFileName);
       $entity->img_path = json_encode($img_list);
       $entity->updated_date = date('Y-m-d H:i:s');
-      $entity->user_last_update = $this->session_user['user_id'];
+      $entity->last_updated_by = $this->session_user['user_id'];
       $this->Products->save($entity);
       die(json_encode(['msg' => 'Success']));
     }
@@ -179,7 +179,7 @@ class ProductsController extends ProductsAppController {
     }
     $entity->img_path = json_encode($img_list);
     $entity->updated_date = date('Y-m-d H:i:s');
-    $entity->user_last_update = $this->session_user['user_id'];
+    $entity->last_updated_by = $this->session_user['user_id'];
     $this->Products->save($entity);
     die(json_encode(['msg' => 'Sort Image Success']));
   }
@@ -209,7 +209,7 @@ class ProductsController extends ProductsAppController {
     
     $entity->img_path = json_encode($img_list);
     $entity->updated_date = date('Y-m-d H:i:s');
-    $entity->user_last_update = $this->session_user['user_id'];
+    $entity->last_updated_by = $this->session_user['user_id'];
     $this->Products->save($entity);
     die(json_encode(['msg' => 'Success']));
   }
