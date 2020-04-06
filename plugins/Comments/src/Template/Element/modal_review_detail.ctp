@@ -16,7 +16,9 @@
 <script>
     $("#modalReviewComment").on('shown.bs.modal', function (data) {
         const comment = data.relatedTarget.dataset.comment;
+        const name = data.relatedTarget.dataset.name;
+        const email = data.relatedTarget.dataset.email;
         $('#commentDetail').empty();
-        $('#commentDetail').append('<div>' + comment + '</div>');
+        $('#commentDetail').append('<table><tr><td>Name</td><td width="20" align="center"> : </td><td>' + name + '</td></tr><tr><td>Email</td><td align="center"> : </td><td>' + email + '</td></tr><tr><td>Review Comment</td><td align="center"> : </td><td>' + comment + '</td></tr></table>');
     });
 </script>

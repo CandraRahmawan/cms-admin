@@ -10,7 +10,7 @@ class ReviewsController extends CommentsAppController
         'Name' => 'name',
         'Email' => 'email',
         'Phone Number' => 'phone_number',
-        'Create Date' => 'created_date',
+        'Create Date' => 'entity_created_date',
         'Status' => 'entity_is_show',
         'Action' => 'action_reviews'
     ];
