@@ -37,7 +37,7 @@ class ProductsController extends ProductsAppController {
     $this->render(false);
     $option['table'] = 'products';
     $option['field'] = $this->option_field;
-    $option['search'] = ['products.name', 'products.unique_id', 'category.name'];
+    $option['search'] = ['Products.name', 'Products.unique_id', 'Category.name'];
     $option['join'] = ['Category', 'Author', 'LastBy'];
     $option['orderby'] = ['product_id' => 'DESC'];
     $json = $this->DataTables->getResponse($option);
