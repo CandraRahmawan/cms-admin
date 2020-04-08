@@ -212,7 +212,7 @@ return [
      */
     'EmailTransport' => [
         'default' => [
-            'className' => \Cake\Network\Email\SmtpTransport::class,
+            'className' => MailTransport::class,
             /*
              * The following keys are used in SMTP transports:
              */
