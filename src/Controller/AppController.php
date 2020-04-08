@@ -23,6 +23,7 @@ class AppController extends Controller
         parent::initialize();
         $this->loadComponent('Flash');
         $this->loadModel('Mailbox');
+        $this->loadModel('ThemesSetting');
         $this->utility = new UtilityHelper(new \Cake\View\View());
         $this->session = $this->request->session();
         $this->session_user = $this->session->read('user_login');

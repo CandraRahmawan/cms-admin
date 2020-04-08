@@ -67,11 +67,29 @@ class ThemesController extends ThemesAppController {
   
   private function __save($id_theme) {
     try {
-      for ($i = 0; $i < count($this->params_data); $i++) {
-        $key = array_keys($this->params_data)[$i];
+      $params = $this->params_data;
+      
+      $theme = $this->ThemesSetting->find()
+        ->where(['id_theme' => $id_theme, 'category' => 'MultiSelect'])
+        ->toArray();
+      
+      foreach ($theme as $item) {
+        if (empty($params[$item['key']])) {
+          $params[$item['key']] = "[]";
+        }
+      }
+      
+      for ($i = 0; $i < count($params); $i++) {
+        $key = array_keys($params)[$i];
         if ('id_theme' != $key) {
-          $value_1 = is_array($this->params_data[$key]) ? json_encode($this->params_data[$key]) : $this->params_data[$key];
+          $value_1 = is_array($params[$key]) ? json_encode($params[$key]) : $params[$key];
           $this->ThemesSetting->updateAll(['value_1' => $value_1], ['`key`' => $key, 'id_theme' => $id_theme]);
+          
+          if ($key == 'hide_menu_sidebar') {
+            $this->session_user['hide_menu_sidebar'] = $value_1;
+            $this->session->write('user_login', $this->session_user);
+          }
+          
         }
       }
       $this->Flash->success('Success Update Theme');
