@@ -61,8 +61,8 @@ class ApiController extends ApiAppController {
           $this->Mailbox->save($mailbox);
           
           if ($themes_setting[1]['value_1'] == 'Y') {
-            $email = new Email('default');
-            $email->setViewVars([
+            $emailConfig = new Email('default');
+            $emailConfig->setViewVars([
               'title_value_1' => 'Name',
               'value_1' => $name,
               'title_value_2' => 'Email',
@@ -73,9 +73,9 @@ class ApiController extends ApiAppController {
               'value_4' => $message
             ]);
             foreach (json_decode($themes_setting[0]['value_1']) as $emailTo) {
-              $email->addTo($emailTo);
+              $emailConfig->addTo($emailTo);
             }
-            $email->template('default')
+            $emailConfig->template('default')
               ->emailFormat('html')
               ->subject(sprintf('%s Send Message to you from dbe-id.com', $name))
               ->send();
