@@ -71,6 +71,10 @@ $this->Html->css([
                                           echo '<option selected>' . $subitem . '</option>';
                                         }
                                         echo '</select>';
+                                      } else if ('isActive' == $item['category']) {
+                                        $isChecked = $item['value_1'] == 'Y' ? 'checked' : '';
+                                        $checkedInfo = $item['value_1'] == 'Y' ? 'Activated' : 'Deactivated';
+                                        echo '<input class="flat-red" type="checkbox" name="' . $item['key'] . '" ' . $isChecked . ' /> &nbsp;&nbsp;' . $checkedInfo . '';
                                       } else {
                                         echo '<textarea name="' . $item['key'] . '" class="form-control">' . $item['value_1'] . '</textarea>';
                                       }

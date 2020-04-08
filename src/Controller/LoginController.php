@@ -10,8 +10,6 @@ class LoginController extends AppController {
   
   public function login() {
     $this->loadModel('Users');
-    $this->loadModel('Themes');
-    $this->loadModel('ThemesSetting');
     $this->loadComponent('Hash');
     
     if ($this->request->is('post')) {

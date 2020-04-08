@@ -70,12 +70,15 @@ class ThemesController extends ThemesAppController {
       $params = $this->params_data;
       
       $theme = $this->ThemesSetting->find()
-        ->where(['id_theme' => $id_theme, 'category' => 'MultiSelect'])
+        ->where(['id_theme' => $id_theme, 'category IN' => ['MultiSelect', 'isActive']])
         ->toArray();
       
       foreach ($theme as $item) {
-        if (empty($params[$item['key']])) {
+        if ($item['category'] == 'MultiSelect' && empty($params[$item['key']])) {
           $params[$item['key']] = "[]";
+        }
+        if ($item['category'] == 'isActive') {
+          $params[$item['key']] = empty($params[$item['key']]) ? 'N' : 'Y';
         }
       }
       
