@@ -38,6 +38,7 @@ class ApiController extends ApiAppController {
         die('Access Denied');
       }
     }
+    die('Send Not Allowed');
   }
   
   public function apiSendMailbox() {
@@ -90,6 +91,7 @@ class ApiController extends ApiAppController {
         die('Access Denied');
       }
     }
+    die('Send Not Allowed');
   }
   
   private function __validateRecaptcha() {
