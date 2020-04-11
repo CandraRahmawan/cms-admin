@@ -8,7 +8,7 @@ use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 
 $protocol = 'http://';
-if (env('HTTPS')) {
+if (env('IS_HTTPS')) {
     $protocol = 'https://';
 }
 
