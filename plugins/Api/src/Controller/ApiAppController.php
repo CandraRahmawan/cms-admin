@@ -12,5 +12,6 @@ class ApiAppController extends Controller {
     $this->loadModel('Themes');
     $this->viewBuilder()->layout(false);
     $this->render(false);
+    header('Access-Control-Allow-Origin: *');
   }
 }
