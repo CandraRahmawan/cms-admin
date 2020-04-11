@@ -107,15 +107,15 @@ $this->Html->css([
                                                             Image
                                                         </label>
                                                         <div class="col-sm-10">
-                                                            <input type="hidden" name="value_2[2]"
+                                                            <input type="hidden" name="value_2[1]"
                                                                    value="<?= isset($value_2[1]) ? $value_2[1] : ''; ?>"/>
                                                             <img src="<?= isset($value_2[1]) ? $value_2[1] : ''; ?>"
-                                                                 id=value_2[2]
+                                                                 id=value_2[1]
                                                                  style="height:150px;width:150px;margin-right:8px;object-fit:contain;"/>
                                                             <button
                                                                     type="button"
                                                                     class="btn btn-primary"
-                                                                    data-key="value_2[2]"
+                                                                    data-key="value_2[1]"
                                                                     data-toggle="modal"
                                                                     data-target="#modalListImage"
                                                             >
