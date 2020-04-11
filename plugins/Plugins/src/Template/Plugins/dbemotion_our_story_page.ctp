@@ -83,9 +83,7 @@ $this->Html->css([
                                                             Description
                                                         </label>
                                                         <div class="col-sm-10">
-                                                            <textarea class="form-control" name="value_3[1]"
-                                                                      rows="5"><?= isset($value_3[0]) ? $value_3[0] : ''; ?>
-                                                            </textarea>
+                                                            <textarea class="form-control" name="value_3[1]" rows="5"><?= isset($value_3[0]) ? $value_3[0] : ''; ?></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -107,15 +105,15 @@ $this->Html->css([
                                                             Image
                                                         </label>
                                                         <div class="col-sm-10">
-                                                            <input type="hidden" name="value_2[1]"
+                                                            <input type="hidden" name="value_2[2]"
                                                                    value="<?= isset($value_2[1]) ? $value_2[1] : ''; ?>"/>
                                                             <img src="<?= isset($value_2[1]) ? $value_2[1] : ''; ?>"
-                                                                 id=value_2[1]
+                                                                 id=value_2[2]
                                                                  style="height:150px;width:150px;margin-right:8px;object-fit:contain;"/>
                                                             <button
                                                                     type="button"
                                                                     class="btn btn-primary"
-                                                                    data-key="value_2[1]"
+                                                                    data-key="value_2[2]"
                                                                     data-toggle="modal"
                                                                     data-target="#modalListImage"
                                                             >
@@ -133,26 +131,27 @@ $this->Html->css([
                                                     </h3>
                                                     <div class="box-group" id="accordion">
                                                       <?php
-                                                      $index = 1;
+                                                      $index_value = 0;
                                                       for ($i = 2; $i < sizeof($pluginDetail); $i++):
+                                                        $index_value = $i + 1;
                                                         ?>
-                                                          <div class="box-body" id="<?= $index; ?>">
+                                                          <div class="box-body" id="<?= $index_value; ?>">
                                                               <div class="panel box box-primary">
                                                                   <div class="box-header with-border">
                                                                       <h4 class="box-title" style="display: block;">
                                                                           <a data-toggle="collapse"
                                                                              data-parent="#accordion"
-                                                                             href="#section_3<?= $index; ?>"
+                                                                             href="#section_3<?= $index_value; ?>"
                                                                              aria-expanded="true" class="">
                                                                             <?= $value_1[$i]; ?>
                                                                           </a>
-                                                                          <a onclick="removeSection('Remove: <?= $value_1[$i]; ?> ?', '<?= $index; ?>')"
+                                                                          <a onclick="removeSection('Remove: <?= $value_1[$i]; ?> ?', '<?= $index_value; ?>')"
                                                                              style="float: right;cursor: pointer;">
                                                                               <i class="fa fa-fw fa-close"></i>
                                                                           </a>
                                                                       </h4>
                                                                   </div>
-                                                                  <div id="section_3<?= $index; ?>"
+                                                                  <div id="section_3<?= $index_value; ?>"
                                                                        class="panel-collapse collapse"
                                                                        aria-expanded="true">
                                                                       <div class="form-group" style="margin-top: 15px;">
@@ -162,10 +161,10 @@ $this->Html->css([
                                                                           </label>
                                                                           <div class="col-sm-10">
                                                                               <input type="hidden"
-                                                                                     name="id[<?= $index; ?>]"
+                                                                                     name="id[<?= $index_value; ?>]"
                                                                                      value="<?= $plugin_detail_id[$i]; ?>">
                                                                               <input type="text" class="form-control"
-                                                                                     name="value_1[<?= $index; ?>]"
+                                                                                     name="value_1[<?= $index_value; ?>]"
                                                                                      value="<?= $value_1[$i]; ?>">
                                                                           </div>
                                                                       </div>
@@ -176,14 +175,14 @@ $this->Html->css([
                                                                           </label>
                                                                           <div class="col-sm-10">
                                                                               <textarea class="form-control"
-                                                                                        name="value_2[<?= $index; ?>]"
+                                                                                        name="value_2[<?= $index_value; ?>]"
                                                                                         rows="5"><?= $value_2[$i];; ?></textarea>
                                                                           </div>
                                                                       </div>
                                                                   </div>
                                                               </div>
                                                           </div>
-                                                        <?php $index++; endfor; ?>
+                                                        <?php endfor; ?>
                                                     </div>
                                                 </div>
                                             </div>
