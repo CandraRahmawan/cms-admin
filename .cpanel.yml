@@ -10,4 +10,4 @@ deployment:
     - /bin/cp -R webroot $DEPLOYPATH/content-management/
     - /bin/cp -R plugins $DEPLOYPATH/content-management/
     - /bin/cp -R config $DEPLOYPATH/content-management/
-    - /bin/mkdir $DEPLOYPATH/content-management/logs
+    - /bin/mkdir -p $DEPLOYPATH/content-management/logs
