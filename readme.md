@@ -28,5 +28,5 @@
 #### Compatible :
 > if you use windows then ready to go, if you doesn't use windows you need make permission on directory `logs` and `tmp` (usually using chmod -R 777).
 
-
-![picture](https://github.com/CandraRahmawan/cms-web/blob/master/admin-dashboard.png)
+#### Dashboard Administrator
+![picture](https://github.com/CandraRahmawan/cms-admin/blob/master/admin-dashboard.png)
