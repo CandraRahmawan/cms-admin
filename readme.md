@@ -8,7 +8,7 @@
 - Apache Server
 
 #### Depedencies :
-- [cms-web](https://bitbucket.org/candra_rahmawan/cms-web/src/master/)
+- [cms-web](https://github.com/CandraRahmawan/cms-web)
 
 #### Login :
 - user `candra`, pass `candra`
@@ -27,3 +27,6 @@
 
 #### Compatible :
 > if you use windows then ready to go, if you doesn't use windows you need make permission on directory `logs` and `tmp` (usually using chmod -R 777).
+
+
+![picture](https://github.com/CandraRahmawan/cms-web/blob/master/admin-dashboard.png)
