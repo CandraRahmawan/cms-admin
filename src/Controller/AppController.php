@@ -50,7 +50,7 @@ class AppController extends Controller {
       }
     }
     
-    $global_mailbox = $this->Mailbox->find()->where(['is_read' => 'N', 'status' => 'A']);
+    $global_mailbox = $this->Mailbox->find()->where(['is_read' => 'N', 'status' => 'A'])->limit(10);
     $this->set(compact('global_mailbox'));
   }
   

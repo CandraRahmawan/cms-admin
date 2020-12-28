@@ -14,7 +14,7 @@
                         <div class="pull-left">
                             <i class="fa fa-fw fa-envelope"></i>
                         </div>
-                        <h4>
+                        <h4 style="margin-left:26px">
                             <?php echo $item['name']; ?>
                             <small>
                                 <i class="fa fa-clock-o"></i> <?= $item['send_date']; ?>
