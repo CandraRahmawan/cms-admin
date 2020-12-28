@@ -293,6 +293,8 @@ CREATE TABLE `products` (
   `category_id` smallint(6) NOT NULL,
   `author` smallint(6) NOT NULL,
   `last_updated_by` smallint(6) DEFAULT NULL,
+  `link_download` text DEFAULT NULL,
+  `download_info` text DEFAULT NULL,
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `products_UN` (`unique_id`),
   KEY `products_FK` (`category_id`),

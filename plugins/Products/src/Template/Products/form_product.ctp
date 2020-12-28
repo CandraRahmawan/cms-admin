@@ -44,6 +44,8 @@ $this->Html->css([
                         <ul class="nav nav-tabs">
                             <li class="active" id="tab-form"><a href="#form" data-toggle="tab">Product Form</a></li>
                             <li id="tab-image"><a href="#image" data-toggle="tab">Upload Image</a></li>
+                            <li id="tab-driver_manual"><a href="#driver_manual" data-toggle="tab">Driver and Manual</a>
+                            </li>
                         </ul>
                         <div class="tab-content">
                             <div class="active tab-pane" id="form">
@@ -209,6 +211,9 @@ $this->Html->css([
                                     <div id="notes"></div>
                                 </div>
                             </div>
+                            <div class="tab-pane" id="driver_manual">
+                              <?php echo $this->Element('driver_manual'); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -252,6 +257,7 @@ echo $this->Element('loading_modal');
         CKEDITOR.replace('description_2');
         CKEDITOR.replace('specification');
         CKEDITOR.replace('additional_info');
+        CKEDITOR.replace('download_info');
         $('.select2').select2({
             tags: true
         });

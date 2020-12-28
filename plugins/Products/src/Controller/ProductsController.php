@@ -123,6 +123,44 @@ class ProductsController extends ProductsAppController {
     }
   }
   
+  public function submitLinkDownload() {
+    $this->render(false);
+    $product_id = isset($this->params_query['product_id']) ? $this->params_query['product_id'] : null;
+    $download_info = isset($this->params_data['download_info']) ? $this->params_data['download_info'] : null;
+    $link_download = isset($this->params_data['link_download']) ? $this->params_data['link_download'] : null;
+    $title_other = isset($this->params_data['title_other']) ? $this->params_data['title_other'] : [];
+    $link_other = isset($this->params_data['link_other']) ? $this->params_data['link_other'] : [];
+    
+    if ($this->request->is('post') || $this->request->is('put')) {
+      $entity = $this->Products->get($product_id);
+      $entity->updated_date = date('Y-m-d H:i:s');
+      $entity->last_updated_by = $this->session_user['user_id'];
+      $entity->download_info = $download_info;
+      
+      $downloads['download'] = $link_download;
+      foreach ($title_other as $key => $item) {
+        $downloads['others'][$key]['title'] = $item;
+      }
+      
+      foreach ($link_other as $key => $item) {
+        $downloads['others'][$key]['link'] = $item;
+      }
+      
+      $entity->link_download = json_encode($downloads);
+      
+      try {
+        $this->Products->save($entity);
+        $this->Flash->success('Driver and Manual Has Been Updated');
+      } catch (\Exception $ex) {
+        $this->Flash->error($ex);
+        return $this->redirect(['action' => 'lists', '_ext' => 'html']);
+      }
+    } else {
+      $this->Flash->error("Failed, request can't be process");
+    }
+    return $this->redirect(['action' => 'formProduct', '_ext' => 'html' . '?product_id=' . $product_id . '']);
+  }
+  
   public function getImage() {
     $product_id = isset($this->params_query['product_id']) ? $this->params_query['product_id'] : null;
     if ($this->request->is('ajax') && !empty($product_id)) {
