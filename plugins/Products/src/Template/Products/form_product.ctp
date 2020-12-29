@@ -257,7 +257,6 @@ echo $this->Element('loading_modal');
         CKEDITOR.replace('description_2');
         CKEDITOR.replace('specification');
         CKEDITOR.replace('additional_info');
-        CKEDITOR.replace('download_info');
         $('.select2').select2({
             tags: true
         });

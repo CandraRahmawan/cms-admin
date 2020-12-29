@@ -8,13 +8,6 @@ $link_download = json_decode($product['link_download']);
 ?>
 <div class="box-body">
     <div class="form-group">
-        <label for="download_info" class="col-sm-2 control-label">Download Info</label>
-        <div class="col-sm-10">
-            <textarea id="download_info" name="download_info" rows="10"
-                      cols="80"><?= $product['download_info']; ?></textarea>
-        </div>
-    </div>
-    <div class="form-group">
         <label for="link_download" class="col-sm-2 control-label">Link Driver URL</label>
         <div class="col-sm-10">
             <input type="text" class="form-control"
