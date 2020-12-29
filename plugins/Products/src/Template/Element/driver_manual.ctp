@@ -47,7 +47,7 @@ $link_download = json_decode($product['link_download']);
                                   <label for="title_other" class="col-sm-2 control-label">Title</label>
                                   <div class="col-sm-10">
                                       <input type="text" class="form-control"
-                                             name="title_other[<?= $key_id; ?>]"
+                                             name="others[<?= $key_id; ?>][title]"
                                              value="<?= $item->title; ?>">
                                   </div>
                               </div>
@@ -55,7 +55,7 @@ $link_download = json_decode($product['link_download']);
                                   <label for="link_other" class="col-sm-2 control-label">Link Manual URL</label>
                                   <div class="col-sm-10">
                                       <input type="text" class="form-control"
-                                             name="link_other[<?= $key_id; ?>]"
+                                             name="others[<?= $key_id; ?>][link]"
                                              value="<?= $item->link; ?>">
                                   </div>
                               </div>
@@ -101,12 +101,12 @@ $link_download = json_decode($product['link_download']);
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
         formGroup += '<label for="title_other" class="col-sm-2 control-label">Title</label>';
         formGroup += '<div class="col-sm-10">';
-        formGroup += '<input type="text" class="form-control" name="title_other[' + countSection + ']">';
+        formGroup += '<input type="text" class="form-control" name="others[' + countSection + '][title]">';
         formGroup += '</div></div>';
         formGroup += '<div class="form-group" style="margin-top: 15px;">';
         formGroup += '<label for="link_other" class="col-sm-2 control-label">Link Manual URL</label>';
         formGroup += '<div class="col-sm-10">';
-        formGroup += '<input type="text" class="form-control" name="link_other[' + countSection + ']">';
+        formGroup += '<input type="text" class="form-control" name="others[' + countSection + '][link]">';
         formGroup += '</div></div>';
         formGroup += '</div>';
         serviceSection.innerHTML = formGroup;

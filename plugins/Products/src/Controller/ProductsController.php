@@ -128,8 +128,7 @@ class ProductsController extends ProductsAppController {
     $product_id = isset($this->params_query['product_id']) ? $this->params_query['product_id'] : null;
     $download_info = isset($this->params_data['download_info']) ? $this->params_data['download_info'] : null;
     $link_download = isset($this->params_data['link_download']) ? $this->params_data['link_download'] : null;
-    $title_other = isset($this->params_data['title_other']) ? $this->params_data['title_other'] : [];
-    $link_other = isset($this->params_data['link_other']) ? $this->params_data['link_other'] : [];
+    $others = isset($this->params_data['others']) ? $this->params_data['others'] : [];
     
     if ($this->request->is('post') || $this->request->is('put')) {
       $entity = $this->Products->get($product_id);
@@ -138,12 +137,12 @@ class ProductsController extends ProductsAppController {
       $entity->download_info = $download_info;
       
       $downloads['download'] = $link_download;
-      foreach ($title_other as $key => $item) {
-        $downloads['others'][$key]['title'] = $item;
-      }
-      
-      foreach ($link_other as $key => $item) {
-        $downloads['others'][$key]['link'] = $item;
+      $downloads['others'] = [];
+      foreach ($others as $key => $item) {
+        array_push($downloads['others'], [
+          'title' => $item['title'],
+          'link' => $item['link']
+        ]);
       }
       
       $entity->link_download = json_encode($downloads);
