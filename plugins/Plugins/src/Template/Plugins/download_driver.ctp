@@ -51,8 +51,8 @@ $this->Html->css([
                                         <select class="form-control select2" multiple name="value_3[]">
                                           <?php
                                           foreach ($products as $subitem) {
-                                            $selected = $this->Utility->downloadDriverSelected($value_3, $subitem['product_id']);
-                                            echo '<option ' . $selected . ' value="' . $subitem['product_id'] . '|' . $subitem['name'] . '">' . $subitem['name'] . '</option>';
+                                            $selected = $this->Utility->downloadDriverSelected($value_3, $subitem['unique_id']);
+                                            echo '<option ' . $selected . ' value="' . $subitem['unique_id'] . '|' . $subitem['name'] . '">' . $subitem['name'] . '</option>';
                                           }
                                           ?>
                                         </select>
