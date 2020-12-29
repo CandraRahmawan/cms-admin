@@ -92,4 +92,15 @@ class UtilityHelper extends Helper {
     }
   }
   
+  public function downloadDriverSelected($list, $id) {
+    $selected = '';
+    foreach (json_decode($list) as $val) {
+      if ($val->id == $id) {
+        $selected = 'selected';
+        break;
+      }
+    }
+    return $selected;
+  }
+  
 }

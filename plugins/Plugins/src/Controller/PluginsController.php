@@ -16,6 +16,7 @@ class PluginsController extends PluginsAppController {
     parent::beforeFilter($event);
     $this->loadModel('Plugins');
     $this->loadModel('PluginsDetail');
+    $this->loadModel('Products');
   }
   
   public function lists() {
@@ -40,9 +41,15 @@ class PluginsController extends PluginsAppController {
     $plugin_id = $this->request->query['plugin_id'];
     $plugin = $this->Plugins->getById($plugin_id);
     if (sizeof($plugin) > 0) {
+      $products = [];
       $pluginDetail = $this->PluginsDetail->find()->where(['plugin_id' => $plugin_id])->toArray();
       $plugin = $plugin[0];
-      $this->set(compact('pluginDetail', 'plugin'));
+  
+      if ($plugin['key'] == 'download_driver') {
+        $products = $this->Products->find()->where(['link_download is not' => null])->toArray();
+      }
+      
+      $this->set(compact('pluginDetail', 'plugin', 'products'));
       $this->render($plugin['render_filename']);
     } else {
       $this->redirect('/');
