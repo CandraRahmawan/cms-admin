@@ -1,4 +1,4 @@
-## Backend Admin CMS Version 1.2.1
+## Backend Admin CMS Version 1.2.2
 > contains dashboard Administrator CMS, build use CakePHP Version 3.8.9
 
 #### Requirement :
