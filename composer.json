@@ -1,6 +1,6 @@
 {
   "require": {
-    "cakephp/cakephp": "3.8.*",
+    "cakephp/cakephp": "3.10.*",
     "cakephp/debug_kit": "3.21.*",
     "josegonzalez/dotenv": "3.2.0"
   },
